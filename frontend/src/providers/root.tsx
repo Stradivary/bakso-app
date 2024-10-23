@@ -3,6 +3,7 @@ import { Notifications } from "@mantine/notifications";
 import { AuthProvider } from "./authProvider";
 
 import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
 import { RouteProvider } from "./routeProvider";
 
 
