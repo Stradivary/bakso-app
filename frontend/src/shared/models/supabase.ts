@@ -67,27 +67,39 @@ export type Database = {
       users_new: {
         Row: {
           created_at: string | null
+          distance: number
           email: string
           id: string
+          is_active: boolean | null
+          last_seen: string | null
           location: unknown | null
           name: string
           role: string
+          updated_at: string | null
         }
         Insert: {
           created_at?: string | null
+          distance?: number
           email: string
           id: string
+          is_active?: boolean | null
+          last_seen?: string | null
           location?: unknown | null
           name: string
           role: string
+          updated_at?: string | null
         }
         Update: {
           created_at?: string | null
+          distance?: number
           email?: string
           id?: string
+          is_active?: boolean | null
+          last_seen?: string | null
           location?: unknown | null
           name?: string
           role?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -96,45 +108,27 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      find_nearest_users: {
+      find_nearby_users: {
         Args: {
-          user_id: string
+          p_user_id: string
+          p_latitude: number
+          p_longitude: number
+          p_radius_meters: number
+          p_active_within_minutes: number
+          p_min_rating: number
+          p_max_results: number
+        }
+        Returns: {
+          id: string
+          name: string
+          email: string
           user_role: string
-          current_lat: number
-          current_long: number
-          radius?: number
-        }
-        Returns: {
-          id: string
-          name: string
-          role: string
-          distance: number
-          latitude: number
+          is_active: boolean
+          last_seen: string
+          rating: number
           longitude: number
-        }[]
-      }
-      get_nearby_customers: {
-        Args: {
-          seller_latitude: number
-          seller_longitude: number
-          radius_meters: number
-        }
-        Returns: {
-          id: string
-          name: string
-          location: unknown
-        }[]
-      }
-      get_nearby_sellers: {
-        Args: {
-          user_latitude: number
-          user_longitude: number
-          radius_meters: number
-        }
-        Returns: {
-          id: string
-          name: string
-          location: unknown
+          latitude: number
+          distance: number
         }[]
       }
     }
@@ -227,4 +221,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never

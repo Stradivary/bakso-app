@@ -2,10 +2,10 @@ export interface User {
   id: string;
   name: string;
   email?: string;
-  role: 'customer' | 'seller';
+  role: string;
   location: {
     latitude: number;
     longitude: number;
   };
-  distance: number;
+  rating?: number;
 }

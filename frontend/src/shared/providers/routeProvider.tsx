@@ -1,11 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ProtectedRoute } from "../components/ProtectedRoute";
-import { Register, MainPage, CustomerPage } from "../pages";
+import { AuthPage, CustomerPage } from "../../pages";
 
 const router = createBrowserRouter([
   {
     path: '/auth',
-    element: <Register />,
+    element: <AuthPage />,
   },
   {
     path: '/',
@@ -15,16 +15,11 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
-  {
-    path: '/maps',
-    element: <CustomerPage />,
-  },
-
 ]);
 
 
 export function RouteProvider() {
   return (
-    <RouterProvider router={router}  />
+    <RouterProvider router={router} />
   );
 }
