@@ -70,24 +70,33 @@ export const authService = {
     const email = `${name.replace(/\s/g, '').toLowerCase()}@${role}.com`;
     const locationBasedPassword = generateLocationBasedPassword(name, role, normalizedLocation);
 
-    // Check for existing users with same name and role
-    const { data: existingUsers } = await supabase
+    // First check for existing users with same name and role for distance check
+    const { data: existingUsers, error: queryError } = await supabase
       .from('users_new')
       .select('*')
       .eq('name', name)
       .eq('role', role);
 
+    if (queryError) {
+      throw new Error(`Error checking for existing users: ${queryError.message}`);
+    }
+
     // Check distance from all existing users with same name and role
-    if (existingUsers?.length) {
+    if (existingUsers && existingUsers.length > 0) {
       const tooClose = existingUsers.some(user => {
-        const userLocation = (user.location as string).replace('POINT(', '').replace(')', '').split(' ');
-        const distance = calculateDistance(
-          normalizedLocation.latitude,
-          normalizedLocation.longitude,
-          parseFloat(userLocation[1]),
-          parseFloat(userLocation[0])
-        );
-        return distance < MIN_DISTANCE_KM;
+        try {
+          const userLocation = (user.location as string).replace('POINT(', '').replace(')', '').split(' ');
+          const distance = calculateDistance(
+            normalizedLocation.latitude,
+            normalizedLocation.longitude,
+            parseFloat(userLocation[1]),
+            parseFloat(userLocation[0])
+          );
+          return distance < MIN_DISTANCE_KM;
+        } catch (error) {
+          console.error('Error calculating distance:', error);
+          return false;
+        }
       });
 
       if (tooClose) {
@@ -95,59 +104,96 @@ export const authService = {
       }
     }
 
-    // Check if exact user exists
-    const { data: existingUser } = await supabase
-      .from('users_new')
-      .select('*')
-      .eq('email', email)
-      // .eq('location', `POINT(${normalizedLocation.longitude} ${normalizedLocation.latitude})`)
-      .single();
-
-    const userData = {
-      id: existingUser?.id ?? "",
+    // Try to sign in first
+    let authUser;
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
       email,
-      name,
-      role: role as "customer" | "seller",
-      location: normalizedLocation,
-      distance: 0
-    };
+      password: locationBasedPassword
+    });
 
-    if (!existingUser) {
-      // Register new user
+    if (!signInError) {
+      // Successful sign in
+      authUser = signInData.user;
+    } else if (!signInError.message.includes('Invalid login credentials')) {
+      // If error is not about invalid credentials, it might be a real error
+      throw signInError;
+    }
+
+    // If no auth user, try to create one
+    if (!authUser) {
       const { data: { user }, error: signUpError } = await supabase.auth.signUp({
         email,
         password: locationBasedPassword
       });
 
-      if (signUpError) throw signUpError;
+      if (signUpError) {
+        if (signUpError.message.includes('User already registered')) {
+          throw new Error('User already exists but password is incorrect. Please contact support.');
+        }
+        throw signUpError;
+      }
 
-      // Insert new user data
-      const { error: insertError } = await supabase.from('users_new').insert([
-        {
-          id: user?.id ?? "",
-          email,
-          name,
-          role: role === 'customer' ? 'customer' : 'seller',
-          location: `SRID=4326;POINT(${normalizedLocation.longitude} ${normalizedLocation.latitude})`,
-          last_seen: new Date().toISOString(),
-          created_at: new Date().toISOString()
-        },
-      ]);
-
-      if (insertError) throw insertError;
-
-      userData.id = user?.id ?? "";
-    } else {
-      // Update last login time
-      await supabase
-        .from('users_new')
-        .update({ last_seen: new Date().toISOString() })
-        .eq('id', existingUser.id);
+      authUser = user;
     }
 
-    return userData;
-  },
+    if (!authUser?.id) {
+      throw new Error('Failed to get user ID from auth system');
+    }
 
+    // Check/create user row in users_new table
+    const { data: dbUser, error: dbError } = await supabase
+      .from('users_new')
+      .select('*')
+      .eq('id', authUser.id)
+      .single();
+
+    if (dbError && dbError.code !== 'PGRST116') {
+      throw new Error(`Database error: ${dbError.message}`);
+    }
+
+    if (!dbUser) {
+      // Create the missing database entry
+      const { error: insertError } = await supabase
+        .from('users_new')
+        .insert([
+          {
+            id: authUser.id,
+            email,
+            name,
+            role: role === 'customer' ? 'customer' : 'seller',
+            location: `SRID=4326;POINT(${normalizedLocation.longitude} ${normalizedLocation.latitude})`,
+            last_seen: new Date().toISOString(),
+            created_at: new Date().toISOString()
+          }
+        ]);
+
+      if (insertError) {
+        throw new Error(`Failed to create user record: ${insertError.message}`);
+      }
+    } else {
+      // Update existing user's location and last_seen
+      const { error: updateError } = await supabase
+        .from('users_new')
+        .update({
+          location: `SRID=4326;POINT(${normalizedLocation.longitude} ${normalizedLocation.latitude})`,
+          last_seen: new Date().toISOString()
+        })
+        .eq('id', authUser.id);
+
+      if (updateError) {
+        console.error('Failed to update user data:', updateError);
+      }
+    }
+
+    return {
+      id: authUser.id,
+      email,
+      name,
+      role: role as "customer" | "seller",
+      location: normalizedLocation,
+      rating: 5,
+    };
+  },
   // Helper method to verify if a location is valid for a user
   verifyLocation: async (
     name: string,

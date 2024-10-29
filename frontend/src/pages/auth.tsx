@@ -21,6 +21,8 @@ export const AuthPage: React.FC = () => {
     if (data.name && data.role && location) {
       const userData = await authService.registerOrLogin(data.name, data.role, location);
       login(userData);
+
+      localStorage.setItem('role', data.role);
       navigate('/');
     }
   };

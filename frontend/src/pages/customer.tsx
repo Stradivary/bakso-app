@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { iconBakso, iconPerson } from '../shared/components/icon.tsx';
 import { supabase } from '../shared/services/supabaseService';
 import { NearbyUser, userService } from '../shared/services/userService';
+
 const RADIUS_METERS = 5000; // 5 km radius
 const LOCATION_UPDATE_INTERVAL = 30000; // 30 seconds
 const SEARCH_PARAMS = {
@@ -16,36 +17,39 @@ const SEARCH_PARAMS = {
   activeWithinMinutes: 15
 };
 
-export function CustomerPage() {
+
+export function LocationMapPage() {
   const [opened, { open, close }] = useDisclosure(false);
   const [position, setPosition] = useState<[number, number] | null>(null);
-  const [sellers, setSellers] = useState<NearbyUser[]>([]);
+  const [nearbyUsers, setNearbyUsers] = useState<NearbyUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const userRole = localStorage.getItem('role') as 'customer' | 'seller';
 
-  // Function to update user's location and fetch nearby sellers
-  const updateLocationAndFetchSellers = async (latitude: number, longitude: number) => {
+  // Get the correct role for searching counterparts
+  const counterpartRole = userRole === 'customer' ? 'seller' : 'buyer';
+
+  // Function to update user's location and fetch nearby users
+  const updateLocationAndFetchUsers = async (latitude: number, longitude: number) => {
     try {
-      // Update user's location
       await userService.updateLocation({ latitude, longitude });
 
-      // Fetch nearby sellers
-      const nearbySellers = await userService.findNearbyCounterparts({
+      const nearbyCounterparts = await userService.findNearbyCounterparts({
         latitude,
         longitude,
-        ...SEARCH_PARAMS
+        ...SEARCH_PARAMS,
       });
 
-      setSellers(nearbySellers);
+      setNearbyUsers(nearbyCounterparts);
       setError(null);
     } catch (err) {
-      console.error('Error updating location or fetching sellers:', err);
+      console.error('Error updating location or fetching users:', err);
       setError((err as Error).message);
     }
   };
 
-  // Initialize location tracking and seller discovery
+  // Initialize location tracking and user discovery
   useEffect(() => {
     let locationWatcher: number;
     let locationInterval: NodeJS.Timeout;
@@ -54,7 +58,6 @@ export function CustomerPage() {
       try {
         setIsLoading(true);
 
-        // Get initial position
         const position = await new Promise<GeolocationPosition>((resolve, reject) => {
           navigator.geolocation.getCurrentPosition(resolve, reject, {
             enableHighAccuracy: true,
@@ -65,14 +68,13 @@ export function CustomerPage() {
 
         const { latitude, longitude } = position.coords;
         setPosition([latitude, longitude]);
-        await updateLocationAndFetchSellers(latitude, longitude);
+        await updateLocationAndFetchUsers(latitude, longitude);
 
-        // Watch for location changes
         locationWatcher = navigator.geolocation.watchPosition(
           async (position) => {
             const { latitude, longitude } = position.coords;
             setPosition([latitude, longitude]);
-            await updateLocationAndFetchSellers(latitude, longitude);
+            await updateLocationAndFetchUsers(latitude, longitude);
           },
           (error) => {
             console.error('Location watch error:', error);
@@ -81,11 +83,10 @@ export function CustomerPage() {
           { enableHighAccuracy: true }
         );
 
-        // Periodic location update and seller refresh
         locationInterval = setInterval(async () => {
           if (position) {
             const { latitude, longitude } = position.coords;
-            await updateLocationAndFetchSellers(latitude, longitude);
+            await updateLocationAndFetchUsers(latitude, longitude);
           }
         }, LOCATION_UPDATE_INTERVAL);
 
@@ -99,7 +100,6 @@ export function CustomerPage() {
 
     initializeLocation();
 
-    // Cleanup function
     return () => {
       if (locationWatcher) {
         navigator.geolocation.clearWatch(locationWatcher);
@@ -110,7 +110,7 @@ export function CustomerPage() {
     };
   }, []);
 
-  // Subscribe to real-time seller updates
+  // Subscribe to real-time updates
   useEffect(() => {
     const subscription = supabase
       .channel('public:users_new')
@@ -120,12 +120,11 @@ export function CustomerPage() {
           event: '*',
           schema: 'public',
           table: 'users_new',
-          filter: 'role=eq.seller'
+          filter: `role=eq.${counterpartRole}`
         },
         async () => {
           if (position) {
-            // Refresh sellers list when a seller's data changes
-            await updateLocationAndFetchSellers(position[0], position[1]);
+            await updateLocationAndFetchUsers(position[0], position[1]);
           }
         }
       )
@@ -134,28 +133,26 @@ export function CustomerPage() {
     return () => {
       supabase.removeChannel(subscription);
     };
-  }, [position]);
+  }, [position, counterpartRole]);
 
-  // Manual refresh function
-  const refreshSellers = async () => {
+  const refreshUsers = async () => {
     if (position) {
       setIsLoading(true);
       try {
-        await updateLocationAndFetchSellers(position[0], position[1]);
+        await updateLocationAndFetchUsers(position[0], position[1]);
       } finally {
         setIsLoading(false);
       }
     }
   };
 
-  // Handle user exit
   const handleExit = async () => {
     try {
       await userService.deactivateUser();
       navigate('/auth');
     } catch (err) {
       console.error('Error deactivating user:', err);
-      navigate('/auth'); // Navigate anyway
+      navigate('/auth');
     }
   };
 
@@ -172,6 +169,11 @@ export function CustomerPage() {
     );
   }
 
+
+  const currentUserIcon = userRole === 'seller' ? iconBakso : iconPerson;
+
+  const counterpartIcon = userRole === 'seller' ? iconPerson : iconBakso;
+
   return (
     <>
       <MapContainer
@@ -186,22 +188,22 @@ export function CustomerPage() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {position && (
-          <Marker position={position} icon={iconPerson}>
+          <Marker position={position} icon={currentUserIcon}>
             <Tooltip>You are here</Tooltip>
           </Marker>
         )}
-        {sellers.map((seller) => (
+        {nearbyUsers.map((user) => (
           <Marker
-            key={seller.id}
-            position={[seller.location.latitude, seller.location.longitude]}
-            icon={iconBakso}
+            key={user.id}
+            position={[user.location.latitude, user.location.longitude]}
+            icon={counterpartIcon}
           >
             <Tooltip>
               <div>
-                <strong>{seller.name}</strong>
+                <strong>{user.name}</strong>
                 <br />
-                Distance: {(seller.distance / 1000).toFixed(1)} km
-                {seller.rating && <><br /> Rating: {seller.rating.toFixed(1)}⭐</>}
+                Distance: {(user.distance / 1000).toFixed(1)} km
+                {user.rating && <><br /> Rating: {user.rating.toFixed(1)}⭐</>}
               </div>
             </Tooltip>
           </Marker>
@@ -220,7 +222,7 @@ export function CustomerPage() {
       }}>
         <Stack m={16}>
           <Button
-            onClick={refreshSellers}
+            onClick={refreshUsers}
             variant='white'
             size='compact-md'
             loading={isLoading}
