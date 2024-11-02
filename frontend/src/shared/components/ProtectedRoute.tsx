@@ -1,9 +1,11 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../services/authService";
+import { useAuth } from "../contexts/useAuth";
 
-export const ProtectedRoute: React.FC<{ children: JSX.Element; }> = ({ children }) => {
+export const ProtectedRoute: React.FC<{ children: JSX.Element; }> = ({
+  children,
+}) => {
   const { user } = useAuth();
-  if (!user) {
+  if (!user && sessionStorage.getItem('user') === null) {
     return <Navigate to="/auth" replace />;
   }
   return children;
