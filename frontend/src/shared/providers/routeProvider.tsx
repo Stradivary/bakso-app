@@ -1,14 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { ProtectedRoute } from "../components/ProtectedRoute";
 import { AuthPage, LocationMapPage } from "../../pages";
+import { ProtectedRoute } from "../components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
-    path: '/auth',
+    path: "/auth",
     element: <AuthPage />,
   },
   {
-    path: '/',
+    path: "/",
     element: (
       <ProtectedRoute>
         <LocationMapPage />
@@ -17,9 +17,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-
 export function RouteProvider() {
-  return (
-    <RouterProvider router={router} />
-  );
+  return <RouterProvider router={router} />;
 }

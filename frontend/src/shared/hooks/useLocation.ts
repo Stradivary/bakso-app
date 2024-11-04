@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export const useLocation = () => {
-  const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(
-    null
-  );
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
 
   useEffect(() => {
     const fetchLocation = () => {

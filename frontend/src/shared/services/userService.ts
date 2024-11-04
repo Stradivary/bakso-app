@@ -1,36 +1,12 @@
-import { User } from '../models/user';
-import { supabase } from './supabaseService';
 
-export interface Location {
-  latitude: number;
-  longitude: number;
-}
+import { UserServiceError, SearchParams, NearbyUser, Location } from "../models/user.types";
+import { supabase } from "./supabaseService";
 
-export interface NearbyUser extends User {
-  distance: number;
-  last_seen: string;
-  is_active: boolean;
-
-}
-
-export interface SearchParams extends Location {
-  radiusMeters: number;
-  maxResults?: number;
-  minRating?: number;
-  activeWithinMinutes?: number;
-}
-
-export class UserServiceError extends Error {
-  constructor(message: string, public code: string) {
-    super(message);
-    this.name = 'UserServiceError';
-  }
-}
 
 export class UserService {
-  private static instance: UserService;
   private readonly DEFAULT_ACTIVE_WITHIN_MINUTES = 15;
   private readonly DEFAULT_MAX_RESULTS = 50;
+  private static instance: UserService;
 
   private constructor() { }
 
@@ -42,14 +18,16 @@ export class UserService {
   }
 
   private getCurrentUserId(): string {
-    const user = localStorage.getItem('user');
+    const user = sessionStorage.getItem("user");
     const userId = user ? JSON.parse(user).id : null;
     if (!userId) {
-      throw new UserServiceError('User ID not found in localStorage', 'USER_NOT_FOUND');
+      throw new UserServiceError(
+        "User ID not found in storage",
+        "USER_NOT_FOUND",
+      );
     }
     return userId;
   }
-
 
   /**
    * Update user's current location and activity status
@@ -58,21 +36,26 @@ export class UserService {
     try {
       const userId = this.getCurrentUserId();
       const { error } = await supabase
-        .from('users_new')
+        .from("users")
         .update({
           location: `SRID=4326;POINT(${location.longitude} ${location.latitude})`,
-          updated_at: new Date().toISOString(),
           last_seen: new Date().toISOString(),
-          is_active: true
+          is_active: true,
         })
-        .eq('id', userId);
+        .eq("id", userId);
 
       if (error) {
-        throw new UserServiceError(`Failed to update location: ${error.message}`, 'UPDATE_LOCATION_ERROR');
+        throw new UserServiceError(
+          `Failed to update location: ${error.message}`,
+          "UPDATE_LOCATION_ERROR",
+        );
       }
     } catch (error) {
       if (error instanceof UserServiceError) throw error;
-      throw new UserServiceError(`Unexpected error updating location: ${error}`, 'UNKNOWN_ERROR');
+      throw new UserServiceError(
+        `Unexpected error updating location: ${error}`,
+        "UNKNOWN_ERROR",
+      );
     }
   }
 
@@ -83,35 +66,42 @@ export class UserService {
     try {
       const userId = this.getCurrentUserId();
       // const userRole = await this.getUserRole(userId);
-      const activeWithinMinutes = params.activeWithinMinutes ?? this.DEFAULT_ACTIVE_WITHIN_MINUTES;
+      const activeWithinMinutes =
+        params.activeWithinMinutes ?? this.DEFAULT_ACTIVE_WITHIN_MINUTES;
       const maxResults = params.maxResults ?? this.DEFAULT_MAX_RESULTS;
 
-      const { data, error } = await supabase.rpc('find_nearby_users', {
-        p_user_id: userId,
+      const { data, error } = await supabase.rpc("find_nearby_users", {
+        user_id: userId,
         p_latitude: params.latitude,
         p_longitude: params.longitude,
-        p_radius_meters: params.radiusMeters,
-        p_max_results: maxResults,
-        p_min_rating: params.minRating ?? 0,
-        p_active_within_minutes: activeWithinMinutes
+        radius_meters: params.radiusMeters,
+        max_results: maxResults,
+        min_rating: params.minRating ?? 0,
+        active_within_minutes: activeWithinMinutes,
       });
 
       if (error) {
-        throw new UserServiceError(`Failed to find nearby users: ${error.message}`, 'NEARBY_SEARCH_ERROR');
+        throw new UserServiceError(
+          `Failed to find nearby users: ${error.message}`,
+          "NEARBY_SEARCH_ERROR",
+        );
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return data.map((user: any) => ({
+      return data.map(({ user_role, ...user }) => ({
         ...user,
+        role: user_role,
         distance: Math.round(user.distance),
         location: {
           latitude: user.latitude,
-          longitude: user.longitude
-        }
+          longitude: user.longitude,
+        },
       }));
     } catch (error) {
       if (error instanceof UserServiceError) throw error;
-      throw new UserServiceError(`Unexpected error finding nearby users: ${error}`, 'UNKNOWN_ERROR');
+      throw new UserServiceError(
+        `Unexpected error finding nearby users: ${error}`,
+        "UNKNOWN_ERROR",
+      );
     }
   }
 
@@ -122,19 +112,25 @@ export class UserService {
     try {
       const userId = this.getCurrentUserId();
       const { error } = await supabase
-        .from('users_new')
+        .from("users")
         .update({
           is_active: false,
-          last_seen: new Date().toISOString()
+          last_seen: new Date().toISOString(),
         })
-        .eq('id', userId);
+        .eq("id", userId);
 
       if (error) {
-        throw new UserServiceError(`Failed to deactivate user: ${error.message}`, 'DEACTIVATE_ERROR');
+        throw new UserServiceError(
+          `Failed to deactivate user: ${error.message}`,
+          "DEACTIVATE_ERROR",
+        );
       }
     } catch (error) {
       if (error instanceof UserServiceError) throw error;
-      throw new UserServiceError(`Unexpected error deactivating user: ${error}`, 'UNKNOWN_ERROR');
+      throw new UserServiceError(
+        `Unexpected error deactivating user: ${error}`,
+        "UNKNOWN_ERROR",
+      );
     }
   }
 
@@ -145,21 +141,29 @@ export class UserService {
     try {
       const userId = this.getCurrentUserId();
       const { error } = await supabase
-        .from('users_new')
+        .from("users")
         .update({
           is_active: true,
-          last_seen: new Date().toISOString()
+          last_seen: new Date().toISOString(),
         })
-        .eq('id', userId);
+        .eq("id", userId);
 
       if (error) {
-        throw new UserServiceError(`Failed to reactivate user: ${error.message}`, 'REACTIVATE_ERROR');
+        throw new UserServiceError(
+          `Failed to reactivate user: ${error.message}`,
+          "REACTIVATE_ERROR",
+        );
       }
     } catch (error) {
       if (error instanceof UserServiceError) throw error;
-      throw new UserServiceError(`Unexpected error reactivating user: ${error}`, 'UNKNOWN_ERROR');
+      throw new UserServiceError(
+        `Unexpected error reactivating user: ${error}`,
+        "UNKNOWN_ERROR",
+      );
     }
   }
+
+
 }
 
 // Export singleton instance
