@@ -1,26 +1,105 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from 'react';
 
-export const useLocation = () => {
-  const [location, setLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
+interface LocationState {
+  latitude: number | null;
+  longitude: number | null;
+  error: string | null;
+  isLoading: boolean;
+}
 
-  useEffect(() => {
-    const fetchLocation = () => {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setLocation({
+interface UseLocationOptions {
+  autoUpdate?: boolean;
+  updateInterval?: number;
+}
+
+export const useLocation = (options?: UseLocationOptions) => {
+  const [state, setState] = useState<LocationState>({
+    latitude: null,
+    longitude: null,
+    error: null,
+    isLoading: false,
+  });
+
+  const requestLocation = useCallback(() => {
+    if (!navigator.geolocation) {
+      setState(prev => ({
+        ...prev,
+        error: "Browser anda tidak mendukung geolocation",
+        isLoading: false,
+      }));
+      return;
+    }
+
+    setState(prev => ({ ...prev, isLoading: true }));
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setState(prev => ({
+          ...prev,
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
+          error: null,
+          isLoading: false,
+        }));
+      },
+      (error) => {
+        setState({
+          latitude: null,
+          longitude: null,
+          error: error.message,
+          isLoading: false,
         });
-      });
-    };
-
-    fetchLocation();
-    const interval = setInterval(fetchLocation, 300000); // Update every 5 minutes
-
-    return () => clearInterval(interval);
+      }
+    );
   }, []);
 
-  return { location };
+  useEffect(() => {
+    let watchId: number | null = null;
+
+    if (options?.autoUpdate) {
+      if (navigator.geolocation) {
+        setState(prev => ({ ...prev, isLoading: true }));
+        watchId = navigator.geolocation.watchPosition(
+          (position) => {
+            setState(prev => ({
+              ...prev,
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              error: null,
+              isLoading: false,
+            }));
+          },
+          (error) => {
+            setState({
+              latitude: null,
+              longitude: null,
+              error: error.message,
+              isLoading: false,
+            });
+          },
+          {
+            maximumAge: options.updateInterval || 300000,
+            timeout: 5000,
+            enableHighAccuracy: true,
+          }
+        );
+      } else {
+        setState(prev => ({
+          ...prev,
+          error: "Browser anda tidak mendukung geolocation",
+          isLoading: false,
+        }));
+      }
+    } else {
+      requestLocation();
+    }
+
+    return () => {
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    };
+  }, [options?.autoUpdate, options?.updateInterval, requestLocation]);
+
+  return { ...state, requestLocation };
 };

@@ -1,7 +1,7 @@
 import { notifications as notify } from "@mantine/notifications";
 import { LatLng } from 'leaflet';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { supabase } from '../services/supabase.service';
+import { supabase } from '../services/supabaseService';
 import { Notification, useNotifications } from './useNotification';
 import { RealtimeChannel } from "@supabase/supabase-js";
 
