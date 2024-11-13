@@ -209,7 +209,7 @@ export const useLocationTracking = (
 
     return () => {
       channel.untrack();
-      supabase.removeChannel(channel);
+      channel.unsubscribe();
     };
   }, [userId, userRole, selectedSeller, userName, addNotification]);
 
@@ -282,18 +282,18 @@ export const useLocationTracking = (
 
     setSelectedSeller(sellerId);
 
-    // Update buyer's availability
-    await channelRef.current.track({
-      user_id: userId,
-      role: userRole,
-      location: {
-        lat: initialLocation.lat,
-        lng: initialLocation.lng,
-      },
-      isOnline: true,
-      userName: userName,
-      isAvailable: false // Set buyer as not available
-    });
+    // // Update buyer's availability
+    // await channelRef.current.track({
+    //   user_id: userId,
+    //   role: userRole,
+    //   location: {
+    //     lat: initialLocation.lat,
+    //     lng: initialLocation.lng,
+    //   },
+    //   isOnline: true,
+    //   userName: userName,
+    //   isAvailable: false // Set buyer as not available
+    // });
 
     // Send ping to seller
     await channelRef.current.send({
@@ -313,7 +313,7 @@ export const useLocationTracking = (
   const deactivateUser = async () => {
     if (channelRef.current) {
       await channelRef.current.untrack();
-      channelRef.current.unsubscribe();
+      await channelRef.current.unsubscribe();
       channelRef.current = null;
     }
   };
