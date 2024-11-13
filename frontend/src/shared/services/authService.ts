@@ -1,226 +1,130 @@
-import { User } from "../models/user.types";
-import { supabase } from "./supabaseService";
-
-const LOCATION_PRECISION = 3; // 3 ~111m precision
-const MIN_DISTANCE_KM = 2; // 2 km
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 
-class AuthService {
-  private static instance: AuthService;
+// authService.ts
+import { supabase } from "@/shared/services/supabaseService";
 
-  private constructor() { }
+interface AuthResponse {
+  session: any | null;
+  user: any | null;
+  error: any | null;
+}
 
-  public static getInstance(): AuthService {
-    if (!AuthService.instance) {
-      AuthService.instance = new AuthService();
-    }
-    return AuthService.instance;
-  }
+const generatePassword = (name: string, role: string): string => {
+  const combined = `${name.toLowerCase()}_${role}`;
+  return Buffer.from(combined).toString("base64");
+};
 
-  private encodeLocation(latitude: number, longitude: number): string {
-    const normalizedLat = this.normalizeLocation(latitude);
-    const normalizedLong = this.normalizeLocation(longitude);
-    const locationString = `${normalizedLat},${normalizedLong}`;
-    return Buffer.from(locationString).toString("base64");
-  }
+const generateEmail = (name: string, role: string, latitude: number, longitude: number): string => {
+  const sanitizedName = name.replace(/\s/g, "_");
+  return `${sanitizedName.toLowerCase()}_${latitude.toFixed(4)}_${longitude.toFixed(4)}_${role}@bakso.local`;
+};
 
-  // private decodeLocation(base64Location: string): { latitude: number; longitude: number; } {
-  //   const locationString = Buffer.from(base64Location, "base64").toString();
-  //   const [latitude, longitude] = locationString.split(",").map(Number);
-  //   return { latitude, longitude };
-  // }
 
-  private generateLocationBasedEmail(name: string, role: string, location: { latitude: number; longitude: number; }): string {
-    const cleanName = name.replace(/\s/g, "").toLowerCase();
-    const locationCode = this.encodeLocation(location.latitude, location.longitude);
-    return `${cleanName}+${locationCode}@${role}.com`;
-  }
+export const signInUser = async (
+  name: string,
+  role: string,
+  latitude: number,
+  longitude: number
+): Promise<AuthResponse> => {
+  try {
+    const password = generatePassword(name, role);
+    const email = generateEmail(name, role, latitude, longitude);
 
-  private calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const R = 6371;
-    const dLat = (lat2 - lat1) * (Math.PI / 180);
-    const dLon = (lon2 - lon1) * (Math.PI / 180);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(lat1 * (Math.PI / 180)) *
-      Math.cos(lat2 * (Math.PI / 180)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  }
-
-  private normalizeLocation(coord: number): number {
-    return Number(coord.toFixed(LOCATION_PRECISION));
-  }
-
-  private generateLocationBasedPassword(name: string, role: string, location: { latitude: number; longitude: number; }): string {
-    const normalizedLat = this.normalizeLocation(location.latitude);
-    const normalizedLong = this.normalizeLocation(location.longitude);
-    return `${name}_${role}_${normalizedLat}_${normalizedLong}`;
-  }
-
-  public async registerOrLogin(name: string, role: string, location: { latitude: number; longitude: number; }): Promise<User> {
-    const normalizedLocation = {
-      latitude: this.normalizeLocation(location.latitude),
-      longitude: this.normalizeLocation(location.longitude),
-    };
-
-    const email = this.generateLocationBasedEmail(name, role, normalizedLocation);
-    const locationBasedPassword = this.generateLocationBasedPassword(name, role, normalizedLocation);
-
-    const { data: existingUsers, error: queryError } = await supabase
-      .from("users")
-      .select("*")
-      .eq("name", name)
-      .eq("role", role);
-
-    if (queryError) {
-      throw new Error(`Error checking for existing users: ${queryError.message}`);
-    }
-
-    if (existingUsers && existingUsers.length > 0) {
-      const tooClose = existingUsers.some((user) => {
-        try {
-          const userLocation = (user.location as string)
-            .replace("POINT(", "")
-            .replace(")", "")
-            .split(" ");
-          const distance = this.calculateDistance(
-            normalizedLocation.latitude,
-            normalizedLocation.longitude,
-            parseFloat(userLocation[1]),
-            parseFloat(userLocation[0]),
-          );
-          return distance < MIN_DISTANCE_KM;
-        } catch (error) {
-          console.error("Error calculating distance:", error);
-          return false;
-        }
-      });
-
-      if (tooClose) {
-        throw new Error(`A user with the same name and role exists within ${MIN_DISTANCE_KM}km of this location`);
-      }
-    }
-
-    let authUser;
+    // Try to sign in first
     const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
       email,
-      password: locationBasedPassword,
+      password,
     });
 
-    if (!signInError) {
-      authUser = signInData.user;
-    } else if (!signInError.message.includes("Invalid login credentials")) {
-      throw signInError;
-    }
-
-    if (!authUser) {
-      const { data: { user }, error: signUpError } = await supabase.auth.signUp({
+    // If user doesn't exist, sign them up
+    if (signInError?.message?.includes('Invalid login credentials')) {
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email,
-        password: locationBasedPassword,
+        password,
         options: {
           data: {
             name,
             role,
-            location: `SRID=4326;POINT(${normalizedLocation.longitude} ${normalizedLocation.latitude})`,
-          },
-        },
-      });
-
-      if (signUpError) {
-        if (signUpError.message.includes("User already registered")) {
-          throw new Error("User already exists but password is incorrect. Please contact support.");
+          }
         }
-        throw signUpError;
-      }
+      });
+      sessionStorage.setItem('role', role);
+      if (signUpError) throw signUpError;
 
-      authUser = user;
-    }
+      if (signUpData.user) {
+        // Create user profile
+        const { error: profileError } = await supabase
+          .from('user_profiles')
+          .insert({
+            id: signUpData.user.id,
+            name,
+            role,
+            is_online: true,
+            latitude,
+            longitude,
+            bakso_type: '',
+          });
 
-    if (!authUser?.id) {
-      throw new Error("Failed to get user ID from auth system");
-    }
+        if (profileError) throw profileError;
 
-    const { data: dbUser, error: dbError } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", authUser.id)
-      .single();
-
-    if (dbError && dbError.code !== "PGRST116") {
-      throw new Error(`Database error: ${dbError.message}`);
-    }
-
-    if (!dbUser) {
-      const { error: insertError } = await supabase.from("users").insert([
-        {
-          id: authUser.id,
+        // Sign in immediately after signup
+        const { data: newSignInData, error: newSignInError } = await supabase.auth.signInWithPassword({
           email,
-          name,
-          role: role === "customer" ? "customer" : "seller",
-          location: `SRID=4326;POINT(${normalizedLocation.longitude} ${normalizedLocation.latitude})`,
-          last_seen: new Date().toISOString(),
-          created_at: new Date().toISOString(),
-        },
-      ]);
+          password,
+        });
 
-      if (insertError) {
-        throw new Error(`Failed to create user record: ${insertError.message}`);
-      }
-    } else {
-      const { error: updateError } = await supabase
-        .from("users")
-        .update({
-          location: `SRID=4326;POINT(${normalizedLocation.longitude} ${normalizedLocation.latitude})`,
-          last_seen: new Date().toISOString(),
-        })
-        .eq("id", authUser.id);
+        if (newSignInError) throw newSignInError;
 
-      if (updateError) {
-        console.error("Failed to update user data:", updateError);
+        return { ...newSignInData, error: null };
       }
+    } else if (signInData.user) {
+      // Check if user profile exists
+      const { data: profileData, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('id')
+        .eq('id', signInData.user.id)
+        .single();
+
+      if (profileError) throw profileError;
+
+      if (!profileData) {
+        // Create user profile
+        const { error: profileInsertError } = await supabase
+          .from('user_profiles')
+          .insert({
+            id: signInData.user.id,
+            name,
+            role,
+            is_online: true,
+            latitude,
+            longitude,
+            bakso_type: '',
+          });
+
+        if (profileInsertError) throw profileInsertError;
+      } else {
+        // Update existing user's location and online status
+        const { error: updateError } = await supabase
+          .from('user_profiles')
+          .update({
+            is_online: true,
+            latitude,
+            longitude,
+            bakso_type: '',
+            last_seen: new Date().toISOString(),
+          })
+          .eq('id', signInData.user.id);
+
+        if (updateError) throw updateError;
+      }
+
+      return { ...signInData, error: null };
     }
 
-    return {
-      id: authUser.id,
-      email,
-      name,
-      role: role as "customer" | "seller",
-      location: normalizedLocation,
-      rating: 5,
-    };
+    throw new Error('Failed to authenticate');
+  } catch (error) {
+    console.error('Auth error:', error);
+    return { session: null, user: null, error };
   }
-
-  public async verifyLocation(name: string, role: string, location: { latitude: number; longitude: number; }): Promise<boolean> {
-    const normalizedLocation = {
-      latitude: this.normalizeLocation(location.latitude),
-      longitude: this.normalizeLocation(location.longitude),
-    };
-
-    const { data: existingUsers } = await supabase
-      .from("users")
-      .select("*")
-      .eq("name", name)
-      .eq("role", role);
-
-    if (!existingUsers?.length) return true;
-
-    return !existingUsers.some((user) => {
-      const userLocation = (user.location as string)
-        .replace("POINT(", "")
-        .replace(")", "")
-        .split(" ");
-      const distance = this.calculateDistance(
-        normalizedLocation.latitude,
-        normalizedLocation.longitude,
-        parseFloat(userLocation[1]),
-        parseFloat(userLocation[0]),
-      );
-      return distance < MIN_DISTANCE_KM;
-    });
-  }
-}
-
-export const authService = AuthService.getInstance();
+};

@@ -1,12 +1,19 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../contexts/useAuth";
+import { useAuth } from "../hooks/useAuth";
 
 export const ProtectedRoute: React.FC<{ children: JSX.Element; }> = ({
   children,
 }) => {
-  const { user } = useAuth();
-  if (!user && sessionStorage.getItem('user') === null) {
-    return <Navigate to="/auth" replace />;
+  const { isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) {
+    // Render a loading indicator or null while checking authentication status
+    return null;
   }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
   return children;
 };
