@@ -1,28 +1,32 @@
 import {
+  ActionIcon,
   Button,
   Card,
   Indicator,
   Popover,
   ScrollArea,
   Stack,
-  Text,
+  Text, Group
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
-import { Bell } from "lucide-react";
+import { Bell, CheckCheck } from "lucide-react";
 import { useCallback } from "react";
-import { useAuth } from "../contexts/useAuth";
-import { useNotifications } from "../hooks/useNotification";
-import { NearbyUser } from "../models/user.types";
+import { Notification } from "../hooks/useNotification";
 
-export function NotificationCenter({ users }: { users: NearbyUser[]; }) {
-  const { user } = useAuth();
-  const { notifications, unreadCount, markAsRead } = useNotifications(user?.id);
+export function NotificationCenter({ notifications }: { notifications?: Notification[]; }) {
+
   const [opened, { toggle }] = useDisclosure();
 
   const handleNotificationClick = useCallback(async (notificationId: string) => {
-    await markAsRead(notificationId);
-  }, [markAsRead]);
+    const notification = notifications?.find(note => note.id === notificationId);
+    if (!notification) return;
+    notification.is_read = true;
+  }, [notifications]);
+
+  const handleClearNotifications = useCallback(() => {
+    notifications?.forEach(note => note.is_read = true);
+  }, [notifications]);
 
   return (
     <Popover
@@ -31,7 +35,7 @@ export function NotificationCenter({ users }: { users: NearbyUser[]; }) {
       shadow="md"
     >
       <Popover.Target>
-        <Indicator disabled={unreadCount === 0} processing
+        <Indicator disabled={notifications?.filter(note => !note.is_read).length === 0} processing
           size={12} >
           <Button
             variant="white"
@@ -45,16 +49,24 @@ export function NotificationCenter({ users }: { users: NearbyUser[]; }) {
 
       <Popover.Dropdown w={250} style={{ zIndex: 800 }}>
         <Stack gap="xs">
-          <Text fw={500}>Notifikasi</Text>
+          <Group justify="space-between" align="center">
+            <Text fw={500}>Notifikasi</Text>
+            <ActionIcon
+              variant="transparent"
+              size="xs"
+              onClick={() => handleClearNotifications()}
+            >
+              <CheckCheck size={20} />
+            </ActionIcon>
+          </Group>
           <ScrollArea style={{ height: 300 }}>
             <Stack gap="xs">
-              {notifications.length === 0 ? (
+              {notifications?.length === 0 ? (
                 <Text c="dimmed" ta="center">
                   Tidak ada notifikasi
                 </Text>
               ) : (
-                notifications.map((notification) => {
-                  const buyer = users?.find((u) => u.id === notification.buyer_id);
+                notifications?.map((notification) => {
                   return (
                     <Card
                       key={notification.id}
@@ -67,7 +79,7 @@ export function NotificationCenter({ users }: { users: NearbyUser[]; }) {
                       }}
                     >
                       <Text size="sm">
-                        Seorang pelanggan mencolekmu: {buyer?.name ?? 'Unknown User'}
+                        Seorang pelanggan mencolekmu: {notification.buyerName ?? 'Unknown User'}
                       </Text>
                       <Text size="xs" c="dimmed">
                         {notification.expiry_at
