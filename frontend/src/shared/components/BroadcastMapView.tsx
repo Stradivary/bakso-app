@@ -79,8 +79,7 @@ const BroadcastMapView: React.FC = () => {
   const handleExit = React.useCallback(() => {
     deactivateUser();
     logout();
-    sessionStorage.clear();
-    navigate('/login');
+    sessionStorage.removeItem('role');
     exitModalClose();
   }, [deactivateUser, exitModalClose, logout, navigate]);
 

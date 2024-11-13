@@ -9,8 +9,8 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
-    storageKey: "cheesecake",
     storage: sessionStorage,
-    detectSessionInUrl: false
+    detectSessionInUrl: false,
+
   }
 });
