@@ -17,7 +17,7 @@ export const useLocation = () => {
     };
 
     fetchLocation();
-    const interval = setInterval(fetchLocation, 300000); // Update every 5 minutes
+    const interval = setInterval(fetchLocation, 3000); // Update every 5 minutes
 
     return () => clearInterval(interval);
   }, []);
