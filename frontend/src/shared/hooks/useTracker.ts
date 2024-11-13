@@ -20,6 +20,7 @@ interface User {
   isOnline: boolean;
   userName: string; // Added userName
   isAvailable: boolean; // Add isAvailable property
+  seller_id: string;
 }
 
 export interface Channel {
@@ -83,20 +84,22 @@ const filterNearbyUsers = (
     return newUsers;
   };
 
-  console.table(users);
   const userss = preventSamePosition(users).filter((user) => {
     if (user.id === userId) return false; // Exclude self
 
     // Exclude buyers who are not available
-    if (user.role === 'buyer' && !user.isAvailable) return false;
+    if (user.role === 'buyer' && !user.isAvailable) {
+      if (user.seller_id === userId) {
+        return true;
+      } else {
+        return false;
+      }
+    };
 
     const distance = calculateDistance(
       currentLocation,
       new LatLng(user.location.lat, user.location.lng)
     );
-
-    console.log("distance", distance);
-    console.log(user);
 
 
     if (userRole === 'buyer') {
@@ -178,16 +181,17 @@ export const useLocationTracking = (
           clearTimeout(presenceUpdateTimerRef.current);
         }
         presenceUpdateTimerRef.current = setTimeout(() => {
-          const filtered = filterNearbyUsers(users, initialLocation, userRole, userId); 
-          console.table(filtered);
+          const filtered = filterNearbyUsers(users, initialLocation, userRole, userId);
           setNearbyUsers(filtered);
         }, PRESENCE_UPDATE_BUFFER);
       });
 
       // Handle ping events
       channel.on('broadcast', { event: 'ping' }, (payload) => {
-        const { buyer_name, buyer_id } = payload.payload;
-        addNotification(buyer_id, buyer_name);
+        const { seller_id, buyer_name, buyer_id } = payload.payload;
+        if (seller_id === userId) {
+          addNotification(buyer_id, buyer_name);
+        }
       });
 
       // Handle location updates
@@ -278,18 +282,19 @@ export const useLocationTracking = (
 
     setSelectedSeller(sellerId);
 
-    // // Update buyer's availability
-    // await channelRef.current.track({
-    //   user_id: userId,
-    //   role: userRole,
-    //   location: {
-    //     lat: initialLocation.lat,
-    //     lng: initialLocation.lng,
-    //   },
-    //   isOnline: true,
-    //   userName: userName,
-    //   isAvailable: false // Set buyer as not available
-    // });
+    // Update buyer's availability
+    await channelRef.current.track({
+      user_id: userId,
+      role: userRole,
+      location: {
+        lat: initialLocation.lat,
+        lng: initialLocation.lng,
+      },
+      isOnline: true,
+      userName: userName,
+      isAvailable: false, // Set buyer as not available
+      seller_id: sellerId
+    });
 
     // Send ping to seller
     await channelRef.current.send({
