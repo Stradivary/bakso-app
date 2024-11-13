@@ -23,20 +23,17 @@ const MapUpdater = ({
   updateLocation: (location: L.LatLng) => void;
 }
 ) => {
-  const { latitude, longitude } = useLocation({
-    autoUpdate: true,
-    updateInterval: UPDATE_INTERVAL
-  });
+  const { location } = useLocation( );
 
   useEffect(() => {
     if (userRole === 'seller') {
       const updateInterval = setInterval(() => {
-        updateLocation(new L.LatLng(latitude ?? 0, longitude ?? 0));
+        updateLocation(new L.LatLng(location?.latitude ?? 0, location?.longitude ?? 0));
       }, UPDATE_INTERVAL);
 
       return () => clearInterval(updateInterval);
     }
-  }, [userRole, updateLocation, latitude, longitude]);
+  }, [userRole, updateLocation, location?.latitude, location?.longitude]);
 
   return null;
 };
@@ -49,11 +46,11 @@ const BroadcastMapView: React.FC = () => {
   const userRole = sessionStorage.getItem('role') as 'seller' | 'buyer';
   const [exitModalOpened, { close: exitModalClose, open: openModal }] = useDisclosure();
 
-  const { latitude, longitude } = useLocation({ autoUpdate: false, updateInterval: 15000 });
+  const { location } = useLocation();
 
-  const initialLocation = useMemo(() => { 
-    return new L.LatLng(latitude ?? 0, longitude ?? 0);
-  }, [latitude, longitude]);
+  const initialLocation = useMemo(() => {
+    return new L.LatLng(location?.latitude ?? 0, location?.longitude ?? 0);
+  }, [location?.latitude, location?.longitude]);
 
   const {
     nearbyUsers,

@@ -15,7 +15,7 @@ import { AlertCircle } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../shared/hooks/useAuth';
-import { useLocation } from '../shared/hooks/useLocation';
+import { useRequestLocation } from '../shared/hooks/useRequestLocation';
 
 interface FormData {
   role: string;
@@ -25,7 +25,7 @@ interface FormData {
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const { latitude, longitude, error: locationError, isLoading: locationLoading, requestLocation } = useLocation();
+  const { latitude, longitude, error: locationError, isLoading: locationLoading, requestLocation } = useRequestLocation();
   const { login } = useAuth();
   const {
     control, handleSubmit, setError, formState: { errors, isValid, isSubmitting },
