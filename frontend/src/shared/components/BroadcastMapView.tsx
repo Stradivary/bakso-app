@@ -1,8 +1,8 @@
 import { Badge, Button, Center, Image, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
-import L, { Point } from 'leaflet';
-import React, { useEffect, useMemo } from 'react';
+import L, { LatLng, Point } from 'leaflet';
+import React, { useEffect } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, Tooltip } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
@@ -23,7 +23,7 @@ const MapUpdater = ({
   updateLocation: (location: L.LatLng) => void;
 }
 ) => {
-  const { location } = useLocation( );
+  const { location } = useLocation();
 
   useEffect(() => {
     if (userRole === 'seller') {
@@ -48,9 +48,6 @@ const BroadcastMapView: React.FC = () => {
 
   const { location } = useLocation();
 
-  const initialLocation = useMemo(() => {
-    return new L.LatLng(location?.latitude ?? 0, location?.longitude ?? 0);
-  }, [location?.latitude, location?.longitude]);
 
   const {
     nearbyUsers,
@@ -58,19 +55,19 @@ const BroadcastMapView: React.FC = () => {
     pingSeller,
     deactivateUser,
     notifications
-  } = useLocationTracking(userId, userRole, initialLocation, session?.user?.user_metadata?.name ?? '');
+  } = useLocationTracking(userId, userRole, new L.LatLng(location?.latitude ?? 0, location?.longitude ?? 0), session?.user?.user_metadata?.name ?? '');
 
 
   const [mapRef, setMapRef] = React.useState<L.Map | null>(null);
 
   const handleRecenter = React.useCallback(() => {
-    if (mapRef && initialLocation) {
-      mapRef.setView(initialLocation, mapRef.getZoom(), {
+    if (mapRef && location) {
+      mapRef.setView(new L.LatLng(location?.latitude ?? 0, location?.longitude ?? 0), mapRef.getZoom(), {
         animate: true,
         duration: 1,
       });
     }
-  }, [mapRef, initialLocation]);
+  }, [mapRef, location]);
 
   const handleExit = React.useCallback(() => {
     deactivateUser();
@@ -79,13 +76,20 @@ const BroadcastMapView: React.FC = () => {
     exitModalClose();
   }, [deactivateUser, exitModalClose, logout, navigate]);
 
+  if (!location) {
+    return (
+      <div>
+        <Text>Getting your location...</Text>
+      </div>
+    );
+  }
 
   return (
     <>
       <MapContainer
-        key={initialLocation.toString()}
+        key={location.toString()}
         ref={(map) => setMapRef(map)}
-        center={initialLocation}
+        center={new L.LatLng(location?.latitude ?? 0, location?.longitude ?? 0) ?? new LatLng(0, 0)}
         zoom={16}
         minZoom={13}
         maxZoom={18}
@@ -102,7 +106,7 @@ const BroadcastMapView: React.FC = () => {
         )}
 
         {/* Render user's current location */}
-        <Marker position={initialLocation} icon={userRole === 'seller' ? iconBakso : iconPerson}>
+        <Marker position={new L.LatLng(location?.latitude ?? 0, location?.longitude ?? 0)} icon={userRole === 'seller' ? iconBakso : iconPerson}>
           <Tooltip permanent direction='bottom' offset={new Point(0, 12)}>
             Lokasi
             Anda
@@ -119,7 +123,7 @@ const BroadcastMapView: React.FC = () => {
               eventHandlers={{
                 click: () => {
                   if (nearbyUser.role === "seller") {
-                    const buyerLocation = initialLocation;
+                    const buyerLocation = new L.LatLng(location?.latitude ?? 0, location?.longitude ?? 0);
                     const sellerLocation = new L.LatLng(
                       nearbyUser.location.lat,
                       nearbyUser.location.lng
