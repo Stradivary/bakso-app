@@ -8,14 +8,14 @@ export default defineConfig({
   plugins: [
     nodePolyfills({ include: ["buffer"] }),
     react(),
-    // VitePWA({
-    //   registerType: "autoUpdate",
-    //   workbox: {
-    //     clientsClaim: true,
-    //     skipWaiting: true,
+    VitePWA({
+      registerType: "autoUpdate",
+      workbox: {
+        clientsClaim: true,
+        skipWaiting: true,
 
-    //   },
-    // }),
+      },
+    }),
   ],
   resolve: {
     alias: {
