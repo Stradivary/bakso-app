@@ -87,7 +87,7 @@ const filterNearbyUsers = (
     if (user.id === userId) return false; // Exclude self
 
     // Exclude buyers who are not available
-    if (user.role === 'buyer' && !user.isAvailable) return false;
+    // if (user.role === 'buyer' && !user.isAvailable) return false;
 
     const distance = calculateDistance(
       currentLocation,
@@ -171,22 +171,6 @@ export const useLocationTracking = (
     channel.on('broadcast', { event: 'ping' }, (payload) => {
       const { buyer_name, buyer_id } = payload.payload;
       addNotification(buyer_id, buyer_name);
-      // if (userRole === 'seller' && userId === seller_id) {
-
-      //   // Initialize ping count if not set
-      //   if (!pingsReceived.current[userId]) {
-      //     pingsReceived.current[userId] = 0;
-      //   }
-      //   // Increment ping count
-      //   pingsReceived.current[userId]++;
-      //   // Check if max pings reached
-      //   if (pingsReceived.current[userId] <= MAX_PINGS_PER_SELLER) {
-      //     // Display notification or handle ping
-
-      //   } else {
-      //     // Optionally, ignore additional pings or notify buyer
-      //   }
-      // }
     });
 
     // Handle location updates
@@ -227,7 +211,7 @@ export const useLocationTracking = (
       channel.untrack();
       supabase.removeChannel(channel);
     };
-  }, [userId, userRole, initialLocation, selectedSeller, userName, addNotification]);
+  }, [userId, userRole, selectedSeller, userName, addNotification]);
 
   // Update location (for sellers only)
   const updateLocation = async (newLocation: LatLng) => {

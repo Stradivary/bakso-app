@@ -25,6 +25,7 @@ const MapUpdater = ({
 ) => {
   const { latitude, longitude } = useLocation({
     autoUpdate: true,
+    updateInterval: UPDATE_INTERVAL
   });
 
   useEffect(() => {
@@ -48,11 +49,9 @@ const BroadcastMapView: React.FC = () => {
   const userRole = sessionStorage.getItem('role') as 'seller' | 'buyer';
   const [exitModalOpened, { close: exitModalClose, open: openModal }] = useDisclosure();
 
-  const { latitude, longitude } = useLocation({ autoUpdate: true, updateInterval: 5000 });
+  const { latitude, longitude } = useLocation({ autoUpdate: false, updateInterval: 15000 });
 
-  const initialLocation = useMemo(() => {
-    console.log('latitude', latitude);
-    console.log('longitude', longitude);
+  const initialLocation = useMemo(() => { 
     return new L.LatLng(latitude ?? 0, longitude ?? 0);
   }, [latitude, longitude]);
 
@@ -101,7 +100,6 @@ const BroadcastMapView: React.FC = () => {
         />
 
 
-        {/* Update map position for sellers */}
         {userRole === 'seller' && (
           <MapUpdater userRole={userRole} updateLocation={updateLocation} />
         )}
