@@ -7,19 +7,20 @@ export const useLocation = () => {
   } | null>(null);
 
   useEffect(() => {
-    const fetchLocation = () => {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
+    const watchId = navigator.geolocation.watchPosition((position) => {
+      setLocation({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
       });
-    };
-
-    fetchLocation();
-    const interval = setInterval(fetchLocation, 300000); // Update every 5 minutes
-
-    return () => clearInterval(interval);
+    }, () => {
+      console.log("error getting position")
+    }, {
+      enableHighAccuracy: true,
+      maximumAge: 360000,
+      timeout: 5000
+    });
+ 
+    return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
   return { location };

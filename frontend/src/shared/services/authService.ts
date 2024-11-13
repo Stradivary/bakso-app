@@ -37,6 +37,7 @@ export const signInUser = async (
       password,
     });
 
+    sessionStorage.setItem('role', role);
     // If user doesn't exist, sign them up
     if (signInError?.message?.includes('Invalid login credentials')) {
       const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
@@ -49,25 +50,9 @@ export const signInUser = async (
           }
         }
       });
-      sessionStorage.setItem('role', role);
       if (signUpError) throw signUpError;
 
       if (signUpData.user) {
-        // Create user profile
-        const { error: profileError } = await supabase
-          .from('user_profiles')
-          .insert({
-            id: signUpData.user.id,
-            name,
-            role,
-            is_online: true,
-            latitude,
-            longitude,
-            bakso_type: '',
-          });
-
-        if (profileError) throw profileError;
-
         // Sign in immediately after signup
         const { data: newSignInData, error: newSignInError } = await supabase.auth.signInWithPassword({
           email,
@@ -78,48 +63,10 @@ export const signInUser = async (
 
         return { ...newSignInData, error: null };
       }
-    } else if (signInData.user) {
-      // Check if user profile exists
-      const { data: profileData, error: profileError } = await supabase
-        .from('user_profiles')
-        .select('id')
-        .eq('id', signInData.user.id)
-        .single();
 
-      if (profileError) throw profileError;
-
-      if (!profileData) {
-        // Create user profile
-        const { error: profileInsertError } = await supabase
-          .from('user_profiles')
-          .insert({
-            id: signInData.user.id,
-            name,
-            role,
-            is_online: true,
-            latitude,
-            longitude,
-            bakso_type: '',
-          });
-
-        if (profileInsertError) throw profileInsertError;
-      } else {
-        // Update existing user's location and online status
-        const { error: updateError } = await supabase
-          .from('user_profiles')
-          .update({
-            is_online: true,
-            latitude,
-            longitude,
-            bakso_type: '',
-            last_seen: new Date().toISOString(),
-          })
-          .eq('id', signInData.user.id);
-
-        if (updateError) throw updateError;
-      }
-
-      return { ...signInData, error: null };
+    }
+    if (signInData.user) {
+      return { ...signInData, error: null }
     }
 
     throw new Error('Failed to authenticate');

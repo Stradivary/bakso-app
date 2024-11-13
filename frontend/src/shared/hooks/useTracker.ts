@@ -146,6 +146,16 @@ export const useLocationTracking = (
     }, 5 * 60 * 1000);
   }, [userId]);
 
+  useEffect(()=> {
+    if (!initialLocation.lat || !initialLocation.lng ){
+      notify.show({
+        title: "hey",
+        message:"Error getting location",
+        color:"red",
+      })
+    }
+  })
+
   useEffect(() => {
     const region = calculateRegion(initialLocation.lat, initialLocation.lng);
     regionRef.current = region;
