@@ -1,5 +1,19 @@
+@font-face {
+  font-family: 'Telkomsel Batik Sans';
+  font-style: normal;
+  src: url(/TelkomselBatikSans-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Telkomsel Batik Sans';
+  font-style: normal;
+  src: url(/TelkomselBatikSans-Bold.ttf) format('truetype');
+  font-weight: 700;
+}
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --mantine-font-family: 'Telkomsel Batik Sans', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Telkomsel Batik Sans', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
