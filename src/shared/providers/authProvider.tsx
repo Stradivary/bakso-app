@@ -21,46 +21,19 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   const validSessionRef = useRef<string | null>(null);
-  
-  const validateSessionIntegrity = useCallback(async () => {
-    try {
-
-      const { data: { session: currentSession }, error } = await supabase.auth.getSession();
-      
-      if (error) throw error;
-
-      const storedSession = window.sessionStorage.getItem('supabase.auth.token');
-      
-      if (storedSession && validSessionRef.current && storedSession !== validSessionRef.current) {
-        console.error('Session storage tampering detected');
-        await logout();
-        setError('Security violation detected. Please login again.');
-        return false;
-      }
-      
-      if (currentSession?.access_token) {
-        validSessionRef.current = currentSession.access_token;
-      }
-      
-      return true;
-    } catch (error) {
-      console.error('Error validating session integrity:', error);
-      return false;
-    }
-  }, []);
 
   const login = async (name: string, role: string, latitude: number, longitude: number) => {
     setIsLoading(true);
     try {
       const { session, error } = await signInUser(name, role, latitude, longitude);
       if (error) throw error;
-      
+
       if (session?.access_token) {
         validSessionRef.current = session.access_token;
       }
-      
+
       setSession(session);
       setError(null);
     } catch (error) {
@@ -77,13 +50,67 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       setSession(null);
       setError(null);
       validSessionRef.current = null;
-      
-      window.sessionStorage.removeItem('supabase.auth.token');
+      const hashedKey = window.sessionStorage.getItem('supabase.auth.key');
+      if (hashedKey) {
+        window.sessionStorage.removeItem(hashedKey);
+      }
+      window.sessionStorage.removeItem('supabase.auth.key');
     } catch (error) {
       console.error('Error during logout:', error);
       setError('Failed to logout');
     }
   };
+
+  const validateSessionIntegrity = useCallback(async () => {
+    try {
+
+      const hashedKey = window.sessionStorage.getItem('supabase.auth.key');
+
+      if (!hashedKey) {
+        console.error('Session key missing.');
+        setError('Session key missing. Please login again.');
+        await logout();
+        return false;
+      }
+
+
+      const storedSession = window.sessionStorage.getItem(hashedKey);
+
+      if (!storedSession) {
+        console.error('Session token not found.');
+        setError('Session token not found. Please login again.');
+        await logout();
+        return false;
+      }
+
+      const parsedSession = JSON.parse(storedSession);
+      const { access_token } = parsedSession;
+
+      if (!access_token) {
+        console.error('Invalid session token structure.');
+        setError('Invalid session token. Please login again.');
+        await logout();
+        return false;
+      }
+
+      if (validSessionRef.current && access_token !== validSessionRef.current) {
+        console.error('Session storage tampering detected.');
+        setError('Security violation detected. Please login again.');
+        await logout();
+        return false;
+      }
+
+      validSessionRef.current = access_token;
+
+      return true;
+    } catch (error) {
+      console.error('Error validating session integrity:', error);
+      setError('Error validating session integrity. Please login again.');
+      await logout();
+      return false;
+    }
+  }, [logout]);
+
 
   const handleAuthStateChange = useCallback(async (_event: string, newSession: Session | null) => {
     const isValid = await validateSessionIntegrity();
@@ -119,7 +146,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     initializeAuth();
 
     const handleStorageChange = async (event: StorageEvent) => {
-      if (event.key && event.key.includes('supabase.auth')) {
+      if (event.key && event.key.includes('supabase-auth-token')) {
         const isValid = await validateSessionIntegrity();
         if (!isValid) {
           await logout();

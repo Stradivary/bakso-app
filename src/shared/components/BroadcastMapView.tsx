@@ -11,8 +11,9 @@ import { calculateDistance, useLocationTracking } from '../hooks/useTracker';
 import { ActionButtons } from './ActionButtons';
 import { Dialog } from './Dialog';
 import { iconBakso, iconPerson } from "./Icon";
+import { notifications as notify } from "@mantine/notifications";
 
-const UPDATE_INTERVAL = 5 * 1000; // Update interval in milliseconds (5 seconds)
+const UPDATE_INTERVAL = 2 * 1000; // Update interval in milliseconds (5 seconds)
 
 // Custom hook to handle map updates
 const MapUpdater = ({
@@ -135,22 +136,23 @@ const BroadcastMapView: React.FC = () => {
                     modals.openConfirmModal({
                       title: "Pesan Bakso",
                       children: (
-                        <>
+                        <Stack gap={4}>
                           <Text size="sm">
                             🍜 Apakah Anda ingin memesan bakso dari {nearbyUser.userName}?
                           </Text>
                           <Text size="xs" c="dimmed">
                             Estimasi waktu: {estimatedTimeInMinutes} menit berjalan kaki
                           </Text>
-                        </>
+                        </Stack>
                       ),
                       labels: { cancel: "Batal", confirm: "Pesan" },
                       onConfirm: () => {
                         pingSeller?.(nearbyUser.user_id);
-                        modals.open({
+                        notify.show({
                           title: "Pesan Bakso",
-                          children: "Pesan bakso telah dikirim",
+                          message: "Pesan bakso telah dikirim",
                           color: "blue",
+
                         });
                       },
                     });
@@ -158,13 +160,12 @@ const BroadcastMapView: React.FC = () => {
                 },
               }}
             >
-              <Popup>
-                <div   >
+              <Tooltip>
+                <Stack gap={4}>
                   <Text>{nearbyUser.userName}</Text>
                   <Text c="gray">{nearbyUser.role === 'seller' ? 'Pedagang Bakso' : 'Pelanggan'}</Text>
-
-                </div>
-              </Popup>
+                </Stack>
+              </Tooltip>
             </Marker>
           );
         })}

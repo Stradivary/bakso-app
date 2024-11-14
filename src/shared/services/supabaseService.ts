@@ -5,10 +5,12 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? "https://tfqnagzgyzfspm
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 function getTabStorageKey() {
-  if (!window.name) {
-    window.name = Math.random().toString(36).substring(4);
-  }
-  return `supabase-auth-token-${window.name}`;
+  const rand = Math.random().toString(36).substring(4);
+  const token = `supabase-auth-token-${rand}`;
+  
+  sessionStorage.setItem('supabase.auth.key', token);
+
+  return token;
 }
 
 
