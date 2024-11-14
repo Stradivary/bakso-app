@@ -1,9 +1,10 @@
 import { Badge, Button, Center, Image, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
+import { notifications as notify } from "@mantine/notifications";
 import L, { LatLng, Point } from 'leaflet';
 import React, { useEffect } from 'react';
-import { MapContainer, Marker, Popup, TileLayer, Tooltip } from 'react-leaflet';
+import { MapContainer, Marker, TileLayer, Tooltip } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useLocation } from '../hooks/useLocation';
@@ -11,7 +12,6 @@ import { calculateDistance, useLocationTracking } from '../hooks/useTracker';
 import { ActionButtons } from './ActionButtons';
 import { Dialog } from './Dialog';
 import { iconBakso, iconPerson } from "./Icon";
-import { notifications as notify } from "@mantine/notifications";
 
 const UPDATE_INTERVAL = 2 * 1000; // Update interval in milliseconds (5 seconds)
 
