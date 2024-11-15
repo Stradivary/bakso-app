@@ -29,10 +29,10 @@ jobs:
         run: npm install
 
       - name: Run Update Snapshot
-        run: npm run test -- -u
+        run: npm run test:update
 
       - name: Run tests with coverage
-        run: npm run cover
+        run: npm run test:coverage
 
       - name: Upload coverage to quality analysis
         uses: actions/upload-artifact@v4.3.3
