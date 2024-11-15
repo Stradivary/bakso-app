@@ -7,7 +7,7 @@ export interface Notification {
   id: string;
   seller_id: string | null;
   is_read: boolean | null;
-  buyerName?: string;
+  buyer_name?: string;
 }
 
 export function useNotifications(

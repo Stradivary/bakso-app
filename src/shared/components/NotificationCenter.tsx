@@ -79,7 +79,7 @@ export function NotificationCenter({ notifications }: Readonly<{ notifications?:
                       }}
                     >
                       <Text size="sm">
-                        Seorang pelanggan mencolekmu: {notification.buyerName ?? 'Unknown User'}
+                        Seorang pelanggan mencolekmu: {notification.buyer_name ?? 'Unknown User'}
                       </Text>
                       <Text size="xs" c="dimmed">
                         {notification.expiry_at

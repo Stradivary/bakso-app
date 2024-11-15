@@ -5,7 +5,7 @@ import { Session, User } from "@supabase/supabase-js";
 interface AuthResponse {
   session: Session | null;
   user: User | null;
-  error: unknown | null;
+  error: Error | null;
 }
 
 const generatePassword = (name: string, role: string): string => {
@@ -69,7 +69,9 @@ export const signInUser = async (
 
     throw new Error('Failed to authenticate');
   } catch (error) {
-    console.error('Auth error:', error);
-    return { session: null, user: null, error };
+    if (error instanceof Error) {
+      return { session: null, user: null, error };
+    }
+    return {session: null, user: null, error: new Error('unknown error')}
   }
 };

@@ -2,25 +2,28 @@ import { Badge, Button, Center, Image, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 import { notifications as notify } from "@mantine/notifications";
-import L, { LatLng, Point } from 'leaflet';
+import L, { Point } from 'leaflet';
 import React, { useEffect } from 'react';
 import { MapContainer, Marker, TileLayer, Tooltip } from 'react-leaflet';
 import { useAuth } from '../hooks/useAuth';
 import { useLocation } from '../hooks/useLocation';
-import { calculateDistance, useLocationTracking } from '../hooks/useTracker';
 import { ActionButtons } from './ActionButtons';
 import { Dialog } from './Dialog';
 import { iconBakso, iconPerson } from "./Icon";
+import { useTracker } from '../hooks/useTracker';
+import { calculateDistance } from '../services/trackerServices';
 
 const UPDATE_INTERVAL = 2 * 1000; // Update interval in milliseconds (5 seconds)
 
 // Custom hook to handle map updates
 const MapUpdater = ({
+  userId,
   userRole,
   updateLocation,
 }: {
+  userId: string,
   userRole: string,
-  updateLocation: (location: L.LatLng) => void;
+  updateLocation: (userId: string, location: L.LatLng) => void;
 }
 ) => {
   const { location } = useLocation();
@@ -28,7 +31,7 @@ const MapUpdater = ({
   useEffect(() => {
     if (userRole === 'seller') {
       const updateInterval = setInterval(() => {
-        updateLocation(new L.LatLng(location?.latitude ?? 0, location?.longitude ?? 0));
+        updateLocation(userId, new L.LatLng(location?.latitude ?? 0, location?.longitude ?? 0));
       }, UPDATE_INTERVAL);
 
       return () => clearInterval(updateInterval);
@@ -38,7 +41,7 @@ const MapUpdater = ({
   return null;
 };
 
-const BroadcastMapView: React.FC = () => { 
+const BroadcastMapView: React.FC = () => {
   const { session, logout } = useAuth();
 
   const userId = session?.user?.id as string;
@@ -50,11 +53,11 @@ const BroadcastMapView: React.FC = () => {
 
   const {
     nearbyUsers,
-    updateLocation,
-    pingSeller,
+    handleLocationUpdate: updateLocation,
+    handlePing: pingSeller,
+    notifications,
     deactivateUser,
-    notifications
-  } = useLocationTracking(userId, userRole, new L.LatLng(location?.latitude ?? 0, location?.longitude ?? 0), session?.user?.user_metadata?.name ?? '');
+  } = useTracker(userId, userRole, new L.LatLng(location?.latitude ?? 0, location?.longitude ?? 0), session?.user?.user_metadata?.name ?? '');
 
 
   const [mapRef, setMapRef] = React.useState<L.Map | null>(null);
@@ -74,7 +77,7 @@ const BroadcastMapView: React.FC = () => {
     logout();
     sessionStorage.removeItem('role');
     exitModalClose();
-  }, [deactivateUser, exitModalClose, logout ]);
+  }, [deactivateUser, exitModalClose, logout]);
 
   if (!location) {
     return (
@@ -102,7 +105,7 @@ const BroadcastMapView: React.FC = () => {
 
 
         {userRole === 'seller' && (
-          <MapUpdater userRole={userRole} updateLocation={updateLocation} />
+          <MapUpdater userId={userId} userRole={userRole} updateLocation={updateLocation} />
         )}
 
         {/* Render user's current location */}
@@ -146,7 +149,7 @@ const BroadcastMapView: React.FC = () => {
                       ),
                       labels: { cancel: "Batal", confirm: "Pesan" },
                       onConfirm: () => {
-                        pingSeller?.(nearbyUser.user_id);
+                        pingSeller?.(nearbyUser.user_id, nearbyUser.userName);
                         notify.show({
                           title: "Pesan Bakso",
                           message: "Pesan bakso telah dikirim",
@@ -172,7 +175,6 @@ const BroadcastMapView: React.FC = () => {
 
       <ActionButtons
         role={userRole}
-        isLoading={false}
         onExit={() => {
           openModal();
         }}
