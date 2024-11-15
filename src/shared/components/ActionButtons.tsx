@@ -5,9 +5,7 @@ import { Notification } from "../hooks/useNotification";
 import { NotificationCenter } from "./NotificationCenter";
 
 export type ActionButtonProps = PropsWithChildren<{
-  onRefresh?: () => void;
   onRecenter: () => void;
-  isLoading: boolean;
   onExit: () => void;
   role: string;
   notifications?: Notification[];
@@ -24,7 +22,7 @@ export const ActionButtons = ({
     style={{
       zIndex: 50,
       position: "absolute",
-      top: 0, 
+      top: 0,
       right: 0,
       display: "flex",
       flexDirection: "column",
@@ -38,15 +36,6 @@ export const ActionButtons = ({
         <Button onClick={onRecenter} variant="white" size="compact-lg" w={50}>
           <LocateFixed size={20} />
         </Button>
-        {/* <Button
-        onClick={onRefresh}
-        variant="white"
-        size="compact-lg"
-        loading={isLoading}
-        w={50}
-      >
-        <RefreshCw size={20} />
-      </Button> */}
         <Button
           color="red"
           onClick={onExit}
@@ -60,7 +49,7 @@ export const ActionButtons = ({
 
       </Stack>
       <Group justify="end" align="end" m={16}>
-      
+
         <Badge color={role === "seller" ? "green" : "blue"}>
           {role === "seller" ? "Tukang Bakso" : "Customer"}
         </Badge>

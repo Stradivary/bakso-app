@@ -24,7 +24,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const validSessionRef = useRef<string | null>(null);
 
-  const login =  useCallback(async (name: string, role: string, latitude: number, longitude: number) => {
+  const login = useCallback(async (name: string, role: string, latitude: number, longitude: number) => {
     setIsLoading(true);
     try {
       const { session, error } = await signInUser(name, role, latitude, longitude);
@@ -146,7 +146,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     initializeAuth();
 
     const handleStorageChange = async (event: StorageEvent) => {
-      if (event.key && event.key.includes('supabase-auth-token')) {
+      if (event.key?.includes('supabase-auth-token')) {
         const isValid = await validateSessionIntegrity();
         if (!isValid) {
           await logout();
@@ -169,7 +169,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const isAuthenticated = !!session;
 
-  const values = useMemo(()=> ({
+  const values = useMemo(() => ({
     session,
     userDetails: null,
     isLoading,

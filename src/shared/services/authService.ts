@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
-
-// authService.ts
 import { supabase } from "@/shared/services/supabaseService";
+import { Session, User } from "@supabase/supabase-js";
 
 interface AuthResponse {
-  session: any | null;
-  user: any | null;
-  error: any | null;
+  session: Session | null;
+  user: User | null;
+  error: unknown | null;
 }
 
 const generatePassword = (name: string, role: string): string => {

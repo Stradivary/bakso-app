@@ -14,7 +14,7 @@ import { Bell, CheckCheck } from "lucide-react";
 import { useCallback } from "react";
 import { Notification } from "../hooks/useNotification";
 
-export function NotificationCenter({ notifications }: { notifications?: Notification[]; }) {
+export function NotificationCenter({ notifications }: Readonly<{ notifications?: Notification[]; }>) {
 
   const [opened, { toggle }] = useDisclosure();
 
