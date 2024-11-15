@@ -10,5 +10,8 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: "./src/tests.setup.ts",
     snapshotSerializers: ["./mantine.serializer.js"],
+    alias: [
+      { find: "@/", replacement: "/src/" },
+    ]
   },
 });

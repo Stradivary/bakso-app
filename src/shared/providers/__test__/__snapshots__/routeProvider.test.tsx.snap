@@ -8,22 +8,22 @@ exports[`RouteProvider > renders without crashing 1`] = `
   <h3
     style="font-style: italic;"
   >
-    @mantine/core: MantineProvider was not found in component tree, make sure you have it in your app
+    useAuth must be used within an AuthProvider
   </h3>
   <pre
     style="padding: 0.5rem; background-color: rgba(200, 200, 200, 0.5);"
   >
-    Error: @mantine/core: MantineProvider was not found in component tree, make sure you have it in your app
-    at useMantineTheme (file:///home/syid/dev/work/baksoapp/node_modules/.pnpm/@mantine+core@7.13.5_@mantine+hooks@7.13.5_react@18.3.1__@types+react@18.3.12_react-dom@18.3._hqzq2w3bapc433sh4vog476xgm/node_modules/@mantine/core/src/core/MantineProvider/MantineThemeProvider/MantineThemeProvider.tsx:11:11)
-    at useProps (file:///home/syid/dev/work/baksoapp/node_modules/.pnpm/@mantine+core@7.13.5_@mantine+hooks@7.13.5_react@18.3.1__@types+react@18.3.12_react-dom@18.3._hqzq2w3bapc433sh4vog476xgm/node_modules/@mantine/core/src/core/MantineProvider/use-props/use-props.ts:5:17)
-    at file:///home/syid/dev/work/baksoapp/node_modules/.pnpm/@mantine+core@7.13.5_@mantine+hooks@7.13.5_react@18.3.1__@types+react@18.3.12_react-dom@18.3._hqzq2w3bapc433sh4vog476xgm/node_modules/@mantine/core/src/components/Flex/Flex.tsx:18:17
-    at renderWithHooks (/home/syid/dev/work/baksoapp/node_modules/.pnpm/react-dom@18.3.1_react@18.3.1/node_modules/react-dom/cjs/react-dom.development.js:15486:18)
-    at updateForwardRef (/home/syid/dev/work/baksoapp/node_modules/.pnpm/react-dom@18.3.1_react@18.3.1/node_modules/react-dom/cjs/react-dom.development.js:19245:20)
-    at beginWork (/home/syid/dev/work/baksoapp/node_modules/.pnpm/react-dom@18.3.1_react@18.3.1/node_modules/react-dom/cjs/react-dom.development.js:21675:16)
-    at beginWork$1 (/home/syid/dev/work/baksoapp/node_modules/.pnpm/react-dom@18.3.1_react@18.3.1/node_modules/react-dom/cjs/react-dom.development.js:27465:14)
-    at performUnitOfWork (/home/syid/dev/work/baksoapp/node_modules/.pnpm/react-dom@18.3.1_react@18.3.1/node_modules/react-dom/cjs/react-dom.development.js:26599:12)
-    at workLoopSync (/home/syid/dev/work/baksoapp/node_modules/.pnpm/react-dom@18.3.1_react@18.3.1/node_modules/react-dom/cjs/react-dom.development.js:26505:5)
-    at renderRootSync (/home/syid/dev/work/baksoapp/node_modules/.pnpm/react-dom@18.3.1_react@18.3.1/node_modules/react-dom/cjs/react-dom.development.js:26473:7)
+    Error: useAuth must be used within an AuthProvider
+    at Module.useAuth (/workspaces/bakso-app/src/shared/hooks/useAuth.tsx:9:11)
+    at ProtectedRoute (/workspaces/bakso-app/src/shared/components/ProtectedRoute.tsx:8:31)
+    at renderWithHooks (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:20103:13)
+    at beginWork (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:21626:16)
+    at beginWork$1 (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:27465:14)
+    at performUnitOfWork (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:26599:12)
+    at workLoopSync (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:26505:5)
+    at renderRootSync (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:26473:7)
+    at recoverFromConcurrentError (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:25889:20)
   </pre>
   <p>
     💿 Hey developer 👋
