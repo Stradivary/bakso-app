@@ -1,0 +1,46 @@
+{
+  "theme_color": "#f21c1c",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "purpose": "maskable",
+      "sizes": "512x512",
+      "src": "icon512_maskable.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "512x512",
+      "src": "icon512_rounded.png",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot_1.jpg",
+      "sizes": "900x1600",
+      "type": "image/jpg",
+      "platform": "wide"
+    },
+    {
+      "src": "screenshot_2.jpg",
+      "sizes": "900x1600",
+      "type": "image/jpg",
+      "platform": "wide"
+    }
+  ],
+  "display": "standalone",
+  "lang": "id-ID",
+  "name": "Abang Bakso App",
+  "short_name": "AbangBakso",
+  "start_url": "https://abangbakso-app.vercel.app",
+  "scope": "/",
+  "description": "Aplikasi Tracking Abang bakso",
+  "dir": "ltr",
+  "orientation": "portrait",
+  "display_override": [
+    "standalone",
+    "browser",
+    "window-controls-overlay"
+  ]
+}
