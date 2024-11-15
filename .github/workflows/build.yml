@@ -6,26 +6,91 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
-  sonarcloud:
-    name: SonarQube Cloud
+  test: # Job Build and Test untuk menjalankan test dan coverage
+    name: Install & Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4.1.4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.0.2
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4.1.0
-        with: 
-          node-version: 18
-          cache: pnpm
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4.0.0
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4.0.2
         with:
-          run_install: pnpm install
-      - name: Test and coverage
-        run: pnpm test:coverage
-      - name: SonarQube Cloud Scan
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Update Snapshot
+        run: npm run test -- -u
+
+      - name: Run tests with coverage
+        run: npm run cover
+
+      - name: Upload coverage to quality analysis
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: coverage
+          path: coverage
+
+  quality: # Job SonarQube untuk melakukan analisis kualitas kode
+    needs: test
+    name: Code Quality Analysis
+    runs-on: ubuntu-latest
+    outputs:
+      quality_gate_passed: ${{ steps.quality_gate.outputs.quality_gate_passed  }}
+    steps:
+      - name: Reuse checked-out code from previous job
+        uses: actions/checkout@v4.1.4
+        with:
+          path: .
+
+      - name: download coverage
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: coverage
+          path: coverage
+
+      - name: Run SonarQube analysis
         uses: SonarSource/sonarcloud-github-action@master
+        with:
+          args: >
+            -Dsonar.projectKey=Stradivary_bakso-app
+            -Dsonar.organization=stradivary 
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info 
+            -Dsonar.source=src
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Check SonarQube Quality Gate Status
+        id: quality_gate
+        run: |
+          URL="https://sonarcloud.io/api/qualitygates/project_status?projectKey=Stradivary_pokejut"
+          TOKEN="${{ env.SONAR_TOKEN }}"
+          STATUS="NONE"
+          while [ "$STATUS" != "OK" ] && [ "$STATUS" != "ERROR" ]; do
+            RESPONSE=$(curl -u $TOKEN: "$URL")
+            STATUS=$(echo $RESPONSE | jq -r '.projectStatus.status')
+            if [ "$STATUS" == "NONE" ]; then
+              echo "Quality Gate status is pending..."
+              sleep 10
+            elif [ "$STATUS" == "ERROR" ]; then
+              echo "Quality Gate failed."
+              echo "quality_gate_passed=false" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+          done
+          echo "Quality Gate passed."
+          echo "quality_gate_passed=true" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
