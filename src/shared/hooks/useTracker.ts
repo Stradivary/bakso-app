@@ -89,11 +89,8 @@ const filterNearbyUsers = (
 
     // Exclude buyers who are not available
     if (user.role === 'buyer' && !user.isAvailable) {
-      if (user.seller_id === userId) {
-        return true;
-      } else {
-        return false;
-      }
+      return user.seller_id === userId;
+
     };
 
     const distance = calculateDistance(

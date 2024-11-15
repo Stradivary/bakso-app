@@ -1,5 +1,5 @@
-import { BroadcastMapPage } from "@/pages/map";
 import { Container } from "@mantine/core";
+import { BroadcastMapPage } from "@/pages/map";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginPage from "@/pages/login";
 

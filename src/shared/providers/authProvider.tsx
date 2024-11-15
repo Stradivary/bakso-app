@@ -1,5 +1,5 @@
 import { Session } from '@supabase/supabase-js';
-import { PropsWithChildren, useCallback, useEffect, useState, useRef } from 'react';
+import { PropsWithChildren, useCallback, useEffect, useState, useRef, useMemo } from 'react';
 import { Database } from '../models/supabase';
 import { signInUser } from '../services/authService';
 import { supabase } from '../services/supabaseService';
@@ -24,7 +24,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const validSessionRef = useRef<string | null>(null);
 
-  const login = async (name: string, role: string, latitude: number, longitude: number) => {
+  const login =  useCallback(async (name: string, role: string, latitude: number, longitude: number) => {
     setIsLoading(true);
     try {
       const { session, error } = await signInUser(name, role, latitude, longitude);
@@ -42,9 +42,9 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       await supabase.auth.signOut();
       setSession(null);
@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       console.error('Error during logout:', error);
       setError('Failed to logout');
     }
-  };
+  }, []);
 
   const validateSessionIntegrity = useCallback(async () => {
     try {
@@ -119,7 +119,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     } else {
       await logout();
     }
-  }, [validateSessionIntegrity]);
+  }, [validateSessionIntegrity, logout]);
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -165,20 +165,28 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       clearInterval(validationInterval);
       subscription.unsubscribe();
     };
-  }, [handleAuthStateChange, validateSessionIntegrity]);
+  }, [handleAuthStateChange, validateSessionIntegrity, logout]);
 
   const isAuthenticated = !!session;
 
+  const values = useMemo(()=> ({
+    session,
+    userDetails: null,
+    isLoading,
+    error,
+    login,
+    logout,
+    isAuthenticated
+  }), [
+    session,
+    isLoading,
+    error,
+    login,
+    logout,
+    isAuthenticated])
+
   return (
-    <AuthContext.Provider value={{
-      session,
-      userDetails: null,
-      isLoading,
-      error,
-      login,
-      logout,
-      isAuthenticated
-    }}>
+    <AuthContext.Provider value={values}>
       {children}
     </AuthContext.Provider>
   );

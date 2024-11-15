@@ -8,7 +8,9 @@ export class UserService {
   private readonly DEFAULT_MAX_RESULTS = 50;
   private static instance: UserService;
 
-  private constructor() { }
+  private constructor() {
+    // empty
+   }
 
   static getInstance(): UserService {
     if (!UserService.instance) {

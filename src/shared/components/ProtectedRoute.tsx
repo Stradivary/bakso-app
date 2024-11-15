@@ -12,6 +12,6 @@ export const ProtectedRoute: React.FC<{ children: JSX.Element; }> = ({
 
       navigate('/login')
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated, navigate])
   return children;
 };

@@ -7,7 +7,7 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 function getTabStorageKey() {
   const rand = Math.random().toString(36).substring(4);
   const token = `supabase-auth-token-${rand}`;
-  
+
   sessionStorage.setItem('supabase.auth.key', token);
 
   return token;

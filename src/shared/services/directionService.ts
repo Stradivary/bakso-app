@@ -5,7 +5,9 @@ import { BASE_ROUTING_URL } from "../utils/constants";
 class DirectionService {
   private static instance: DirectionService;
 
-  private constructor() { }
+  private constructor() { 
+    // empty
+  }
 
   static getInstance(): DirectionService {
     if (!DirectionService.instance) {

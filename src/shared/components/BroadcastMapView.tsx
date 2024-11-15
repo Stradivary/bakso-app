@@ -5,7 +5,6 @@ import { notifications as notify } from "@mantine/notifications";
 import L, { LatLng, Point } from 'leaflet';
 import React, { useEffect } from 'react';
 import { MapContainer, Marker, TileLayer, Tooltip } from 'react-leaflet';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useLocation } from '../hooks/useLocation';
 import { calculateDistance, useLocationTracking } from '../hooks/useTracker';
@@ -39,8 +38,7 @@ const MapUpdater = ({
   return null;
 };
 
-const BroadcastMapView: React.FC = () => {
-  const navigate = useNavigate();
+const BroadcastMapView: React.FC = () => { 
   const { session, logout } = useAuth();
 
   const userId = session?.user?.id as string;
@@ -63,7 +61,8 @@ const BroadcastMapView: React.FC = () => {
 
   const handleRecenter = React.useCallback(() => {
     if (mapRef && location) {
-      mapRef.setView(new L.LatLng(location?.latitude ?? 0, location?.longitude ?? 0), mapRef.getZoom(), {
+      const newLocation = [location?.latitude || 0, location?.longitude || 0]
+      mapRef.setView(new L.LatLng(newLocation[0], newLocation[1]), mapRef.getZoom(), {
         animate: true,
         duration: 1,
       });
@@ -75,7 +74,7 @@ const BroadcastMapView: React.FC = () => {
     logout();
     sessionStorage.removeItem('role');
     exitModalClose();
-  }, [deactivateUser, exitModalClose, logout, navigate]);
+  }, [deactivateUser, exitModalClose, logout ]);
 
   if (!location) {
     return (
@@ -90,7 +89,7 @@ const BroadcastMapView: React.FC = () => {
       <MapContainer
         key={location.toString()}
         ref={(map) => setMapRef(map)}
-        center={new L.LatLng(location?.latitude ?? 0, location?.longitude ?? 0) ?? new LatLng(0, 0)}
+        center={new L.LatLng(location?.latitude || 0, location?.longitude || 0)}
         zoom={16}
         minZoom={13}
         maxZoom={18}
