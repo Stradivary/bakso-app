@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { Database } from "../models/supabase";
+import { Database } from "../models/supabase.types";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? "https://tfqnagzgyzfspmbladso.supabase.co";
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY ?? "";

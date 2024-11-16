@@ -1,6 +1,6 @@
 import { Session } from '@supabase/supabase-js';
 import { PropsWithChildren, useCallback, useEffect, useState, useRef, useMemo } from 'react';
-import { Database } from '../models/supabase';
+import { Database } from '../models/supabase.types';
 import { signInUser } from '../services/authService';
 import { supabase } from '../services/supabaseService';
 import { AuthContext } from '../hooks/useAuth';

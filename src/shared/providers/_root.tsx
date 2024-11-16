@@ -7,14 +7,23 @@ import { AuthProvider } from "./authProvider";
 import { RouteProvider } from "./routeProvider";
 import { OfflineHandler } from "../components/OfflineHandler";
 import { ThemeProvider } from "./themeProvider";
+import { PropsWithChildren } from "react";
 
-export function Root() {
+export function Contexts({ children }: PropsWithChildren) {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <RouteProvider />
-        <OfflineHandler />
+        {children}
       </ThemeProvider>
     </AuthProvider>
+  )
+}
+
+export function Root() {
+  return (
+    <Contexts>
+      <RouteProvider />
+      <OfflineHandler />
+    </Contexts>
   );
 }
