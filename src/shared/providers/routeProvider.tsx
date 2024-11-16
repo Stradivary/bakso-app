@@ -1,7 +1,7 @@
 import { Container } from "@mantine/core";
 import { BroadcastMapPage } from "@/pages/map";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LoginPage from "@/pages/login";
+import LoginView from "@/shared/views/LoginView";
 
 const router = createBrowserRouter([
   {
@@ -10,7 +10,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <LoginPage />
+    element: <LoginView />
   },
   {
     path: "*",

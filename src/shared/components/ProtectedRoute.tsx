@@ -9,7 +9,6 @@ export const ProtectedRoute: React.FC<{ children: JSX.Element; }> = ({
   const navigate = useNavigate();
   useEffect(() => {
     if (!isAuthenticated) {
-
       navigate('/login')
     }
   }, [isAuthenticated, navigate])

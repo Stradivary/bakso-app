@@ -20,13 +20,13 @@
       "src": "screenshot_1.jpg",
       "sizes": "900x1600",
       "type": "image/jpg",
-      "platform": "wide"
+      "form_factor": "wide"
     },
     {
       "src": "screenshot_2.jpg",
       "sizes": "900x1600",
       "type": "image/jpg",
-      "platform": "wide"
+      "form_factor": "narrow"
     }
   ],
   "display": "standalone",

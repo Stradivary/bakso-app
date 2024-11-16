@@ -1,8 +1,4 @@
-/**
- * New MAP based on broadcast mode
- */
-
-import BroadcastMapView from "@/shared/components/BroadcastMapView";
+import BroadcastMapView from "@/shared/views/BroadcastMapView";
 import { ProtectedRoute } from "@/shared/components/ProtectedRoute";
 
 export const BroadcastMapPage = () => {

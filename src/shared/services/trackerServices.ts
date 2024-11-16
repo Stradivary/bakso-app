@@ -10,14 +10,14 @@ export interface User {
   id: string;
   user_id: string;
   role: 'seller' | 'buyer';
-  location: { lat: number; lng: number };
+  location: { lat: number; lng: number; };
   isOnline: boolean;
   userName: string;
   isAvailable: boolean;
   seller_id: string;
 }
 
-export const calculateRegion = (lat: number, lng: number): string => 
+export const calculateRegion = (lat: number, lng: number): string =>
   Buffer.from(`${Math.floor(lat * 10)}-${Math.floor(lng * 10)}`).toString('base64');
 
 export const calculateDistance = (point1: LatLng, point2: LatLng): number => {
@@ -103,7 +103,7 @@ export const initSupabaseChannel = async (
     handleLocationUpdate(user_id, location);
   });
 
-  await channel.subscribe(status => {
+  channel.subscribe(status => {
     if (status === 'SUBSCRIBED') {
       channel.track({
         user_id: userId,
@@ -120,16 +120,16 @@ export const initSupabaseChannel = async (
 };
 
 export const createPingPayload = ({
-    buyer_id, buyer_name, user_id
-  }: { buyer_id: string, buyer_name: string, user_id: string }) => {
-  
-    return ({
-      id: `${buyer_id}-${Date.now()}`,
-      buyer_id: buyer_id,
-      buyer_name: buyer_name,
-      seller_id: user_id,
-      is_read: false,
-      created_at: new Date().toISOString(),
-      expiry_at: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
-    })
-  }
+  buyer_id, buyer_name, user_id
+}: { buyer_id: string, buyer_name: string, user_id: string; }) => {
+
+  return ({
+    id: `${buyer_id}-${Date.now()}`,
+    buyer_id: buyer_id,
+    buyer_name: buyer_name,
+    seller_id: user_id,
+    is_read: false,
+    created_at: new Date().toISOString(),
+    expiry_at: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
+  });
+};

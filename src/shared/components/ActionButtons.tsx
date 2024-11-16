@@ -1,24 +1,24 @@
-import { Badge, Button, Flex, Group, Stack } from "@mantine/core";
+import { Badge, Box, Button, Flex, Group, Stack } from "@mantine/core";
 import { LocateFixed, X } from "lucide-react";
-import { PropsWithChildren } from "react";
 import { Notification } from "../hooks/useNotification";
 import { NotificationCenter } from "./NotificationCenter";
 
-export type ActionButtonProps = PropsWithChildren<{
+export type ActionButtonProps = {
   onRecenter: () => void;
   onExit: () => void;
   role: string;
+  name: string;
   notifications?: Notification[];
-}>;
+};
 
 export const ActionButtons = ({
   onExit,
   onRecenter,
   role,
-  children,
+  name,
   notifications,
 }: ActionButtonProps) => (
-  <div
+  <Box
     style={{
       zIndex: 50,
       position: "absolute",
@@ -53,8 +53,10 @@ export const ActionButtons = ({
         <Badge color={role === "seller" ? "green" : "blue"}>
           {role === "seller" ? "Tukang Bakso" : "Customer"}
         </Badge>
-        {children}
+        <Badge variant='filled' color='teal'>
+          {name}
+        </Badge>
       </Group>
     </Flex>
-  </div>
+  </Box>
 );

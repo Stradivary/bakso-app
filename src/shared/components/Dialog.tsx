@@ -1,4 +1,4 @@
-import { Drawer, Modal } from "@mantine/core";
+import { Box, Drawer, Modal } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { PropsWithChildren } from "react";
 
@@ -26,7 +26,7 @@ export function Dialog({ opened, close, children }: PropsWithChildren<{ opened: 
       },
     }}
   >
-    <div
+    <Box
       style={{
         width: 42,
         height: 4,
@@ -37,7 +37,7 @@ export function Dialog({ opened, close, children }: PropsWithChildren<{ opened: 
         flexGrow: 0,
         margin: "16px auto 24px auto",
       }}>
-    </div>
+    </Box>
     {children}
 
   </Drawer>;

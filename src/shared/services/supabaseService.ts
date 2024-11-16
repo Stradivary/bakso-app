@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import { Database } from "../models/supabase";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? "https://tfqnagzgyzfspmbladso.supabase.co";
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY ?? "";
 
 function getTabStorageKey() {
   const rand = Math.random().toString(36).substring(4);

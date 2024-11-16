@@ -19,13 +19,10 @@ export function useNotifications(
     initialNotifications.filter(note => !note.is_read).length
   );
 
-
-
   const markAsRead = useCallback(async (notificationId: string) => {
     if (!userId) return;
 
     try {
-
       // Optimistically update the UI
       setNotifications(prev =>
         prev.map(n =>
