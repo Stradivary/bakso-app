@@ -1,12 +1,16 @@
-name: Build
+name: Build, Test, and Deploy
 on:
   push:
     branches:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
+
+env:
+  NODE_VERSION: '20' 
+
 jobs:
-  test: # Job Build and Test untuk menjalankan test dan coverage
+  test:
     name: Install & Test
     runs-on: ubuntu-latest
     steps:
@@ -17,16 +21,10 @@ jobs:
         uses: actions/setup-node@v4.0.2
         with:
           node-version: ${{ env.NODE_VERSION }}
-
-      - name: Cache npm dependencies
-        uses: actions/cache@v4.0.2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-node-
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci 
 
       - name: Run Update Snapshot
         run: npm run test:update
@@ -34,63 +32,223 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:coverage
 
-      - name: Upload coverage to quality analysis
+      - name: Upload coverage to artifacts
         uses: actions/upload-artifact@v4.3.3
         with:
           name: coverage
           path: coverage
+          retention-days: 1
 
-  quality: # Job SonarQube untuk melakukan analisis kualitas kode
+  quality:
     needs: test
     name: Code Quality Analysis
     runs-on: ubuntu-latest
     outputs:
-      quality_gate_passed: ${{ steps.quality_gate.outputs.quality_gate_passed  }}
+      quality_gate_passed: ${{ steps.quality_gate.outputs.quality_gate_passed }}
     steps:
-      - name: Reuse checked-out code from previous job
+      - name: Checkout code
         uses: actions/checkout@v4.1.4
-        with:
-          path: .
 
-      - name: download coverage
+      - name: Download coverage
         uses: actions/download-artifact@v4.1.7
         with:
           name: coverage
           path: coverage
 
-      - name: Run SonarQube analysis
+      - name: SonarQube analysis
         uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
             -Dsonar.projectKey=Stradivary_bakso-app
-            -Dsonar.organization=stradivary 
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info 
-            -Dsonar.source=src
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            -Dsonar.organization=stradivary
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.sources=src
+            -Dsonar.tests=src
+            -Dsonar.test.inclusions=**/*.test.js,**/*.test.jsx,**/*.test.ts,**/*.test.tsx
+            -Dsonar.coverage.exclusions=**/*.test.js,**/*.test.jsx,**/*.test.ts,**/*.test.tsx
 
-      - name: Check SonarQube Quality Gate Status
+      - name: Check Quality Gate
         id: quality_gate
         run: |
-          URL="https://sonarcloud.io/api/qualitygates/project_status?projectKey=Stradivary_pokejut"
-          TOKEN="${{ env.SONAR_TOKEN }}"
-          STATUS="NONE"
-          while [ "$STATUS" != "OK" ] && [ "$STATUS" != "ERROR" ]; do
-            RESPONSE=$(curl -u $TOKEN: "$URL")
-            STATUS=$(echo $RESPONSE | jq -r '.projectStatus.status')
-            if [ "$STATUS" == "NONE" ]; then
-              echo "Quality Gate status is pending..."
-              sleep 10
-            elif [ "$STATUS" == "ERROR" ]; then
-              echo "Quality Gate failed."
+          TIMEOUT=300  # 5 minutes timeout
+          START_TIME=$(date +%s)
+          
+          while true; do
+            CURRENT_TIME=$(date +%s)
+            if [ $((CURRENT_TIME - START_TIME)) -gt $TIMEOUT ]; then
+              echo "Timeout waiting for Quality Gate"
               echo "quality_gate_passed=false" >> $GITHUB_OUTPUT
-              exit 0
+              exit 1
             fi
+            
+            RESPONSE=$(curl -s -u ${{ secrets.SONAR_TOKEN }}: \
+              "https://sonarcloud.io/api/qualitygates/project_status?projectKey=Stradivary_bakso-app")
+            
+            STATUS=$(echo $RESPONSE | jq -r '.projectStatus.status')
+            
+            if [ "$STATUS" = "OK" ]; then
+              echo "Quality Gate passed"
+              echo "quality_gate_passed=true" >> $GITHUB_OUTPUT
+              exit 0
+            elif [ "$STATUS" = "ERROR" ]; then
+              echo "Quality Gate failed"
+              echo "quality_gate_passed=false" >> $GITHUB_OUTPUT
+              exit 1
+            fi
+            
+            echo "Quality Gate status is pending... waiting"
+            sleep 10
           done
-          echo "Quality Gate passed."
-          echo "quality_gate_passed=true" >> $GITHUB_OUTPUT
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+  build:
+    needs: [test, quality]
+    if: needs.quality.outputs.quality_gate_passed == 'true'
+    name: Build Application
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: dist
+          path: dist
+          retention-days: 1
+
+  deploy:
+    needs: [build]
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'  # Only deploy on main branch
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: dist
+          path: dist
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy.key
+          chmod 600 ~/.ssh/deploy.key
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+          
+          cat > ~/.ssh/config << EOF
+          Host biznet
+            HostName ${{ secrets.SERVER_HOST }}
+            User ${{ secrets.SERVER_USER }}
+            IdentityFile ~/.ssh/deploy.key
+            StrictHostKeyChecking yes
+            ServerAliveInterval 60
+            ServerAliveCountMax 3
+          EOF
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Verify SSH connection
+        run: ssh biznet 'echo "SSH connection successful"'
+
+      - name: Setup remote environment
+        run: |
+          ssh biznet '
+            # Install Node.js if not present
+            if ! command -v node &> /dev/null; then
+              curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+              sudo apt-get install -y nodejs
+            fi
+            
+            # Install PM2 if not present
+            if ! command -v pm2 &> /dev/null; then
+              sudo npm install -g pm2
+              pm2 install pm2-logrotate
+            fi
+            
+            # Create application directory
+            mkdir -p ~/vite-app'
+
+      - name: Deploy application
+        run: |
+          # Copy ecosystem config
+          scp ecosystem.config.js biznet:~/vite-app/
+          
+          # Sync the built files
+          rsync -azP --delete \
+            --exclude='.git*' \
+            --exclude='node_modules' \
+            --exclude='src' \
+            --exclude='public' \
+            --exclude='*.log' \
+            --exclude='*.md' \
+            ./dist/ biznet:~/vite-app/dist/
+          
+          # Deploy application
+          ssh biznet "
+            cd ~/vite-app && \
+            npm ci --production && \
+            pm2 delete ${{ env.PM2_APP_NAME }} 2>/dev/null || true && \
+            PORT=${{ secrets.APP_PORT }} \
+            NODE_ENV=production \
+            pm2 start ecosystem.config.js --env production && \
+            pm2 save"
+
+      - name: Configure Nginx
+        run: |
+          ssh biznet 'sudo bash -c "cat > /etc/nginx/sites-available/${{ env.PM2_APP_NAME }} << EOF
+          server {
+              listen 80;
+              server_name ${{ secrets.DOMAIN_NAME }};
+              
+              location / {
+                  proxy_pass http://localhost:${{ secrets.APP_PORT }};
+                  proxy_http_version 1.1;
+                  proxy_set_header Upgrade \\\$http_upgrade;
+                  proxy_set_header Connection '\''upgrade'\'';
+                  proxy_set_header Host \\\$host;
+                  proxy_cache_bypass \\\$http_upgrade;
+                  
+                  # Add security headers
+                  add_header X-Frame-Options "SAMEORIGIN";
+                  add_header X-XSS-Protection "1; mode=block";
+                  add_header X-Content-Type-Options "nosniff";
+              }
+          }
+          EOF"'
+          
+          ssh biznet '
+            sudo ln -sf /etc/nginx/sites-available/${{ env.PM2_APP_NAME }} /etc/nginx/sites-enabled/ && \
+            sudo nginx -t && \
+            sudo systemctl reload nginx'
+
+      - name: Verify deployment
+        run: |
+          # Wait for application to start
+          sleep 10
+          # Check PM2 process
+          ssh biznet "pm2 list | grep '${{ env.PM2_APP_NAME }}'" || exit 1
+          # Basic health check
+          curl -f -s "http://${{ secrets.DOMAIN_NAME }}" || exit 1
+
+      - name: Cleanup
+        if: always()
+        run: rm -f ~/.ssh/deploy.key

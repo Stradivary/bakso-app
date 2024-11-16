@@ -6,6 +6,10 @@ import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
+  preview: {
+    port: parseInt(process.env.PORT || "3000"),
+    host: true,
+  },
   plugins: [
     nodePolyfills({ include: ["buffer"] }),
     react(),
@@ -14,7 +18,6 @@ export default defineConfig({
       workbox: {
         clientsClaim: true,
         skipWaiting: true,
-
       },
     }),
   ],
