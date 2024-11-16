@@ -32,6 +32,7 @@
     "Buffer": "^0.0.0",
     "dayjs": "^1.11.13",
     "leaflet": "^1.9.4",
+    "lint-staged": "^15.2.10",
     "lucide-react": "^0.456.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -70,5 +71,11 @@
     "vite": "^5.4.10",
     "vite-plugin-node-polyfills": "^0.22.0",
     "vitest": "^2.1.4"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   }
 }
