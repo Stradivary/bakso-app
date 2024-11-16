@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AuthProvider > should handle session integrity validation 1`] = `
+<div>
+  <div>
+    Test
+  </div>
+</div>
+`;
