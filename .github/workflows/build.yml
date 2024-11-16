@@ -8,7 +8,7 @@ on:
 
 env:
   NODE_VERSION: '20' 
-  BUILD_DIR: '/var/www/baksoapp'
+  BUILD_DIR: '/var/www/abangbakso'
 
 jobs:
 
@@ -163,16 +163,30 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy.key
           chmod 600 ~/.ssh/deploy.key
           ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+          
+          cat > ~/.ssh/config << EOF
+          Host biznet
+            HostName ${{ secrets.SERVER_HOST }}
+            User ${{ secrets.SERVER_USER }}
+            IdentityFile ~/.ssh/deploy.key
+            StrictHostKeyChecking yes
+            ServerAliveInterval 60
+            ServerAliveCountMax 3
+          EOF
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Verify SSH connection
+        run: ssh biznet 'echo "SSH connection successful"'
+
       - name: Deploy application
         run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} '
+          ssh biznet '
             sudo mkdir -p $BUILD_DIR
-            sudo chown ${{ secrets.SERVER_USER }}:$BUILD_DIR
+            sudo chown -R www-data:www-data $BUILD_DIR
+            sudo chmod -R 755 $BUILD_DIR
           '
-          rsync -azP --delete ./dist/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:$BUILD_DIR/
+          rsync -azP --delete ./dist/ biznet:$BUILD_DIR/
         env:
           BUILD_DIR: ${{ env.BUILD_DIR }}
 
