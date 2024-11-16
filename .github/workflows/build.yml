@@ -181,14 +181,14 @@ jobs:
 
       - name: Deploy application
         run: |
-          ssh biznet '
-            sudo mkdir -p $BUILD_DIR
-            sudo chown -R www-data:www-data $BUILD_DIR
-            sudo chmod -R 755 $BUILD_DIR
-          '
-          rsync -azP --delete ./dist/ biznet:$BUILD_DIR/
+          ssh biznet "
+            sudo mkdir -p ${BUILD_DIR}
+            sudo chown -R www-data:www-data ${BUILD_DIR}
+            sudo chmod -R 755 ${BUILD_DIR}
+          "
+          rsync -azP --delete ./dist/ biznet:${BUILD_DIR}/
         env:
-          BUILD_DIR: ${{ env.BUILD_DIR }}
+          BUILD_DIR: /var/www/abangbakso
 
       - name: Verify deployment
         run: curl -f -s "http://${{ secrets.DOMAIN_NAME }}" || exit 1
