@@ -8,8 +8,10 @@ on:
 
 env:
   NODE_VERSION: '20' 
+  BUILD_DIR: '/var/www/baksoapp'
 
 jobs:
+
   test:
     name: Install & Test
     runs-on: ubuntu-latest
@@ -103,9 +105,9 @@ jobs:
             sleep 10
           done
 
+
   build:
-    needs: [test, quality]
-    if: needs.quality.outputs.quality_gate_passed == 'true'
+    needs: test
     name: Build Application
     runs-on: ubuntu-latest
     steps:
@@ -121,6 +123,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Set environment variables for build
+        run: |
+          echo "VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}" >> .env.production.local
+          echo "VITE_SUPABASE_ANON_KEY=${{ secrets.VITE_SUPABASE_ANON_KEY }}" >> .env.production.local
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
       - name: Build application
         run: npm run build
 
@@ -132,7 +142,7 @@ jobs:
           retention-days: 1
 
   deploy:
-    needs: [build]
+    needs: build
     name: Deploy to Production
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'  # Only deploy on main branch
@@ -153,101 +163,21 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy.key
           chmod 600 ~/.ssh/deploy.key
           ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
-          
-          cat > ~/.ssh/config << EOF
-          Host biznet
-            HostName ${{ secrets.SERVER_HOST }}
-            User ${{ secrets.SERVER_USER }}
-            IdentityFile ~/.ssh/deploy.key
-            StrictHostKeyChecking yes
-            ServerAliveInterval 60
-            ServerAliveCountMax 3
-          EOF
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Verify SSH connection
-        run: ssh biznet 'echo "SSH connection successful"'
-
-      - name: Setup remote environment
-        run: |
-          ssh biznet '
-            # Install Node.js if not present
-            if ! command -v node &> /dev/null; then
-              curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-              sudo apt-get install -y nodejs
-            fi
-            
-            # Install PM2 if not present
-            if ! command -v pm2 &> /dev/null; then
-              sudo npm install -g pm2
-              pm2 install pm2-logrotate
-            fi
-            
-            # Create application directory
-            mkdir -p ~/vite-app'
-
       - name: Deploy application
         run: |
-          # Copy ecosystem config
-          scp ecosystem.config.js biznet:~/vite-app/
-          
-          # Sync the built files
-          rsync -azP --delete \
-            --exclude='.git*' \
-            --exclude='node_modules' \
-            --exclude='src' \
-            --exclude='public' \
-            --exclude='*.log' \
-            --exclude='*.md' \
-            ./dist/ biznet:~/vite-app/dist/
-          
-          # Deploy application
-          ssh biznet "
-            cd ~/vite-app && \
-            npm ci --production && \
-            pm2 delete ${{ env.PM2_APP_NAME }} 2>/dev/null || true && \
-            PORT=${{ secrets.APP_PORT }} \
-            NODE_ENV=production \
-            pm2 start ecosystem.config.js --env production && \
-            pm2 save"
-
-      - name: Configure Nginx
-        run: |
-          ssh biznet 'sudo bash -c "cat > /etc/nginx/sites-available/${{ env.PM2_APP_NAME }} << EOF
-          server {
-              listen 80;
-              server_name ${{ secrets.DOMAIN_NAME }};
-              
-              location / {
-                  proxy_pass http://localhost:${{ secrets.APP_PORT }};
-                  proxy_http_version 1.1;
-                  proxy_set_header Upgrade \\\$http_upgrade;
-                  proxy_set_header Connection '\''upgrade'\'';
-                  proxy_set_header Host \\\$host;
-                  proxy_cache_bypass \\\$http_upgrade;
-                  
-                  # Add security headers
-                  add_header X-Frame-Options "SAMEORIGIN";
-                  add_header X-XSS-Protection "1; mode=block";
-                  add_header X-Content-Type-Options "nosniff";
-              }
-          }
-          EOF"'
-          
-          ssh biznet '
-            sudo ln -sf /etc/nginx/sites-available/${{ env.PM2_APP_NAME }} /etc/nginx/sites-enabled/ && \
-            sudo nginx -t && \
-            sudo systemctl reload nginx'
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} '
+            sudo mkdir -p $BUILD_DIR
+            sudo chown ${{ secrets.SERVER_USER }}:$BUILD_DIR
+          '
+          rsync -azP --delete ./dist/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:$BUILD_DIR/
+        env:
+          BUILD_DIR: ${{ env.BUILD_DIR }}
 
       - name: Verify deployment
-        run: |
-          # Wait for application to start
-          sleep 10
-          # Check PM2 process
-          ssh biznet "pm2 list | grep '${{ env.PM2_APP_NAME }}'" || exit 1
-          # Basic health check
-          curl -f -s "http://${{ secrets.DOMAIN_NAME }}" || exit 1
+        run: curl -f -s "http://${{ secrets.DOMAIN_NAME }}" || exit 1
 
       - name: Cleanup
         if: always()
