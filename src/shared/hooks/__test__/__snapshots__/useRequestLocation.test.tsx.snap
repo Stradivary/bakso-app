@@ -1,0 +1,31 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useRequestLocation > should handle location error 1`] = `
+{
+  "error": "Location denied",
+  "isLoading": false,
+  "latitude": null,
+  "longitude": null,
+  "requestLocation": [Function],
+}
+`;
+
+exports[`useRequestLocation > should handle successful location request 1`] = `
+{
+  "error": null,
+  "isLoading": false,
+  "latitude": 40.7128,
+  "longitude": -74.006,
+  "requestLocation": [Function],
+}
+`;
+
+exports[`useRequestLocation > should initialize with default values 1`] = `
+{
+  "error": null,
+  "isLoading": true,
+  "latitude": null,
+  "longitude": null,
+  "requestLocation": [Function],
+}
+`;

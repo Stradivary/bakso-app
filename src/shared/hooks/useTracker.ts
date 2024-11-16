@@ -71,14 +71,18 @@ export const useTracker = (
     regionRef.current = region;
 
     initSupabaseChannel(
-      region,
-      userId,
-      userRole,
       initialLocation,
-      userName,
-      handlePresenceSync,
-      handlePing,
-      handleLocationUpdate,
+      region,
+      {
+        userId,
+        userRole,
+        userName,
+      },
+      {
+        handleLocationUpdate,
+        handlePing,
+        handlePresenceSync,
+      },
     ).then((channel) => {
       channelRef.current = channel;
     });

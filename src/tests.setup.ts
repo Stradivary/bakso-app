@@ -1,4 +1,4 @@
-import { vi } from "vitest";
+import { beforeAll, vi } from "vitest";
 
 // setupTests.ts
 Object.defineProperty(window, "matchMedia", {
@@ -13,4 +13,15 @@ Object.defineProperty(window, "matchMedia", {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   }),
+});
+
+class MockResizeObserver {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+}
+
+// Mock implementation
+beforeAll(() => {
+  vi.stubGlobal("ResizeObserver", MockResizeObserver);
 });

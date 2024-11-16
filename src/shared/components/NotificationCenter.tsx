@@ -6,7 +6,8 @@ import {
   Popover,
   ScrollArea,
   Stack,
-  Text, Group
+  Text,
+  Group,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
@@ -14,30 +15,36 @@ import { Bell, CheckCheck } from "lucide-react";
 import { useCallback } from "react";
 import { Notification } from "../hooks/useNotification";
 
-export function NotificationCenter({ notifications }: Readonly<{ notifications?: Notification[]; }>) {
-
+export function NotificationCenter({
+  notifications,
+}: Readonly<{ notifications?: Notification[] }>) {
   const [opened, { toggle }] = useDisclosure();
 
-  const handleNotificationClick = useCallback(async (notificationId: string) => {
-    const notification = notifications?.find(note => note.id === notificationId);
-    if (!notification) return;
-    notification.is_read = true;
-  }, [notifications]);
+  const handleNotificationClick = useCallback(
+    async (notificationId: string) => {
+      const notification = notifications?.find(
+        (note) => note.id === notificationId,
+      );
+      if (!notification) return;
+      notification.is_read = true;
+    },
+    [notifications],
+  );
 
   const handleClearNotifications = useCallback(() => {
-    notifications?.forEach(note => note.is_read = true);
+    notifications?.forEach((note) => (note.is_read = true));
   }, [notifications]);
 
   return (
-    <Popover
-      opened={opened}
-      position="bottom-end"
-      shadow="md"
-    >
+    <Popover opened={opened} position="bottom-end" shadow="md">
       <Popover.Target>
-        <Indicator disabled={notifications?.filter(note => !note.is_read).length === 0} processing
-          size={12} >
+        <Indicator
+          disabled={notifications?.filter((note) => !note.is_read).length === 0}
+          processing
+          size={12}
+        >
           <Button
+            data-testid="notification-center"
             variant="white"
             size="compact-lg"
             onClick={() => toggle()}
@@ -74,17 +81,22 @@ export function NotificationCenter({ notifications }: Readonly<{ notifications?:
                       withBorder
                       onClick={() => handleNotificationClick(notification.id)}
                       style={{
-                        backgroundColor: notification.is_read ? undefined : '#f0f9ff',
-                        cursor: 'pointer'
+                        backgroundColor: notification.is_read
+                          ? undefined
+                          : "#f0f9ff",
+                        cursor: "pointer",
                       }}
                     >
                       <Text size="sm">
-                        Seorang pelanggan mencolekmu: {notification.buyer_name ?? 'Unknown User'}
+                        Seorang pelanggan mencolekmu:{" "}
+                        {notification.buyer_name ?? "Unknown User"}
                       </Text>
                       <Text size="xs" c="dimmed">
                         {notification.expiry_at
-                          ? dayjs(notification.expiry_at).format("DD MMMM YYYY\n HH:mm")
-                          : 'No date'}
+                          ? dayjs(notification.expiry_at).format(
+                              "DD MMMM YYYY\n HH:mm",
+                            )
+                          : "No date"}
                       </Text>
                     </Card>
                   );

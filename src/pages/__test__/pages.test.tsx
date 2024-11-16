@@ -13,7 +13,6 @@ import {
 import { LoginPage } from "../login";
 import { BroadcastMapPage } from "../map";
 
-// mock useNavigate from @remix-run/router
 vi.mock("react-router-dom", async (importOriginal) => {
   const actual = (await importOriginal()) as Record<string, never>;
   return {
@@ -26,27 +25,6 @@ vi.mock("src/shared/components/ProtectedRoute.tsx", () => {
   return {
     ProtectedRoute: vi.fn(({ children }) => ({ children })),
   };
-});
-
-class MockResizeObserver {
-  observe = vi.fn();
-  unobserve = vi.fn();
-  disconnect = vi.fn();
-}
-
-// Mock implementation
-beforeAll(() => {
-  vi.stubGlobal("ResizeObserver", MockResizeObserver);
-});
-
-// Clean up after tests
-afterAll(() => {
-  vi.unstubAllGlobals();
-});
-
-// Optional: Reset mocks between tests
-afterEach(() => {
-  vi.clearAllMocks();
 });
 
 // Define mock coordinates type for better TypeScript support

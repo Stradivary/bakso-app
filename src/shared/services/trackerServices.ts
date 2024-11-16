@@ -1,5 +1,5 @@
-import { LatLng } from 'leaflet';
-import { supabase } from '../services/supabaseService';
+import { LatLng } from "leaflet";
+import { supabase } from "../services/supabaseService";
 import { RealtimeChannel } from "@supabase/supabase-js";
 
 export const SELLER_RADIUS = 3000; // 3km in meters
@@ -9,8 +9,8 @@ export const PRESENCE_UPDATE_BUFFER = 1000; // 5 seconds
 export interface User {
   id: string;
   user_id: string;
-  role: 'seller' | 'buyer';
-  location: { lat: number; lng: number; };
+  role: "seller" | "buyer";
+  location: { lat: number; lng: number };
   isOnline: boolean;
   userName: string;
   isAvailable: boolean;
@@ -18,7 +18,9 @@ export interface User {
 }
 
 export const calculateRegion = (lat: number, lng: number): string =>
-  Buffer.from(`${Math.floor(lat * 10)}-${Math.floor(lng * 10)}`).toString('base64');
+  Buffer.from(`${Math.floor(lat * 10)}-${Math.floor(lng * 10)}`).toString(
+    "base64",
+  );
 
 export const calculateDistance = (point1: LatLng, point2: LatLng): number => {
   const R = 6371e3; // Earth's radius in meters
@@ -38,8 +40,8 @@ export const calculateDistance = (point1: LatLng, point2: LatLng): number => {
 export const filterNearbyUsers = (
   users: User[],
   currentLocation: LatLng,
-  userRole: 'seller' | 'buyer',
-  userId?: string
+  userRole: "seller" | "buyer",
+  userId?: string,
 ): User[] => {
   const adjustDuplicateLocations = (users: User[]) => {
     for (let i = 0; i < users.length; i++) {
@@ -56,61 +58,67 @@ export const filterNearbyUsers = (
     return users;
   };
 
-  return adjustDuplicateLocations(users).filter(user => {
+  return adjustDuplicateLocations(users).filter((user) => {
     if (user.id === userId) return false; // Exclude self
 
     const distance = calculateDistance(
       currentLocation,
-      new LatLng(user.location.lat, user.location.lng)
+      new LatLng(user.location.lat, user.location.lng),
     );
 
-    if (userRole === 'buyer') {
-      return user.role === 'seller' && distance <= BUYER_RADIUS;
-    } else if (userRole === 'seller') {
-      return user.role === 'buyer' && distance <= SELLER_RADIUS && user.isAvailable;
+    if (userRole === "buyer") {
+      return user.role === "seller" && distance <= BUYER_RADIUS;
+    } else if (userRole === "seller") {
+      return (
+        user.role === "buyer" && distance <= SELLER_RADIUS && user.isAvailable
+      );
     }
     return false;
   });
 };
 
 export const initSupabaseChannel = async (
-  region: string,
-  userId: string,
-  userRole: 'seller' | 'buyer',
   location: LatLng,
-  userName: string,
-  handlePresenceSync: (users: User[]) => void,
-  handlePing: (buyerId: string, buyerName: string) => void,
-  handleLocationUpdate: (userId: string, location: LatLng) => void
+  region: string,
+  user: {
+    userId: string;
+    userRole: "seller" | "buyer";
+    userName: string;
+  },
+  handlers: {
+    handlePresenceSync: (users: User[]) => void;
+    handlePing: (buyerId: string, buyerName: string) => void;
+    handleLocationUpdate: (userId: string, location: LatLng) => void;
+  },
 ): Promise<RealtimeChannel> => {
   const channel = supabase.channel(`${region}`, {
-    config: { presence: { key: userId } },
+    config: { presence: { key: user.userId } },
   });
 
-  channel.on('presence', { event: 'sync' }, () => {
+  channel.on("presence", { event: "sync" }, () => {
     const state = channel.presenceState<User>();
     const users = Object.values(state).flat();
-    handlePresenceSync(users);
+    handlers.handlePresenceSync(users);
   });
 
-  channel.on('broadcast', { event: 'ping' }, payload => {
+  channel.on("broadcast", { event: "ping" }, (payload) => {
     const { seller_id, buyer_name, buyer_id } = payload.payload;
-    if (seller_id === userId) handlePing(buyer_id, buyer_name);
+    if (seller_id === user.userId) handlers.handlePing(buyer_id, buyer_name);
   });
 
-  channel.on('broadcast', { event: 'location' }, payload => {
+  channel.on("broadcast", { event: "location" }, (payload) => {
     const { user_id, location } = payload.payload;
-    handleLocationUpdate(user_id, location);
+    handlers.handleLocationUpdate(user_id, location);
   });
 
-  channel.subscribe(status => {
-    if (status === 'SUBSCRIBED') {
+  channel.subscribe((status) => {
+    if (status === "SUBSCRIBED") {
       channel.track({
-        user_id: userId,
-        role: userRole,
+        user_id: user.userId,
+        role: user.userRole,
         location: { lat: location.lat, lng: location.lng },
         isOnline: true,
-        userName: userName,
+        userName: user.userName,
         isAvailable: true,
       });
     }
@@ -120,10 +128,15 @@ export const initSupabaseChannel = async (
 };
 
 export const createPingPayload = ({
-  buyer_id, buyer_name, user_id
-}: { buyer_id: string, buyer_name: string, user_id: string; }) => {
-
-  return ({
+  buyer_id,
+  buyer_name,
+  user_id,
+}: {
+  buyer_id: string;
+  buyer_name: string;
+  user_id: string;
+}) => {
+  return {
     id: `${buyer_id}-${Date.now()}`,
     buyer_id: buyer_id,
     buyer_name: buyer_name,
@@ -131,5 +144,5 @@ export const createPingPayload = ({
     is_read: false,
     created_at: new Date().toISOString(),
     expiry_at: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
-  });
+  };
 };

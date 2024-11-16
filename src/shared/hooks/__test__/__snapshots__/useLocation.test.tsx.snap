@@ -1,0 +1,19 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useLocation > should initialize with null location 1`] = `
+{
+  "location": {
+    "latitude": null,
+    "longitude": null,
+  },
+}
+`;
+
+exports[`useLocation > should update location when position changes 1`] = `
+{
+  "location": {
+    "latitude": 40.7128,
+    "longitude": -74.006,
+  },
+}
+`;

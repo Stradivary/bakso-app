@@ -1,0 +1,45 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useNotifications > should initialize with empty notifications 1`] = `
+{
+  "markAsRead": [Function],
+  "notifications": [],
+  "unreadCount": 0,
+}
+`;
+
+exports[`useNotifications > should initialize with provided notifications 1`] = `
+{
+  "markAsRead": [Function],
+  "notifications": [
+    {
+      "buyer_id": "buyer1",
+      "buyer_name": "John",
+      "created_at": "2023-01-01",
+      "expiry_at": "2023-01-02",
+      "id": "1",
+      "is_read": false,
+      "seller_id": "seller1",
+    },
+  ],
+  "unreadCount": 1,
+}
+`;
+
+exports[`useNotifications > should mark notification as read 1`] = `
+{
+  "markAsRead": [Function],
+  "notifications": [
+    {
+      "buyer_id": "buyer1",
+      "buyer_name": "John",
+      "created_at": "2023-01-01",
+      "expiry_at": "2023-01-02",
+      "id": "1",
+      "is_read": true,
+      "seller_id": "seller1",
+    },
+  ],
+  "unreadCount": 0,
+}
+`;

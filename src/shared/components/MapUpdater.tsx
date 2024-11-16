@@ -1,12 +1,9 @@
 import { Stack, Text } from "@mantine/core";
-import { LatLng, Point } from "leaflet";
-import { useEffect } from "react";
+import { LatLng, LeafletMouseEventHandlerFn, Point } from "leaflet";
 import { Marker, Tooltip } from "react-leaflet";
-import { useLocation } from "../hooks/useLocation";
+import { useLocationUpdater } from "../hooks/useLocationUpdater";
 import { User } from "../models/BroadcastMapModel";
 import { iconBakso, iconPerson } from "./Icon";
-
-const UPDATE_INTERVAL = 2 * 1000;
 
 export const MapUpdater = ({
   disabled,
@@ -19,27 +16,7 @@ export const MapUpdater = ({
   userRole: string;
   updateLocation: (userId: string, location: LatLng) => void;
 }>) => {
-  const { location } = useLocation();
-
-  useEffect(() => {
-    if (userRole === "seller" && !disabled) {
-      const updateInterval = setInterval(() => {
-        updateLocation(
-          userId,
-          new LatLng(location?.latitude ?? 0, location?.longitude ?? 0),
-        );
-      }, UPDATE_INTERVAL);
-
-      return () => clearInterval(updateInterval);
-    }
-  }, [
-    userRole,
-    updateLocation,
-    location?.latitude,
-    location?.longitude,
-    disabled,
-  ]);
-
+  useLocationUpdater({ disabled, userId, userRole, updateLocation });
   return null;
 };
 
@@ -92,4 +69,22 @@ export function UserMarker({
       </Tooltip>
     </Marker>
   );
+}
+
+export function NearbyUsersMarker({
+  nearbyUsers,
+  handleMarkerClick,
+}: {
+  nearbyUsers: User[];
+  handleMarkerClick: (
+    nearbyUser: User,
+  ) => LeafletMouseEventHandlerFn | undefined;
+}): React.ReactNode {
+  return nearbyUsers.map((nearbyUser, idx) => (
+    <TargetMark
+      key={`${nearbyUser.user_id} ${idx} ${nearbyUser.role}`}
+      nearbyUser={nearbyUser}
+      handleClick={() => handleMarkerClick(nearbyUser)}
+    />
+  ));
 }

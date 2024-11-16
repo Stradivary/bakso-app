@@ -1,0 +1,869 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ActionButtons > applies correct badge colors based on role 1`] = `
+<div>
+  <style
+    data-mantine-styles="true"
+  >
+    :root{--mantine-font-family: 'Poppins', system-ui, sans-serif;--mantine-font-family-headings: 'Telkomsel Batik Sans', system-ui, sans-serif;--mantine-radius-default: calc(0.5rem * var(--mantine-scale));--mantine-primary-color-filled: var(--mantine-color-primary-filled);--mantine-primary-color-filled-hover: var(--mantine-color-primary-filled-hover);--mantine-primary-color-light: var(--mantine-color-primary-light);--mantine-primary-color-light-hover: var(--mantine-color-primary-light-hover);--mantine-primary-color-light-color: var(--mantine-color-primary-light-color);--mantine-primary-color-0: var(--mantine-color-primary-0);--mantine-primary-color-1: var(--mantine-color-primary-1);--mantine-primary-color-2: var(--mantine-color-primary-2);--mantine-primary-color-3: var(--mantine-color-primary-3);--mantine-primary-color-4: var(--mantine-color-primary-4);--mantine-primary-color-5: var(--mantine-color-primary-5);--mantine-primary-color-6: var(--mantine-color-primary-6);--mantine-primary-color-7: var(--mantine-color-primary-7);--mantine-primary-color-8: var(--mantine-color-primary-8);--mantine-primary-color-9: var(--mantine-color-primary-9);--mantine-color-primary-0: #ffe8ed;--mantine-color-primary-1: #ffcfd7;--mantine-color-primary-2: #fe9cab;--mantine-color-primary-3: #fd677d;--mantine-color-primary-4: #fc3a56;--mantine-color-primary-5: #fb203e;--mantine-color-primary-6: #fc1131;--mantine-color-primary-7: #e10224;--mantine-color-primary-8: #c9001f;--mantine-color-primary-9: #b00018;--mantine-color-secondary-0: #ebf4ff;--mantine-color-secondary-1: #d4e5fa;--mantine-color-secondary-2: #a3c9f7;--mantine-color-secondary-3: #71abf6;--mantine-color-secondary-4: #4b92f5;--mantine-color-secondary-5: #3782f5;--mantine-color-secondary-6: #2e7af6;--mantine-color-secondary-7: #2368dc;--mantine-color-secondary-8: #195dc5;--mantine-color-secondary-9: #0050ad;}:root[data-mantine-color-scheme="dark"]{--mantine-color-anchor: var(--mantine-color-primary-4);--mantine-color-primary-text: var(--mantine-color-primary-4);--mantine-color-primary-filled: var(--mantine-color-primary-8);--mantine-color-primary-filled-hover: var(--mantine-color-primary-9);--mantine-color-primary-light: rgba(252, 17, 49, 0.15);--mantine-color-primary-light-hover: rgba(252, 17, 49, 0.2);--mantine-color-primary-light-color: var(--mantine-color-primary-3);--mantine-color-primary-outline: var(--mantine-color-primary-4);--mantine-color-primary-outline-hover: rgba(252, 58, 86, 0.05);--mantine-color-secondary-text: var(--mantine-color-secondary-4);--mantine-color-secondary-filled: var(--mantine-color-secondary-8);--mantine-color-secondary-filled-hover: var(--mantine-color-secondary-9);--mantine-color-secondary-light: rgba(46, 122, 246, 0.15);--mantine-color-secondary-light-hover: rgba(46, 122, 246, 0.2);--mantine-color-secondary-light-color: var(--mantine-color-secondary-3);--mantine-color-secondary-outline: var(--mantine-color-secondary-4);--mantine-color-secondary-outline-hover: rgba(75, 146, 245, 0.05);}:root[data-mantine-color-scheme="light"]{--mantine-color-anchor: var(--mantine-color-primary-6);--mantine-color-primary-text: var(--mantine-color-primary-filled);--mantine-color-primary-filled: var(--mantine-color-primary-6);--mantine-color-primary-filled-hover: var(--mantine-color-primary-7);--mantine-color-primary-light: rgba(252, 17, 49, 0.1);--mantine-color-primary-light-hover: rgba(252, 17, 49, 0.12);--mantine-color-primary-light-color: var(--mantine-color-primary-6);--mantine-color-primary-outline: var(--mantine-color-primary-6);--mantine-color-primary-outline-hover: rgba(252, 17, 49, 0.05);--mantine-color-secondary-text: var(--mantine-color-secondary-filled);--mantine-color-secondary-filled: var(--mantine-color-secondary-6);--mantine-color-secondary-filled-hover: var(--mantine-color-secondary-7);--mantine-color-secondary-light: rgba(46, 122, 246, 0.1);--mantine-color-secondary-light-hover: rgba(46, 122, 246, 0.12);--mantine-color-secondary-light-color: var(--mantine-color-secondary-6);--mantine-color-secondary-outline: var(--mantine-color-secondary-6);--mantine-color-secondary-outline-hover: rgba(46, 122, 246, 0.05);}
+  </style>
+  <style
+    data-mantine-styles="classes"
+  >
+    @media (max-width: 35.99375em) {.mantine-visible-from-xs {display: none !important;}}@media (min-width: 36em) {.mantine-hidden-from-xs {display: none !important;}}@media (max-width: 47.99375em) {.mantine-visible-from-sm {display: none !important;}}@media (min-width: 48em) {.mantine-hidden-from-sm {display: none !important;}}@media (max-width: 61.99375em) {.mantine-visible-from-md {display: none !important;}}@media (min-width: 62em) {.mantine-hidden-from-md {display: none !important;}}@media (max-width: 74.99375em) {.mantine-visible-from-lg {display: none !important;}}@media (min-width: 75em) {.mantine-hidden-from-lg {display: none !important;}}@media (max-width: 87.99375em) {.mantine-visible-from-xl {display: none !important;}}@media (min-width: 88em) {.mantine-hidden-from-xl {display: none !important;}}
+  </style>
+  <div
+    class=""
+    style="z-index: 50; position: absolute; top: 0px; right: 0px; display: flex; flex-direction: column; align-items: flex-end; padding: 8px;"
+  >
+    <div
+      class="m_8bffd616 mantine-Flex-root __m__-r3d"
+      style="flex-direction: column;"
+    >
+      <div
+        class="m_6d731127 mantine-Stack-root"
+        style="--stack-gap: var(--mantine-spacing-md); --stack-align: end; --stack-justify: flex-start; flex-grow: 1;"
+      >
+        <button
+          class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+          data-size="compact-lg"
+          data-variant="white"
+          style="--button-height: var(--button-height-compact-lg); --button-padding-x: var(--button-padding-x-compact-lg); --button-fz: var(--mantine-font-size-lg); --button-bg: var(--mantine-color-white); --button-hover: rgba(252, 252, 252, 1); --button-color: var(--mantine-color-primary-filled); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+          type="button"
+        >
+          <span
+            class="m_80f1301b mantine-Button-inner"
+          >
+            <span
+              class="m_811560b9 mantine-Button-label"
+            >
+              <svg
+                class="lucide lucide-locate-fixed"
+                fill="none"
+                height="20"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <line
+                  x1="2"
+                  x2="5"
+                  y1="12"
+                  y2="12"
+                />
+                <line
+                  x1="19"
+                  x2="22"
+                  y1="12"
+                  y2="12"
+                />
+                <line
+                  x1="12"
+                  x2="12"
+                  y1="2"
+                  y2="5"
+                />
+                <line
+                  x1="12"
+                  x2="12"
+                  y1="19"
+                  y2="22"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="7"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="3"
+                />
+              </svg>
+            </span>
+          </span>
+        </button>
+        <button
+          class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+          data-size="compact-lg"
+          data-variant="white"
+          style="--button-height: var(--button-height-compact-lg); --button-padding-x: var(--button-padding-x-compact-lg); --button-fz: var(--mantine-font-size-lg); --button-bg: var(--mantine-color-white); --button-hover: rgba(252, 252, 252, 1); --button-color: var(--mantine-color-red-filled); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+          type="button"
+        >
+          <span
+            class="m_80f1301b mantine-Button-inner"
+          >
+            <span
+              class="m_811560b9 mantine-Button-label"
+            >
+              <svg
+                class="lucide lucide-x"
+                fill="none"
+                height="20"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18 6 6 18"
+                />
+                <path
+                  d="m6 6 12 12"
+                />
+              </svg>
+            </span>
+          </span>
+        </button>
+      </div>
+      <div
+        class="m_4081bf90 mantine-Group-root"
+        style="--group-gap: var(--mantine-spacing-md); --group-align: end; --group-justify: end; --group-wrap: wrap;"
+      >
+        <div
+          class="m_347db0ec mantine-Badge-root"
+          style="--badge-bg: var(--mantine-color-blue-filled); --badge-color: var(--mantine-color-white); --badge-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+        >
+          <span
+            class="m_5add502a mantine-Badge-label"
+          >
+            Customer
+          </span>
+        </div>
+        <div
+          class="m_347db0ec mantine-Badge-root"
+          data-variant="filled"
+          style="--badge-bg: var(--mantine-color-teal-filled); --badge-color: var(--mantine-color-white); --badge-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+        >
+          <span
+            class="m_5add502a mantine-Badge-label"
+          >
+            John Doe
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ActionButtons > applies correct badge colors based on role 2`] = `
+<div>
+  <style
+    data-mantine-styles="true"
+  >
+    :root{--mantine-font-family: 'Poppins', system-ui, sans-serif;--mantine-font-family-headings: 'Telkomsel Batik Sans', system-ui, sans-serif;--mantine-radius-default: calc(0.5rem * var(--mantine-scale));--mantine-primary-color-filled: var(--mantine-color-primary-filled);--mantine-primary-color-filled-hover: var(--mantine-color-primary-filled-hover);--mantine-primary-color-light: var(--mantine-color-primary-light);--mantine-primary-color-light-hover: var(--mantine-color-primary-light-hover);--mantine-primary-color-light-color: var(--mantine-color-primary-light-color);--mantine-primary-color-0: var(--mantine-color-primary-0);--mantine-primary-color-1: var(--mantine-color-primary-1);--mantine-primary-color-2: var(--mantine-color-primary-2);--mantine-primary-color-3: var(--mantine-color-primary-3);--mantine-primary-color-4: var(--mantine-color-primary-4);--mantine-primary-color-5: var(--mantine-color-primary-5);--mantine-primary-color-6: var(--mantine-color-primary-6);--mantine-primary-color-7: var(--mantine-color-primary-7);--mantine-primary-color-8: var(--mantine-color-primary-8);--mantine-primary-color-9: var(--mantine-color-primary-9);--mantine-color-primary-0: #ffe8ed;--mantine-color-primary-1: #ffcfd7;--mantine-color-primary-2: #fe9cab;--mantine-color-primary-3: #fd677d;--mantine-color-primary-4: #fc3a56;--mantine-color-primary-5: #fb203e;--mantine-color-primary-6: #fc1131;--mantine-color-primary-7: #e10224;--mantine-color-primary-8: #c9001f;--mantine-color-primary-9: #b00018;--mantine-color-secondary-0: #ebf4ff;--mantine-color-secondary-1: #d4e5fa;--mantine-color-secondary-2: #a3c9f7;--mantine-color-secondary-3: #71abf6;--mantine-color-secondary-4: #4b92f5;--mantine-color-secondary-5: #3782f5;--mantine-color-secondary-6: #2e7af6;--mantine-color-secondary-7: #2368dc;--mantine-color-secondary-8: #195dc5;--mantine-color-secondary-9: #0050ad;}:root[data-mantine-color-scheme="dark"]{--mantine-color-anchor: var(--mantine-color-primary-4);--mantine-color-primary-text: var(--mantine-color-primary-4);--mantine-color-primary-filled: var(--mantine-color-primary-8);--mantine-color-primary-filled-hover: var(--mantine-color-primary-9);--mantine-color-primary-light: rgba(252, 17, 49, 0.15);--mantine-color-primary-light-hover: rgba(252, 17, 49, 0.2);--mantine-color-primary-light-color: var(--mantine-color-primary-3);--mantine-color-primary-outline: var(--mantine-color-primary-4);--mantine-color-primary-outline-hover: rgba(252, 58, 86, 0.05);--mantine-color-secondary-text: var(--mantine-color-secondary-4);--mantine-color-secondary-filled: var(--mantine-color-secondary-8);--mantine-color-secondary-filled-hover: var(--mantine-color-secondary-9);--mantine-color-secondary-light: rgba(46, 122, 246, 0.15);--mantine-color-secondary-light-hover: rgba(46, 122, 246, 0.2);--mantine-color-secondary-light-color: var(--mantine-color-secondary-3);--mantine-color-secondary-outline: var(--mantine-color-secondary-4);--mantine-color-secondary-outline-hover: rgba(75, 146, 245, 0.05);}:root[data-mantine-color-scheme="light"]{--mantine-color-anchor: var(--mantine-color-primary-6);--mantine-color-primary-text: var(--mantine-color-primary-filled);--mantine-color-primary-filled: var(--mantine-color-primary-6);--mantine-color-primary-filled-hover: var(--mantine-color-primary-7);--mantine-color-primary-light: rgba(252, 17, 49, 0.1);--mantine-color-primary-light-hover: rgba(252, 17, 49, 0.12);--mantine-color-primary-light-color: var(--mantine-color-primary-6);--mantine-color-primary-outline: var(--mantine-color-primary-6);--mantine-color-primary-outline-hover: rgba(252, 17, 49, 0.05);--mantine-color-secondary-text: var(--mantine-color-secondary-filled);--mantine-color-secondary-filled: var(--mantine-color-secondary-6);--mantine-color-secondary-filled-hover: var(--mantine-color-secondary-7);--mantine-color-secondary-light: rgba(46, 122, 246, 0.1);--mantine-color-secondary-light-hover: rgba(46, 122, 246, 0.12);--mantine-color-secondary-light-color: var(--mantine-color-secondary-6);--mantine-color-secondary-outline: var(--mantine-color-secondary-6);--mantine-color-secondary-outline-hover: rgba(46, 122, 246, 0.05);}
+  </style>
+  <style
+    data-mantine-styles="classes"
+  >
+    @media (max-width: 35.99375em) {.mantine-visible-from-xs {display: none !important;}}@media (min-width: 36em) {.mantine-hidden-from-xs {display: none !important;}}@media (max-width: 47.99375em) {.mantine-visible-from-sm {display: none !important;}}@media (min-width: 48em) {.mantine-hidden-from-sm {display: none !important;}}@media (max-width: 61.99375em) {.mantine-visible-from-md {display: none !important;}}@media (min-width: 62em) {.mantine-hidden-from-md {display: none !important;}}@media (max-width: 74.99375em) {.mantine-visible-from-lg {display: none !important;}}@media (min-width: 75em) {.mantine-hidden-from-lg {display: none !important;}}@media (max-width: 87.99375em) {.mantine-visible-from-xl {display: none !important;}}@media (min-width: 88em) {.mantine-hidden-from-xl {display: none !important;}}
+  </style>
+  <div
+    class=""
+    style="z-index: 50; position: absolute; top: 0px; right: 0px; display: flex; flex-direction: column; align-items: flex-end; padding: 8px;"
+  >
+    <div
+      class="m_8bffd616 mantine-Flex-root __m__-r3d"
+      style="flex-direction: column;"
+    >
+      <div
+        class="m_6d731127 mantine-Stack-root"
+        style="--stack-gap: var(--mantine-spacing-md); --stack-align: end; --stack-justify: flex-start; flex-grow: 1;"
+      >
+        <button
+          class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+          data-size="compact-lg"
+          data-variant="white"
+          style="--button-height: var(--button-height-compact-lg); --button-padding-x: var(--button-padding-x-compact-lg); --button-fz: var(--mantine-font-size-lg); --button-bg: var(--mantine-color-white); --button-hover: rgba(252, 252, 252, 1); --button-color: var(--mantine-color-primary-filled); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+          type="button"
+        >
+          <span
+            class="m_80f1301b mantine-Button-inner"
+          >
+            <span
+              class="m_811560b9 mantine-Button-label"
+            >
+              <svg
+                class="lucide lucide-locate-fixed"
+                fill="none"
+                height="20"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <line
+                  x1="2"
+                  x2="5"
+                  y1="12"
+                  y2="12"
+                />
+                <line
+                  x1="19"
+                  x2="22"
+                  y1="12"
+                  y2="12"
+                />
+                <line
+                  x1="12"
+                  x2="12"
+                  y1="2"
+                  y2="5"
+                />
+                <line
+                  x1="12"
+                  x2="12"
+                  y1="19"
+                  y2="22"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="7"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="3"
+                />
+              </svg>
+            </span>
+          </span>
+        </button>
+        <button
+          class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+          data-size="compact-lg"
+          data-variant="white"
+          style="--button-height: var(--button-height-compact-lg); --button-padding-x: var(--button-padding-x-compact-lg); --button-fz: var(--mantine-font-size-lg); --button-bg: var(--mantine-color-white); --button-hover: rgba(252, 252, 252, 1); --button-color: var(--mantine-color-red-filled); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+          type="button"
+        >
+          <span
+            class="m_80f1301b mantine-Button-inner"
+          >
+            <span
+              class="m_811560b9 mantine-Button-label"
+            >
+              <svg
+                class="lucide lucide-x"
+                fill="none"
+                height="20"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18 6 6 18"
+                />
+                <path
+                  d="m6 6 12 12"
+                />
+              </svg>
+            </span>
+          </span>
+        </button>
+        <div
+          aria-controls=""
+          aria-expanded="false"
+          aria-haspopup="dialog"
+          class="m_e5262200 mantine-Indicator-root"
+          id=""
+          style="--indicator-size: calc(0.75rem * var(--mantine-scale)); --indicator-top: 0rem; --indicator-right: 0rem; --indicator-translate-x: 50%; --indicator-translate-y: -50%;"
+        >
+          <div
+            class="m_760d1fb1 mantine-Indicator-indicator"
+            data-processing="true"
+          />
+          <button
+            class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+            data-size="compact-lg"
+            data-testid="notification-center"
+            data-variant="white"
+            style="--button-height: var(--button-height-compact-lg); --button-padding-x: var(--button-padding-x-compact-lg); --button-fz: var(--mantine-font-size-lg); --button-bg: var(--mantine-color-white); --button-hover: rgba(252, 252, 252, 1); --button-color: var(--mantine-color-primary-filled); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+            type="button"
+          >
+            <span
+              class="m_80f1301b mantine-Button-inner"
+            >
+              <span
+                class="m_811560b9 mantine-Button-label"
+              >
+                <svg
+                  class="lucide lucide-bell"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"
+                  />
+                  <path
+                    d="M10.3 21a1.94 1.94 0 0 0 3.4 0"
+                  />
+                </svg>
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        class="m_4081bf90 mantine-Group-root"
+        style="--group-gap: var(--mantine-spacing-md); --group-align: end; --group-justify: end; --group-wrap: wrap;"
+      >
+        <div
+          class="m_347db0ec mantine-Badge-root"
+          style="--badge-bg: var(--mantine-color-green-filled); --badge-color: var(--mantine-color-white); --badge-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+        >
+          <span
+            class="m_5add502a mantine-Badge-label"
+          >
+            Tukang Bakso
+          </span>
+        </div>
+        <div
+          class="m_347db0ec mantine-Badge-root"
+          data-variant="filled"
+          style="--badge-bg: var(--mantine-color-teal-filled); --badge-color: var(--mantine-color-white); --badge-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+        >
+          <span
+            class="m_5add502a mantine-Badge-label"
+          >
+            John Doe
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ActionButtons > calls onExit when exit button is clicked 1`] = `
+<div>
+  <style
+    data-mantine-styles="true"
+  >
+    :root{--mantine-font-family: 'Poppins', system-ui, sans-serif;--mantine-font-family-headings: 'Telkomsel Batik Sans', system-ui, sans-serif;--mantine-radius-default: calc(0.5rem * var(--mantine-scale));--mantine-primary-color-filled: var(--mantine-color-primary-filled);--mantine-primary-color-filled-hover: var(--mantine-color-primary-filled-hover);--mantine-primary-color-light: var(--mantine-color-primary-light);--mantine-primary-color-light-hover: var(--mantine-color-primary-light-hover);--mantine-primary-color-light-color: var(--mantine-color-primary-light-color);--mantine-primary-color-0: var(--mantine-color-primary-0);--mantine-primary-color-1: var(--mantine-color-primary-1);--mantine-primary-color-2: var(--mantine-color-primary-2);--mantine-primary-color-3: var(--mantine-color-primary-3);--mantine-primary-color-4: var(--mantine-color-primary-4);--mantine-primary-color-5: var(--mantine-color-primary-5);--mantine-primary-color-6: var(--mantine-color-primary-6);--mantine-primary-color-7: var(--mantine-color-primary-7);--mantine-primary-color-8: var(--mantine-color-primary-8);--mantine-primary-color-9: var(--mantine-color-primary-9);--mantine-color-primary-0: #ffe8ed;--mantine-color-primary-1: #ffcfd7;--mantine-color-primary-2: #fe9cab;--mantine-color-primary-3: #fd677d;--mantine-color-primary-4: #fc3a56;--mantine-color-primary-5: #fb203e;--mantine-color-primary-6: #fc1131;--mantine-color-primary-7: #e10224;--mantine-color-primary-8: #c9001f;--mantine-color-primary-9: #b00018;--mantine-color-secondary-0: #ebf4ff;--mantine-color-secondary-1: #d4e5fa;--mantine-color-secondary-2: #a3c9f7;--mantine-color-secondary-3: #71abf6;--mantine-color-secondary-4: #4b92f5;--mantine-color-secondary-5: #3782f5;--mantine-color-secondary-6: #2e7af6;--mantine-color-secondary-7: #2368dc;--mantine-color-secondary-8: #195dc5;--mantine-color-secondary-9: #0050ad;}:root[data-mantine-color-scheme="dark"]{--mantine-color-anchor: var(--mantine-color-primary-4);--mantine-color-primary-text: var(--mantine-color-primary-4);--mantine-color-primary-filled: var(--mantine-color-primary-8);--mantine-color-primary-filled-hover: var(--mantine-color-primary-9);--mantine-color-primary-light: rgba(252, 17, 49, 0.15);--mantine-color-primary-light-hover: rgba(252, 17, 49, 0.2);--mantine-color-primary-light-color: var(--mantine-color-primary-3);--mantine-color-primary-outline: var(--mantine-color-primary-4);--mantine-color-primary-outline-hover: rgba(252, 58, 86, 0.05);--mantine-color-secondary-text: var(--mantine-color-secondary-4);--mantine-color-secondary-filled: var(--mantine-color-secondary-8);--mantine-color-secondary-filled-hover: var(--mantine-color-secondary-9);--mantine-color-secondary-light: rgba(46, 122, 246, 0.15);--mantine-color-secondary-light-hover: rgba(46, 122, 246, 0.2);--mantine-color-secondary-light-color: var(--mantine-color-secondary-3);--mantine-color-secondary-outline: var(--mantine-color-secondary-4);--mantine-color-secondary-outline-hover: rgba(75, 146, 245, 0.05);}:root[data-mantine-color-scheme="light"]{--mantine-color-anchor: var(--mantine-color-primary-6);--mantine-color-primary-text: var(--mantine-color-primary-filled);--mantine-color-primary-filled: var(--mantine-color-primary-6);--mantine-color-primary-filled-hover: var(--mantine-color-primary-7);--mantine-color-primary-light: rgba(252, 17, 49, 0.1);--mantine-color-primary-light-hover: rgba(252, 17, 49, 0.12);--mantine-color-primary-light-color: var(--mantine-color-primary-6);--mantine-color-primary-outline: var(--mantine-color-primary-6);--mantine-color-primary-outline-hover: rgba(252, 17, 49, 0.05);--mantine-color-secondary-text: var(--mantine-color-secondary-filled);--mantine-color-secondary-filled: var(--mantine-color-secondary-6);--mantine-color-secondary-filled-hover: var(--mantine-color-secondary-7);--mantine-color-secondary-light: rgba(46, 122, 246, 0.1);--mantine-color-secondary-light-hover: rgba(46, 122, 246, 0.12);--mantine-color-secondary-light-color: var(--mantine-color-secondary-6);--mantine-color-secondary-outline: var(--mantine-color-secondary-6);--mantine-color-secondary-outline-hover: rgba(46, 122, 246, 0.05);}
+  </style>
+  <style
+    data-mantine-styles="classes"
+  >
+    @media (max-width: 35.99375em) {.mantine-visible-from-xs {display: none !important;}}@media (min-width: 36em) {.mantine-hidden-from-xs {display: none !important;}}@media (max-width: 47.99375em) {.mantine-visible-from-sm {display: none !important;}}@media (min-width: 48em) {.mantine-hidden-from-sm {display: none !important;}}@media (max-width: 61.99375em) {.mantine-visible-from-md {display: none !important;}}@media (min-width: 62em) {.mantine-hidden-from-md {display: none !important;}}@media (max-width: 74.99375em) {.mantine-visible-from-lg {display: none !important;}}@media (min-width: 75em) {.mantine-hidden-from-lg {display: none !important;}}@media (max-width: 87.99375em) {.mantine-visible-from-xl {display: none !important;}}@media (min-width: 88em) {.mantine-hidden-from-xl {display: none !important;}}
+  </style>
+  <div
+    class=""
+    style="z-index: 50; position: absolute; top: 0px; right: 0px; display: flex; flex-direction: column; align-items: flex-end; padding: 8px;"
+  >
+    <div
+      class="m_8bffd616 mantine-Flex-root __m__-r21"
+      style="flex-direction: column;"
+    >
+      <div
+        class="m_6d731127 mantine-Stack-root"
+        style="--stack-gap: var(--mantine-spacing-md); --stack-align: end; --stack-justify: flex-start; flex-grow: 1;"
+      >
+        <button
+          class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+          data-size="compact-lg"
+          data-variant="white"
+          style="--button-height: var(--button-height-compact-lg); --button-padding-x: var(--button-padding-x-compact-lg); --button-fz: var(--mantine-font-size-lg); --button-bg: var(--mantine-color-white); --button-hover: rgba(252, 252, 252, 1); --button-color: var(--mantine-color-primary-filled); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+          type="button"
+        >
+          <span
+            class="m_80f1301b mantine-Button-inner"
+          >
+            <span
+              class="m_811560b9 mantine-Button-label"
+            >
+              <svg
+                class="lucide lucide-locate-fixed"
+                fill="none"
+                height="20"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <line
+                  x1="2"
+                  x2="5"
+                  y1="12"
+                  y2="12"
+                />
+                <line
+                  x1="19"
+                  x2="22"
+                  y1="12"
+                  y2="12"
+                />
+                <line
+                  x1="12"
+                  x2="12"
+                  y1="2"
+                  y2="5"
+                />
+                <line
+                  x1="12"
+                  x2="12"
+                  y1="19"
+                  y2="22"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="7"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="3"
+                />
+              </svg>
+            </span>
+          </span>
+        </button>
+        <button
+          class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+          data-size="compact-lg"
+          data-variant="white"
+          style="--button-height: var(--button-height-compact-lg); --button-padding-x: var(--button-padding-x-compact-lg); --button-fz: var(--mantine-font-size-lg); --button-bg: var(--mantine-color-white); --button-hover: rgba(252, 252, 252, 1); --button-color: var(--mantine-color-red-filled); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+          type="button"
+        >
+          <span
+            class="m_80f1301b mantine-Button-inner"
+          >
+            <span
+              class="m_811560b9 mantine-Button-label"
+            >
+              <svg
+                class="lucide lucide-x"
+                fill="none"
+                height="20"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18 6 6 18"
+                />
+                <path
+                  d="m6 6 12 12"
+                />
+              </svg>
+            </span>
+          </span>
+        </button>
+      </div>
+      <div
+        class="m_4081bf90 mantine-Group-root"
+        style="--group-gap: var(--mantine-spacing-md); --group-align: end; --group-justify: end; --group-wrap: wrap;"
+      >
+        <div
+          class="m_347db0ec mantine-Badge-root"
+          style="--badge-bg: var(--mantine-color-blue-filled); --badge-color: var(--mantine-color-white); --badge-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+        >
+          <span
+            class="m_5add502a mantine-Badge-label"
+          >
+            Customer
+          </span>
+        </div>
+        <div
+          class="m_347db0ec mantine-Badge-root"
+          data-variant="filled"
+          style="--badge-bg: var(--mantine-color-teal-filled); --badge-color: var(--mantine-color-white); --badge-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+        >
+          <span
+            class="m_5add502a mantine-Badge-label"
+          >
+            John Doe
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ActionButtons > calls onRecenter when recenter button is clicked 1`] = `
+<div>
+  <style
+    data-mantine-styles="true"
+  >
+    :root{--mantine-font-family: 'Poppins', system-ui, sans-serif;--mantine-font-family-headings: 'Telkomsel Batik Sans', system-ui, sans-serif;--mantine-radius-default: calc(0.5rem * var(--mantine-scale));--mantine-primary-color-filled: var(--mantine-color-primary-filled);--mantine-primary-color-filled-hover: var(--mantine-color-primary-filled-hover);--mantine-primary-color-light: var(--mantine-color-primary-light);--mantine-primary-color-light-hover: var(--mantine-color-primary-light-hover);--mantine-primary-color-light-color: var(--mantine-color-primary-light-color);--mantine-primary-color-0: var(--mantine-color-primary-0);--mantine-primary-color-1: var(--mantine-color-primary-1);--mantine-primary-color-2: var(--mantine-color-primary-2);--mantine-primary-color-3: var(--mantine-color-primary-3);--mantine-primary-color-4: var(--mantine-color-primary-4);--mantine-primary-color-5: var(--mantine-color-primary-5);--mantine-primary-color-6: var(--mantine-color-primary-6);--mantine-primary-color-7: var(--mantine-color-primary-7);--mantine-primary-color-8: var(--mantine-color-primary-8);--mantine-primary-color-9: var(--mantine-color-primary-9);--mantine-color-primary-0: #ffe8ed;--mantine-color-primary-1: #ffcfd7;--mantine-color-primary-2: #fe9cab;--mantine-color-primary-3: #fd677d;--mantine-color-primary-4: #fc3a56;--mantine-color-primary-5: #fb203e;--mantine-color-primary-6: #fc1131;--mantine-color-primary-7: #e10224;--mantine-color-primary-8: #c9001f;--mantine-color-primary-9: #b00018;--mantine-color-secondary-0: #ebf4ff;--mantine-color-secondary-1: #d4e5fa;--mantine-color-secondary-2: #a3c9f7;--mantine-color-secondary-3: #71abf6;--mantine-color-secondary-4: #4b92f5;--mantine-color-secondary-5: #3782f5;--mantine-color-secondary-6: #2e7af6;--mantine-color-secondary-7: #2368dc;--mantine-color-secondary-8: #195dc5;--mantine-color-secondary-9: #0050ad;}:root[data-mantine-color-scheme="dark"]{--mantine-color-anchor: var(--mantine-color-primary-4);--mantine-color-primary-text: var(--mantine-color-primary-4);--mantine-color-primary-filled: var(--mantine-color-primary-8);--mantine-color-primary-filled-hover: var(--mantine-color-primary-9);--mantine-color-primary-light: rgba(252, 17, 49, 0.15);--mantine-color-primary-light-hover: rgba(252, 17, 49, 0.2);--mantine-color-primary-light-color: var(--mantine-color-primary-3);--mantine-color-primary-outline: var(--mantine-color-primary-4);--mantine-color-primary-outline-hover: rgba(252, 58, 86, 0.05);--mantine-color-secondary-text: var(--mantine-color-secondary-4);--mantine-color-secondary-filled: var(--mantine-color-secondary-8);--mantine-color-secondary-filled-hover: var(--mantine-color-secondary-9);--mantine-color-secondary-light: rgba(46, 122, 246, 0.15);--mantine-color-secondary-light-hover: rgba(46, 122, 246, 0.2);--mantine-color-secondary-light-color: var(--mantine-color-secondary-3);--mantine-color-secondary-outline: var(--mantine-color-secondary-4);--mantine-color-secondary-outline-hover: rgba(75, 146, 245, 0.05);}:root[data-mantine-color-scheme="light"]{--mantine-color-anchor: var(--mantine-color-primary-6);--mantine-color-primary-text: var(--mantine-color-primary-filled);--mantine-color-primary-filled: var(--mantine-color-primary-6);--mantine-color-primary-filled-hover: var(--mantine-color-primary-7);--mantine-color-primary-light: rgba(252, 17, 49, 0.1);--mantine-color-primary-light-hover: rgba(252, 17, 49, 0.12);--mantine-color-primary-light-color: var(--mantine-color-primary-6);--mantine-color-primary-outline: var(--mantine-color-primary-6);--mantine-color-primary-outline-hover: rgba(252, 17, 49, 0.05);--mantine-color-secondary-text: var(--mantine-color-secondary-filled);--mantine-color-secondary-filled: var(--mantine-color-secondary-6);--mantine-color-secondary-filled-hover: var(--mantine-color-secondary-7);--mantine-color-secondary-light: rgba(46, 122, 246, 0.1);--mantine-color-secondary-light-hover: rgba(46, 122, 246, 0.12);--mantine-color-secondary-light-color: var(--mantine-color-secondary-6);--mantine-color-secondary-outline: var(--mantine-color-secondary-6);--mantine-color-secondary-outline-hover: rgba(46, 122, 246, 0.05);}
+  </style>
+  <style
+    data-mantine-styles="classes"
+  >
+    @media (max-width: 35.99375em) {.mantine-visible-from-xs {display: none !important;}}@media (min-width: 36em) {.mantine-hidden-from-xs {display: none !important;}}@media (max-width: 47.99375em) {.mantine-visible-from-sm {display: none !important;}}@media (min-width: 48em) {.mantine-hidden-from-sm {display: none !important;}}@media (max-width: 61.99375em) {.mantine-visible-from-md {display: none !important;}}@media (min-width: 62em) {.mantine-hidden-from-md {display: none !important;}}@media (max-width: 74.99375em) {.mantine-visible-from-lg {display: none !important;}}@media (min-width: 75em) {.mantine-hidden-from-lg {display: none !important;}}@media (max-width: 87.99375em) {.mantine-visible-from-xl {display: none !important;}}@media (min-width: 88em) {.mantine-hidden-from-xl {display: none !important;}}
+  </style>
+  <div
+    class=""
+    style="z-index: 50; position: absolute; top: 0px; right: 0px; display: flex; flex-direction: column; align-items: flex-end; padding: 8px;"
+  >
+    <div
+      class="m_8bffd616 mantine-Flex-root __m__-r1e"
+      style="flex-direction: column;"
+    >
+      <div
+        class="m_6d731127 mantine-Stack-root"
+        style="--stack-gap: var(--mantine-spacing-md); --stack-align: end; --stack-justify: flex-start; flex-grow: 1;"
+      >
+        <button
+          class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+          data-size="compact-lg"
+          data-variant="white"
+          style="--button-height: var(--button-height-compact-lg); --button-padding-x: var(--button-padding-x-compact-lg); --button-fz: var(--mantine-font-size-lg); --button-bg: var(--mantine-color-white); --button-hover: rgba(252, 252, 252, 1); --button-color: var(--mantine-color-primary-filled); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+          type="button"
+        >
+          <span
+            class="m_80f1301b mantine-Button-inner"
+          >
+            <span
+              class="m_811560b9 mantine-Button-label"
+            >
+              <svg
+                class="lucide lucide-locate-fixed"
+                fill="none"
+                height="20"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <line
+                  x1="2"
+                  x2="5"
+                  y1="12"
+                  y2="12"
+                />
+                <line
+                  x1="19"
+                  x2="22"
+                  y1="12"
+                  y2="12"
+                />
+                <line
+                  x1="12"
+                  x2="12"
+                  y1="2"
+                  y2="5"
+                />
+                <line
+                  x1="12"
+                  x2="12"
+                  y1="19"
+                  y2="22"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="7"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="3"
+                />
+              </svg>
+            </span>
+          </span>
+        </button>
+        <button
+          class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+          data-size="compact-lg"
+          data-variant="white"
+          style="--button-height: var(--button-height-compact-lg); --button-padding-x: var(--button-padding-x-compact-lg); --button-fz: var(--mantine-font-size-lg); --button-bg: var(--mantine-color-white); --button-hover: rgba(252, 252, 252, 1); --button-color: var(--mantine-color-red-filled); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+          type="button"
+        >
+          <span
+            class="m_80f1301b mantine-Button-inner"
+          >
+            <span
+              class="m_811560b9 mantine-Button-label"
+            >
+              <svg
+                class="lucide lucide-x"
+                fill="none"
+                height="20"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18 6 6 18"
+                />
+                <path
+                  d="m6 6 12 12"
+                />
+              </svg>
+            </span>
+          </span>
+        </button>
+      </div>
+      <div
+        class="m_4081bf90 mantine-Group-root"
+        style="--group-gap: var(--mantine-spacing-md); --group-align: end; --group-justify: end; --group-wrap: wrap;"
+      >
+        <div
+          class="m_347db0ec mantine-Badge-root"
+          style="--badge-bg: var(--mantine-color-blue-filled); --badge-color: var(--mantine-color-white); --badge-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+        >
+          <span
+            class="m_5add502a mantine-Badge-label"
+          >
+            Customer
+          </span>
+        </div>
+        <div
+          class="m_347db0ec mantine-Badge-root"
+          data-variant="filled"
+          style="--badge-bg: var(--mantine-color-teal-filled); --badge-color: var(--mantine-color-white); --badge-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+        >
+          <span
+            class="m_5add502a mantine-Badge-label"
+          >
+            John Doe
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ActionButtons > renders notifications when provided and role is seller 1`] = `
+<div>
+  <style
+    data-mantine-styles="true"
+  >
+    :root{--mantine-font-family: 'Poppins', system-ui, sans-serif;--mantine-font-family-headings: 'Telkomsel Batik Sans', system-ui, sans-serif;--mantine-radius-default: calc(0.5rem * var(--mantine-scale));--mantine-primary-color-filled: var(--mantine-color-primary-filled);--mantine-primary-color-filled-hover: var(--mantine-color-primary-filled-hover);--mantine-primary-color-light: var(--mantine-color-primary-light);--mantine-primary-color-light-hover: var(--mantine-color-primary-light-hover);--mantine-primary-color-light-color: var(--mantine-color-primary-light-color);--mantine-primary-color-0: var(--mantine-color-primary-0);--mantine-primary-color-1: var(--mantine-color-primary-1);--mantine-primary-color-2: var(--mantine-color-primary-2);--mantine-primary-color-3: var(--mantine-color-primary-3);--mantine-primary-color-4: var(--mantine-color-primary-4);--mantine-primary-color-5: var(--mantine-color-primary-5);--mantine-primary-color-6: var(--mantine-color-primary-6);--mantine-primary-color-7: var(--mantine-color-primary-7);--mantine-primary-color-8: var(--mantine-color-primary-8);--mantine-primary-color-9: var(--mantine-color-primary-9);--mantine-color-primary-0: #ffe8ed;--mantine-color-primary-1: #ffcfd7;--mantine-color-primary-2: #fe9cab;--mantine-color-primary-3: #fd677d;--mantine-color-primary-4: #fc3a56;--mantine-color-primary-5: #fb203e;--mantine-color-primary-6: #fc1131;--mantine-color-primary-7: #e10224;--mantine-color-primary-8: #c9001f;--mantine-color-primary-9: #b00018;--mantine-color-secondary-0: #ebf4ff;--mantine-color-secondary-1: #d4e5fa;--mantine-color-secondary-2: #a3c9f7;--mantine-color-secondary-3: #71abf6;--mantine-color-secondary-4: #4b92f5;--mantine-color-secondary-5: #3782f5;--mantine-color-secondary-6: #2e7af6;--mantine-color-secondary-7: #2368dc;--mantine-color-secondary-8: #195dc5;--mantine-color-secondary-9: #0050ad;}:root[data-mantine-color-scheme="dark"]{--mantine-color-anchor: var(--mantine-color-primary-4);--mantine-color-primary-text: var(--mantine-color-primary-4);--mantine-color-primary-filled: var(--mantine-color-primary-8);--mantine-color-primary-filled-hover: var(--mantine-color-primary-9);--mantine-color-primary-light: rgba(252, 17, 49, 0.15);--mantine-color-primary-light-hover: rgba(252, 17, 49, 0.2);--mantine-color-primary-light-color: var(--mantine-color-primary-3);--mantine-color-primary-outline: var(--mantine-color-primary-4);--mantine-color-primary-outline-hover: rgba(252, 58, 86, 0.05);--mantine-color-secondary-text: var(--mantine-color-secondary-4);--mantine-color-secondary-filled: var(--mantine-color-secondary-8);--mantine-color-secondary-filled-hover: var(--mantine-color-secondary-9);--mantine-color-secondary-light: rgba(46, 122, 246, 0.15);--mantine-color-secondary-light-hover: rgba(46, 122, 246, 0.2);--mantine-color-secondary-light-color: var(--mantine-color-secondary-3);--mantine-color-secondary-outline: var(--mantine-color-secondary-4);--mantine-color-secondary-outline-hover: rgba(75, 146, 245, 0.05);}:root[data-mantine-color-scheme="light"]{--mantine-color-anchor: var(--mantine-color-primary-6);--mantine-color-primary-text: var(--mantine-color-primary-filled);--mantine-color-primary-filled: var(--mantine-color-primary-6);--mantine-color-primary-filled-hover: var(--mantine-color-primary-7);--mantine-color-primary-light: rgba(252, 17, 49, 0.1);--mantine-color-primary-light-hover: rgba(252, 17, 49, 0.12);--mantine-color-primary-light-color: var(--mantine-color-primary-6);--mantine-color-primary-outline: var(--mantine-color-primary-6);--mantine-color-primary-outline-hover: rgba(252, 17, 49, 0.05);--mantine-color-secondary-text: var(--mantine-color-secondary-filled);--mantine-color-secondary-filled: var(--mantine-color-secondary-6);--mantine-color-secondary-filled-hover: var(--mantine-color-secondary-7);--mantine-color-secondary-light: rgba(46, 122, 246, 0.1);--mantine-color-secondary-light-hover: rgba(46, 122, 246, 0.12);--mantine-color-secondary-light-color: var(--mantine-color-secondary-6);--mantine-color-secondary-outline: var(--mantine-color-secondary-6);--mantine-color-secondary-outline-hover: rgba(46, 122, 246, 0.05);}
+  </style>
+  <style
+    data-mantine-styles="classes"
+  >
+    @media (max-width: 35.99375em) {.mantine-visible-from-xs {display: none !important;}}@media (min-width: 36em) {.mantine-hidden-from-xs {display: none !important;}}@media (max-width: 47.99375em) {.mantine-visible-from-sm {display: none !important;}}@media (min-width: 48em) {.mantine-hidden-from-sm {display: none !important;}}@media (max-width: 61.99375em) {.mantine-visible-from-md {display: none !important;}}@media (min-width: 62em) {.mantine-hidden-from-md {display: none !important;}}@media (max-width: 74.99375em) {.mantine-visible-from-lg {display: none !important;}}@media (min-width: 75em) {.mantine-hidden-from-lg {display: none !important;}}@media (max-width: 87.99375em) {.mantine-visible-from-xl {display: none !important;}}@media (min-width: 88em) {.mantine-hidden-from-xl {display: none !important;}}
+  </style>
+  <div
+    class=""
+    style="z-index: 50; position: absolute; top: 0px; right: 0px; display: flex; flex-direction: column; align-items: flex-end; padding: 8px;"
+  >
+    <div
+      class="m_8bffd616 mantine-Flex-root __m__-r2k"
+      style="flex-direction: column;"
+    >
+      <div
+        class="m_6d731127 mantine-Stack-root"
+        style="--stack-gap: var(--mantine-spacing-md); --stack-align: end; --stack-justify: flex-start; flex-grow: 1;"
+      >
+        <button
+          class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+          data-size="compact-lg"
+          data-variant="white"
+          style="--button-height: var(--button-height-compact-lg); --button-padding-x: var(--button-padding-x-compact-lg); --button-fz: var(--mantine-font-size-lg); --button-bg: var(--mantine-color-white); --button-hover: rgba(252, 252, 252, 1); --button-color: var(--mantine-color-primary-filled); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+          type="button"
+        >
+          <span
+            class="m_80f1301b mantine-Button-inner"
+          >
+            <span
+              class="m_811560b9 mantine-Button-label"
+            >
+              <svg
+                class="lucide lucide-locate-fixed"
+                fill="none"
+                height="20"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <line
+                  x1="2"
+                  x2="5"
+                  y1="12"
+                  y2="12"
+                />
+                <line
+                  x1="19"
+                  x2="22"
+                  y1="12"
+                  y2="12"
+                />
+                <line
+                  x1="12"
+                  x2="12"
+                  y1="2"
+                  y2="5"
+                />
+                <line
+                  x1="12"
+                  x2="12"
+                  y1="19"
+                  y2="22"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="7"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="3"
+                />
+              </svg>
+            </span>
+          </span>
+        </button>
+        <button
+          class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+          data-size="compact-lg"
+          data-variant="white"
+          style="--button-height: var(--button-height-compact-lg); --button-padding-x: var(--button-padding-x-compact-lg); --button-fz: var(--mantine-font-size-lg); --button-bg: var(--mantine-color-white); --button-hover: rgba(252, 252, 252, 1); --button-color: var(--mantine-color-red-filled); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+          type="button"
+        >
+          <span
+            class="m_80f1301b mantine-Button-inner"
+          >
+            <span
+              class="m_811560b9 mantine-Button-label"
+            >
+              <svg
+                class="lucide lucide-x"
+                fill="none"
+                height="20"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18 6 6 18"
+                />
+                <path
+                  d="m6 6 12 12"
+                />
+              </svg>
+            </span>
+          </span>
+        </button>
+        <div
+          aria-controls=""
+          aria-expanded="false"
+          aria-haspopup="dialog"
+          class="m_e5262200 mantine-Indicator-root"
+          id=""
+          style="--indicator-size: calc(0.75rem * var(--mantine-scale)); --indicator-top: 0rem; --indicator-right: 0rem; --indicator-translate-x: 50%; --indicator-translate-y: -50%;"
+        >
+          <div
+            class="m_760d1fb1 mantine-Indicator-indicator"
+            data-processing="true"
+          />
+          <button
+            class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+            data-size="compact-lg"
+            data-testid="notification-center"
+            data-variant="white"
+            style="--button-height: var(--button-height-compact-lg); --button-padding-x: var(--button-padding-x-compact-lg); --button-fz: var(--mantine-font-size-lg); --button-bg: var(--mantine-color-white); --button-hover: rgba(252, 252, 252, 1); --button-color: var(--mantine-color-primary-filled); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+            type="button"
+          >
+            <span
+              class="m_80f1301b mantine-Button-inner"
+            >
+              <span
+                class="m_811560b9 mantine-Button-label"
+              >
+                <svg
+                  class="lucide lucide-bell"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"
+                  />
+                  <path
+                    d="M10.3 21a1.94 1.94 0 0 0 3.4 0"
+                  />
+                </svg>
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        class="m_4081bf90 mantine-Group-root"
+        style="--group-gap: var(--mantine-spacing-md); --group-align: end; --group-justify: end; --group-wrap: wrap;"
+      >
+        <div
+          class="m_347db0ec mantine-Badge-root"
+          style="--badge-bg: var(--mantine-color-green-filled); --badge-color: var(--mantine-color-white); --badge-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+        >
+          <span
+            class="m_5add502a mantine-Badge-label"
+          >
+            Tukang Bakso
+          </span>
+        </div>
+        <div
+          class="m_347db0ec mantine-Badge-root"
+          data-variant="filled"
+          style="--badge-bg: var(--mantine-color-teal-filled); --badge-color: var(--mantine-color-white); --badge-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
+        >
+          <span
+            class="m_5add502a mantine-Badge-label"
+          >
+            John Doe
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

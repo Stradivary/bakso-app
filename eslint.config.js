@@ -25,6 +25,7 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
+      "@typescript-eslint/no-explicit-any": "warn",
       "sonarjs/no-intrusive-permissions": "off",
       "sonarjs/no-nested-functions": "warn",
       "sonarjs/pseudo-random": "off",
