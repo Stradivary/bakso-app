@@ -13,7 +13,7 @@ import { Notification, useNotifications } from "./useNotification";
 export const useTracker = (
   userId: string,
   userRole: "seller" | "buyer",
-  initialLocation: LatLng,
+  initialLocation: LatLng | null,
   userName: string,
 ) => {
   const [nearbyUsers, setNearbyUsers] = useState<User[]>([]);
@@ -33,6 +33,7 @@ export const useTracker = (
 
   const handlePresenceSync = useCallback(
     (users: User[]) => {
+      if (!initialLocation) return users;
       const filteredUsers = filterNearbyUsers(
         users,
         initialLocation,
@@ -41,7 +42,7 @@ export const useTracker = (
       );
       setNearbyUsers(filteredUsers);
     },
-    [initialLocation, userRole, userId],
+    [userRole, userId, initialLocation],
   );
 
   const handlePing = useCallback(
@@ -67,9 +68,9 @@ export const useTracker = (
   );
 
   useEffect(() => {
+    if (!initialLocation) return;
     const region = calculateRegion(initialLocation.lat, initialLocation.lng);
     regionRef.current = region;
-
     initSupabaseChannel(
       initialLocation,
       region,

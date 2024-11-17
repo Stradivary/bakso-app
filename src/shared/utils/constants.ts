@@ -5,6 +5,10 @@ export const SEARCH_PARAMS = {
   activeWithinMinutes: 15,
 };
 
+export const SELLER_RADIUS = 3000; // 3km in meters
+export const BUYER_RADIUS = 3000; // 3km in meters
+export const PRESENCE_UPDATE_BUFFER = 1000; // 1 seconds
+
 export const LOCATION_UPDATE_INTERVAL = 10 * 1000; // 30 seconds
 
 export const BASE_ROUTING_URL =

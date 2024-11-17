@@ -1,10 +1,7 @@
 import { LatLng } from "leaflet";
 import { supabase } from "../services/supabaseService";
 import { RealtimeChannel } from "@supabase/supabase-js";
-
-export const SELLER_RADIUS = 3000; // 3km in meters
-export const BUYER_RADIUS = 3000; // 3km in meters
-export const PRESENCE_UPDATE_BUFFER = 1000; // 5 seconds
+import { BUYER_RADIUS, SELLER_RADIUS } from "../utils/constants";
 
 export interface User {
   id: string;
@@ -23,6 +20,9 @@ export const calculateRegion = (lat: number, lng: number): string =>
   );
 
 export const calculateDistance = (point1: LatLng, point2: LatLng): number => {
+  if (!point1 || !point2) {
+    return Number.MAX_SAFE_INTEGER;
+  }
   const R = 6371e3; // Earth's radius in meters
   const φ1 = (point1.lat * Math.PI) / 180;
   const φ2 = (point2.lat * Math.PI) / 180;
@@ -101,14 +101,14 @@ export const initSupabaseChannel = async (
     handlers.handlePresenceSync(users);
   });
 
-  channel.on("broadcast", { event: "ping" }, (payload) => {
-    const { seller_id, buyer_name, buyer_id } = payload.payload;
-    if (seller_id === user.userId) handlers.handlePing(buyer_id, buyer_name);
-  });
-
   channel.on("broadcast", { event: "location" }, (payload) => {
     const { user_id, location } = payload.payload;
     handlers.handleLocationUpdate(user_id, location);
+  });
+
+  channel.on("broadcast", { event: "ping" }, (payload) => {
+    const { seller_id, buyer_name, buyer_id } = payload.payload;
+    if (seller_id === user.userId) handlers.handlePing(buyer_id, buyer_name);
   });
 
   channel.subscribe((status) => {

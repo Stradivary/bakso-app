@@ -1,23 +1,36 @@
+import { Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import L from "leaflet";
-import React, { useMemo } from "react";
+import { modals } from "@mantine/modals";
+import { notifications as notify } from "@mantine/notifications";
+import L, { LatLng } from "leaflet";
+import React, { useCallback, useMemo, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useLocation } from "../hooks/useLocation";
 import { useTracker } from "../hooks/useTracker";
 import { User } from "../models/BroadcastMapModel";
 import { calculateDistance } from "../services/trackerServices";
-import { Stack, Text } from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { notifications as notify } from "@mantine/notifications";
 
 export const useBroadcastMapViewModel = () => {
   const { session, logout } = useAuth();
   const userId = session?.user?.id as string;
+  const userName = session?.user?.user_metadata?.name;
   const userRole = sessionStorage.getItem("role") as "seller" | "buyer";
-
   const [exitModalOpened, { close: exitModalClose, open: openModal }] =
     useDisclosure();
+  const [lastValidLatLng, setLastValidLatLng] = useState<LatLng | null>(null);
+
   const { location } = useLocation();
+
+  const fixedLocation = useMemo(() => {
+    if (!location?.latitude || !location?.longitude) {
+      return lastValidLatLng;
+    }
+    const LatLng = new L.LatLng(location?.latitude, location?.longitude);
+    setLastValidLatLng(LatLng);
+    return LatLng;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location?.latitude, location?.longitude]);
+
   const {
     nearbyUsers,
     handleLocationUpdate,
@@ -27,9 +40,10 @@ export const useBroadcastMapViewModel = () => {
   } = useTracker(
     userId,
     userRole,
-    new L.LatLng(location?.latitude ?? 0, location?.longitude ?? 0),
+    fixedLocation,
     session?.user?.user_metadata?.name ?? "",
   );
+
   const [mapRef, setMapRef] = React.useState<L.Map | null>(null);
 
   const handleRecenter = React.useCallback(() => {
@@ -53,12 +67,13 @@ export const useBroadcastMapViewModel = () => {
     exitModalClose();
   }, [deactivateUser, exitModalClose, logout]);
 
-  const handleMarkerClick = (
-    nearbyUser: User,
-    location: { latitude: number; longitude: number },
-    handlePing: (buyerId: string, buyerName: string) => void,
-  ): L.LeafletMouseEventHandlerFn | undefined => {
-    return () => {
+  const handleMarkerClick = useCallback(
+    (
+      nearbyUser: User,
+      location: { latitude: number; longitude: number },
+      handlePing: (buyerId: string, buyerName: string) => void,
+    ) => {
+      console.log("hehe");
       if (nearbyUser.role === "seller") {
         const buyerLocation = new L.LatLng(
           location?.latitude ?? 0,
@@ -100,8 +115,9 @@ export const useBroadcastMapViewModel = () => {
           },
         });
       }
-    };
-  };
+    },
+    [],
+  );
 
   const centerLocation = useMemo(
     () => new L.LatLng(location?.latitude || 0, location?.longitude || 0),
@@ -110,7 +126,7 @@ export const useBroadcastMapViewModel = () => {
 
   return {
     userId,
-    userName: session?.user?.user_metadata?.name,
+    userName,
     session,
     userRole,
     location,

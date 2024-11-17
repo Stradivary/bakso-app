@@ -1,5 +1,5 @@
 import { Stack, Text } from "@mantine/core";
-import { LatLng, LeafletMouseEventHandlerFn, Point } from "leaflet";
+import { LatLng, Point } from "leaflet";
 import { Marker, Tooltip } from "react-leaflet";
 import { useLocationUpdater } from "../hooks/useLocationUpdater";
 import { User } from "../models/BroadcastMapModel";
@@ -25,7 +25,7 @@ export function TargetMark({
   nearbyUser,
 }: Readonly<{
   nearbyUser: User;
-  handleClick: () => L.LeafletMouseEventHandlerFn | undefined;
+  handleClick: (nearbyUser: User) => void;
 }>) {
   return (
     <Marker
@@ -37,7 +37,7 @@ export function TargetMark({
       }
       icon={nearbyUser.role === "seller" ? iconBakso : iconPerson}
       eventHandlers={{
-        click: handleClick,
+        click: () => handleClick(nearbyUser),
       }}
     >
       <Tooltip>
@@ -76,15 +76,13 @@ export function NearbyUsersMarker({
   handleMarkerClick,
 }: {
   nearbyUsers: User[];
-  handleMarkerClick: (
-    nearbyUser: User,
-  ) => LeafletMouseEventHandlerFn | undefined;
+  handleMarkerClick: (nearbyUser: User) => void;
 }): React.ReactNode {
   return nearbyUsers.map((nearbyUser, idx) => (
     <TargetMark
       key={`${nearbyUser.user_id} ${idx} ${nearbyUser.role}`}
       nearbyUser={nearbyUser}
-      handleClick={() => handleMarkerClick(nearbyUser)}
+      handleClick={handleMarkerClick}
     />
   ));
 }

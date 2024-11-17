@@ -52,7 +52,7 @@ export const useLoginViewModel = () => {
   };
 
   const handleOnChange = (
-    onChange: (...event: any[]) => void,
+    onChange: (...event: unknown[]) => void,
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     onChange(e);

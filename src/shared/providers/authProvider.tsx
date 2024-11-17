@@ -80,11 +80,11 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(
       async (event: string, newSession: Session | null) => {
-        if (event === "SIGNED_IN" && session) {
-          if (newSession?.user.id === session.user.id) setSession(newSession);
+        if (event === "SIGNED_IN") {
+          if (newSession?.user.id === session?.user.id) setSession(newSession);
         }
-        if (event === "SIGNED_OUT" && session) {
-          if (newSession?.user.id === session.user.id) {
+        if (event === "SIGNED_OUT") {
+          if (newSession?.user.id === session?.user.id) {
             await supabase.auth.signOut({
               scope: "local",
             });
@@ -98,7 +98,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [session?.user.id]);
 
   const isAuthenticated = !!session?.user;
 
