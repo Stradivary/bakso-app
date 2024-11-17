@@ -30,9 +30,30 @@ export interface AuthContextType {
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<UserDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [initialized, setInitialized] = useState(false);
+
+  // Fetch user profile data
+  const fetchUserProfile = useCallback(async (userId: string) => {
+    try {
+      const { data, error: fetchError } = await supabase
+        .from("user_profiles")
+        .select("*")
+        .eq("id", userId)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      if (data) {
+        setUser(data);
+      }
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+      setError("Failed to fetch user profile");
+    }
+  }, []);
 
   // Initialize auth state
   useEffect(() => {
@@ -45,13 +66,13 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
         } = await supabase.auth.getSession();
 
         if (sessionError) {
-          console.error("failed to set session", existingSession);
+          console.error("failed to set session, log in again");
           throw sessionError;
         }
 
         if (existingSession) {
-          console.log("existingSession -> set to", existingSession);
           setSession(existingSession);
+          await fetchUserProfile(existingSession.user.id);
         }
       } catch (error) {
         console.error("Error initializing auth:", error);
@@ -63,7 +84,42 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     };
 
     initializeAuth();
-  }, []);
+  }, [fetchUserProfile]);
+
+  // Storage change observer
+  useEffect(() => {
+    if (!initialized) return;
+
+    const handleStorageChange = (event: StorageEvent) => {
+      // Check if the changed key is the Supabase session
+      if (event.key === "sb-session") {
+        const currentSession = event.newValue;
+        const previousSession = event.oldValue;
+
+        // If session was changed externally
+        if (currentSession !== previousSession) {
+          console.warn("Session storage change detected");
+
+          // If session was removed or tampered
+          if (
+            !currentSession ||
+            (previousSession && currentSession !== previousSession)
+          ) {
+            console.warn("Possible session tampering detected");
+            logout();
+            setError("Session security violation detected");
+          }
+        }
+      }
+    };
+
+    // Add storage event listener
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, [initialized]);
 
   const login = useCallback(
     async (name: string, role: string, latitude: number, longitude: number) => {
@@ -78,6 +134,9 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
         if (signInError) throw signInError;
 
         setSession(newSession);
+        if (newSession) {
+          await fetchUserProfile(newSession.user.id);
+        }
         setError(null);
       } catch (error) {
         console.error("Error during login:", error);
@@ -86,7 +145,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
         setIsLoading(false);
       }
     },
-    [],
+    [fetchUserProfile],
   );
 
   const logout = useCallback(async () => {
@@ -98,6 +157,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       if (signOutError) throw signOutError;
 
       setSession(null);
+      setUser(null);
       window.location.href = "/login";
     } catch (error) {
       console.error("Error during logout:", error);
@@ -120,9 +180,13 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
         case "TOKEN_REFRESHED":
         case "USER_UPDATED":
           setSession(newSession);
+          if (newSession) {
+            await fetchUserProfile(newSession.user.id);
+          }
           break;
         case "SIGNED_OUT":
           setSession(null);
+          setUser(null);
           break;
       }
     });
@@ -130,21 +194,21 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [initialized]);
+  }, [initialized, fetchUserProfile]);
 
   const isAuthenticated = !!session?.user;
 
   const values = useMemo(
     () => ({
       session,
-      user: null,
+      user,
       isLoading,
       error,
       login,
       logout,
       isAuthenticated,
     }),
-    [session, isLoading, error, login, logout, isAuthenticated],
+    [session, user, isLoading, error, login, logout, isAuthenticated],
   );
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
