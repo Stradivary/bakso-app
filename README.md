@@ -1,15 +1,14 @@
-# BaksoApp 🍜
+# AbangBakso 🍜
 
-BaksoApp is a real-time location-based application connecting Bakso sellers with customers in Indonesia. The app allows customers to find nearby Bakso sellers and enables sellers to see potential customers in their vicinity.
+[![Build, Test, and Deploy](https://github.com/Stradivary/bakso-app/actions/workflows/build.yml/badge.svg)](https://github.com/Stradivary/bakso-app/actions/workflows/build.yml)
+
+AbangBakso is a real-time location-based application connecting Bakso sellers with customers in Indonesia. The app allows customers to find nearby Bakso sellers and enables sellers to see potential customers in their vicinity.
 
 ## Project Structure 📁
 
 ```
 bakso-app/
-├── frontend/           # Vite React application
-├── backend/            # Self-hosted Supabase
-├── docker-compose.yml  # Main orchestration file
-├── .env.example        # Environment variables template 
+├── src/           # Vite React application 
 ├── LICENSE             
 └── README.md
 ```
@@ -70,10 +69,8 @@ bakso-app/
 3. **Start the application**
    ```bash
    # Start all services
-   docker compose up -d
-
-   # Or use make command if available
-   make up
+   npm run dev
+   
    ```
 
    The following services will be available:
@@ -91,33 +88,7 @@ bakso-app/
    make init-db
    ```
 
-## Development 💻
-
-### Frontend Development
-
-```bash
-# Start only the backend services
-docker compose up -d supabase-db supabase-api supabase-auth
-
-# Navigate to frontend directory
-cd frontend
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-```
-
-### Backend Development
-
-```bash
-# Modify Supabase configurations in backend/config/
-
-# Rebuild and restart Supabase services
-docker compose up -d --build supabase-db supabase-api supabase-auth
-```
-
+ 
 ## Database Setup 💾
 
 The PostGIS extension and initial schema are automatically set up through Docker. You can find the database initialization scripts in:
