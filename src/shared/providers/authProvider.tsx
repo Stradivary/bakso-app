@@ -82,7 +82,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const validateSessionIntegrity = useCallback(async () => {
     try {
-      const storedSession = "sb-abangbakso-auth-token";
+      const storedSession = sessionStorage.getItem("sb-abangbakso-auth-token");
 
       if (!storedSession) {
         console.error("Session token not found.");
