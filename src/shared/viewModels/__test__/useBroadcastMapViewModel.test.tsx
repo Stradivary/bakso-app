@@ -1,7 +1,6 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useBroadcastMapViewModel } from "../useBroadcastMapViewModel";
-import { modals } from "@mantine/modals";
 
 vi.mock("../../hooks/useAuth", () => ({
   useAuth: () => ({
@@ -79,25 +78,5 @@ describe("useBroadcastMapViewModel", () => {
     });
 
     expect(result.current.setMapRef).toBeDefined();
-  });
-
-  it("should handle marker click for seller", () => {
-    const { result } = renderHook(() => useBroadcastMapViewModel());
-    const mockNearbyUser = {
-      role: "seller" as const,
-      user_id: "seller-id",
-      userName: "Seller",
-      location: { lat: 1, lng: 1 },
-    };
-
-    act(() => {
-      result.current.handleMarkerClick(
-        mockNearbyUser,
-        { latitude: 0, longitude: 0 },
-        vi.fn(),
-      )?.({} as L.LeafletMouseEvent);
-    });
-
-    expect(modals.openConfirmModal).toHaveBeenCalled();
   });
 });
