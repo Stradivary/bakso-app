@@ -9,7 +9,6 @@ import {
   vi,
 } from "vitest";
 import { RouteProvider } from "../routeProvider";
-import { Contexts } from "../_root";
 
 class MockResizeObserver {
   observe = vi.fn();
@@ -33,11 +32,7 @@ describe("RouteProvider", () => {
     vi.clearAllMocks();
   });
   it("renders without crashing", () => {
-    const { container } = render(
-      <Contexts>
-        <RouteProvider />
-      </Contexts>,
-    );
+    const { container } = render(<RouteProvider />);
     expect(container).toMatchSnapshot();
   });
 });

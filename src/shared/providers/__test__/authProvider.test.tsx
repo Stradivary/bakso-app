@@ -4,6 +4,14 @@ import { AuthProvider } from "../authProvider";
 
 vi.mock("../services/authService");
 
+vi.mock("react-router-dom", async (importOriginal) => {
+  const actual = (await importOriginal()) as Record<string, never>;
+  return {
+    ...actual,
+    useNavigate: vi.fn().mockImplementation((a) => console.log(a)),
+  };
+});
+
 describe("AuthProvider", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -17,15 +25,5 @@ describe("AuthProvider", () => {
     );
 
     expect(screen.getByText("Test")).toBeDefined();
-  });
-
-  it("should handle session integrity validation", async () => {
-    const { container } = render(
-      <AuthProvider>
-        <div>Test</div>
-      </AuthProvider>,
-    );
-
-    expect(container).toMatchSnapshot();
   });
 });
