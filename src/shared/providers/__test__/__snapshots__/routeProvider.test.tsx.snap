@@ -15,7 +15,7 @@ exports[`RouteProvider > renders without crashing 1`] = `
   >
     Error: useAuth must be used within an AuthProvider
     at Module.useAuth (/workspaces/bakso-app/src/shared/hooks/useAuth.ts:9:11)
-    at ProtectedRoute (/workspaces/bakso-app/src/shared/components/ProtectedRoute.tsx:8:31)
+    at ProtectedRoute (/workspaces/bakso-app/src/shared/components/ProtectedRoute.tsx:8:42)
     at renderWithHooks (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:15486:18)
     at mountIndeterminateComponent (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:20103:13)
     at beginWork (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:21626:16)

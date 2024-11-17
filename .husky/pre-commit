@@ -1,3 +1,3 @@
 
 npx lint-staged
-npm run test -- --run
+npm run test:update -- --run

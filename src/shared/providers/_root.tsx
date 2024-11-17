@@ -14,7 +14,7 @@ export function Contexts({ children }: PropsWithChildren) {
 export function Root() {
   return (
     <AuthProvider>
-      <RouteProvider />{" "}
+      <RouteProvider />
     </AuthProvider>
   );
 }

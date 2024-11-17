@@ -6,7 +6,6 @@ import {
   useMemo,
   useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../hooks/useAuth";
 import { Database } from "../models/supabase.types";
 import { signInUser } from "../services/authService";
@@ -34,7 +33,6 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [initialized, setInitialized] = useState(false);
-  const navigate = useNavigate();
 
   // Initialize auth state
   useEffect(() => {
@@ -46,9 +44,13 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
           error: sessionError,
         } = await supabase.auth.getSession();
 
-        if (sessionError) throw sessionError;
+        if (sessionError) {
+          console.error("failed to set session", existingSession);
+          throw sessionError;
+        }
 
         if (existingSession) {
+          console.log("existingSession -> set to", existingSession);
           setSession(existingSession);
         }
       } catch (error) {
@@ -96,12 +98,12 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       if (signOutError) throw signOutError;
 
       setSession(null);
-      navigate("/login");
+      window.location.href = "/login";
     } catch (error) {
       console.error("Error during logout:", error);
       setError("Failed to logout");
     }
-  }, [navigate]);
+  }, []);
 
   useEffect(() => {
     if (!initialized) return;
@@ -109,20 +111,18 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, newSession) => {
-      console.log("Auth state changed:", event, newSession?.user?.id);
+      console.log("Auth state changed:", newSession?.user?.id, event);
 
       switch (event) {
+        case "INITIAL_SESSION":
+          break;
         case "SIGNED_IN":
+        case "TOKEN_REFRESHED":
+        case "USER_UPDATED":
           setSession(newSession);
           break;
         case "SIGNED_OUT":
           setSession(null);
-          break;
-        case "TOKEN_REFRESHED":
-          setSession(newSession);
-          break;
-        case "USER_UPDATED":
-          setSession(newSession);
           break;
       }
     });
