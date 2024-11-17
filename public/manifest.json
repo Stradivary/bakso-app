@@ -45,8 +45,8 @@
     "navigation"
   ],
   "display_override": [
+    "window-controls-overlay",
     "standalone",
-    "browser",
-    "window-controls-overlay"
+    "browser"
   ]
 }
