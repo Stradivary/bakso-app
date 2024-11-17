@@ -82,33 +82,12 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const validateSessionIntegrity = useCallback(async () => {
     try {
-      const storedSession = sessionStorage.getItem("sb-abangbakso-auth-token");
-
-      if (!storedSession) {
-        console.error("Session token not found.");
-        setError("Session token not found. Please login again.");
-        await logout();
-        return false;
-      }
-
-      const parsedSession = JSON.parse(storedSession);
-      const { access_token } = parsedSession;
-
-      if (!access_token) {
+      if (!supabase.auth.getUser()) {
         console.error("Invalid session token structure.");
         setError("Invalid session token. Please login again.");
         await logout();
         return false;
       }
-
-      if (validSessionRef.current && access_token !== validSessionRef.current) {
-        console.error("Session storage tampering detected.");
-        setError("Security violation detected. Please login again.");
-        await logout();
-        return false;
-      }
-
-      validSessionRef.current = access_token;
 
       return true;
     } catch (error) {
