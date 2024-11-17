@@ -10,6 +10,7 @@ import {
 } from "vitest";
 import { AuthProvider } from "../authProvider";
 import { RouteProvider } from "../routeProvider";
+import { ThemeProvider } from "../themeProvider";
 interface MockCoordinates {
   latitude: number | null;
   longitude: number | null;
@@ -77,9 +78,12 @@ describe("RouteProvider", () => {
   });
   it("renders without crashing", () => {
     const { container } = render(
-      <AuthProvider>
-        <RouteProvider />
-      </AuthProvider>,
+      <ThemeProvider>
+        <AuthProvider>
+          <RouteProvider />
+        </AuthProvider>
+        ,
+      </ThemeProvider>,
     );
     expect(container).toMatchSnapshot();
   });
