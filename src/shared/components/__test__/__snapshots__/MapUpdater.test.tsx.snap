@@ -1,3 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`MapUpdater > updates location for seller role 1`] = `<div />`;
+
+exports[`NearbyUsersMarker > renders invalid nearby users location 1`] = `
+<p
+  class="mantine-focus-auto m_b6d8b162 mantine-Text-root"
+>
+  Pedagang Bakso
+</p>
+`;

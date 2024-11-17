@@ -213,6 +213,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     return () => {
       subscription.unsubscribe();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialized, fetchUserProfile]);
 
   const isAuthenticated = !!session?.user?.id && !isLoading;

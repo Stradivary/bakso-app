@@ -1,0 +1,23 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ProtectedRoute > redirects to login when user is not authenticated 1`] = `<div />`;
+
+exports[`ProtectedRoute > renders protected content when user is authenticated 1`] = `
+<div
+  data-testid="protected-content"
+>
+  Protected Content
+</div>
+`;
+
+exports[`ProtectedRoute > shows loading overlay when authentication is being checked 1`] = `
+<div
+  data-testid="mantine-box"
+  h="100dvh"
+>
+  <div
+    aria-hidden="false"
+    data-testid="mantine-loading-overlay"
+  />
+</div>
+`;

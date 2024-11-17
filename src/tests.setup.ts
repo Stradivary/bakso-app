@@ -1,4 +1,7 @@
-import { beforeAll, vi } from "vitest";
+import { afterEach, beforeAll, expect, vi } from "vitest";
+
+import { cleanup } from "@testing-library/react";
+import * as matchers from "@testing-library/jest-dom/matchers";
 
 // setupTests.ts
 Object.defineProperty(window, "matchMedia", {
@@ -24,4 +27,12 @@ class MockResizeObserver {
 // Mock implementation
 beforeAll(() => {
   vi.stubGlobal("ResizeObserver", MockResizeObserver);
+});
+
+// Extend Vitest's expect with Testing Library matchers
+expect.extend(matchers);
+
+// Clean up after each test
+afterEach(() => {
+  cleanup();
 });
