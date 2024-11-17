@@ -66,7 +66,9 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const logout = useCallback(async () => {
     try {
-      await supabase.auth.signOut();
+      await supabase.auth.signOut({
+        scope: "local",
+      });
       setSession(null);
       setError(null);
       validSessionRef.current = null;
