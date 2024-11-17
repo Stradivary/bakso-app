@@ -13,8 +13,10 @@ export function Contexts({ children }: PropsWithChildren) {
 
 export function Root() {
   return (
-    <AuthProvider>
-      <RouteProvider />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <RouteProvider />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

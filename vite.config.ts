@@ -14,11 +14,13 @@ export default defineConfig({
     nodePolyfills({ include: ["buffer"] }),
     react(),
     VitePWA({
+      mode: "production",
       registerType: "autoUpdate",
       workbox: {
         cleanupOutdatedCaches: true,
         clientsClaim: true,
         skipWaiting: true,
+        disableDevLogs: true,
       },
     }),
   ],

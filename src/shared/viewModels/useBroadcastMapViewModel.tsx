@@ -14,7 +14,9 @@ export const useBroadcastMapViewModel = () => {
   const { session, logout } = useAuth();
   const userId = session?.user?.id as string;
   const userName = session?.user?.user_metadata?.name;
-  const userRole = sessionStorage.getItem("role") as "seller" | "buyer";
+  const userRole = sessionStorage.getItem("abangbakso-role") as
+    | "seller"
+    | "buyer";
   const [exitModalOpened, { close: exitModalClose, open: openModal }] =
     useDisclosure();
   const [lastValidLatLng, setLastValidLatLng] = useState<LatLng | null>(null);
@@ -63,7 +65,6 @@ export const useBroadcastMapViewModel = () => {
   const handleExit = React.useCallback(() => {
     deactivateUser();
     logout();
-    sessionStorage.removeItem("role");
     exitModalClose();
   }, [deactivateUser, exitModalClose, logout]);
 

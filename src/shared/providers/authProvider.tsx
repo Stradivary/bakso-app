@@ -1,3 +1,4 @@
+import { notifications } from "@mantine/notifications";
 import { Session } from "@supabase/supabase-js";
 import {
   PropsWithChildren,
@@ -85,42 +86,6 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
     initializeAuth();
   }, [fetchUserProfile]);
-
-  // Storage change observer
-  useEffect(() => {
-    if (!initialized) return;
-
-    const handleStorageChange = (event: StorageEvent) => {
-      // Check if the changed key is the Supabase session
-      if (event.key === "sb-session") {
-        const currentSession = event.newValue;
-        const previousSession = event.oldValue;
-
-        // If session was changed externally
-        if (currentSession !== previousSession) {
-          console.warn("Session storage change detected");
-
-          // If session was removed or tampered
-          if (
-            !currentSession ||
-            (previousSession && currentSession !== previousSession)
-          ) {
-            console.warn("Possible session tampering detected");
-            logout();
-            setError("Session security violation detected");
-          }
-        }
-      }
-    };
-
-    // Add storage event listener
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, [initialized]);
-
   const login = useCallback(
     async (name: string, role: string, latitude: number, longitude: number) => {
       setIsLoading(true);
@@ -155,15 +120,67 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       });
 
       if (signOutError) throw signOutError;
-
+      sessionStorage.removeItem("abangbakso-role");
       setSession(null);
       setUser(null);
-      window.location.href = "/login";
     } catch (error) {
       console.error("Error during logout:", error);
       setError("Failed to logout");
     }
   }, []);
+
+  // Storage change observer
+  useEffect(() => {
+    if (!initialized) return;
+
+    const handleStorageChange = (event: StorageEvent) => {
+      const currentSession = event.newValue;
+      const previousSession = event.oldValue;
+
+      // Check if the changed key is the Supabase session
+      if (event.key === "abangbakso-role") {
+        if (currentSession !== previousSession) {
+          console.warn("Session storage change detected");
+
+          logout();
+          notifications.show({
+            title: "Warning",
+            message: "Possible role tampering detected",
+            color: "orange",
+          });
+        }
+      }
+
+      if (event.key === "abangbakso-session") {
+        // If session was changed externally
+        if (currentSession !== previousSession) {
+          console.warn("Session storage change detected");
+
+          // If session was removed or tampered
+          if (
+            !currentSession ||
+            (previousSession && currentSession !== previousSession)
+          ) {
+            notifications.show({
+              title: "Warning",
+              message: "Possible session tampering detected",
+              color: "orange",
+            });
+
+            logout();
+            setError("Session security violation detected");
+          }
+        }
+      }
+    };
+
+    // Add storage event listener
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, [initialized, logout, session?.user.id]);
 
   useEffect(() => {
     if (!initialized) return;
@@ -172,7 +189,9 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, newSession) => {
       console.log("Auth state changed:", newSession?.user?.id, event);
-
+      if (newSession?.user.id !== session?.user.id) {
+        return;
+      }
       switch (event) {
         case "INITIAL_SESSION":
           break;

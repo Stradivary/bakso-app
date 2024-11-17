@@ -8,16 +8,15 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { OfflineHandler } from "../components/OfflineHandler";
-import { ThemeProvider } from "./themeProvider";
 
 const routes: RouteObject[] = [
   {
     path: "/",
     element: (
-      <ThemeProvider>
+      <>
         <Outlet />
         <OfflineHandler />
-      </ThemeProvider>
+      </>
     ),
     children: [
       {
