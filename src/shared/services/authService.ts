@@ -50,6 +50,8 @@ export const signInUser = async (
             data: {
               name,
               role,
+              latitude,
+              longitude,
             },
           },
         });

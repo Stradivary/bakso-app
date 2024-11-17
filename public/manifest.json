@@ -33,7 +33,7 @@
   "lang": "id-ID",
   "name": "Abang Bakso App",
   "short_name": "AbangBakso",
-  "start_url": "https://abangbakso-app.vercel.app",
+  "start_url": "https://abangbakso.ahmadmuzaki.dev/",
   "scope": "/",
   "description": "Aplikasi Tracking Abang bakso",
   "dir": "ltr",

@@ -4,19 +4,19 @@ import {
   useCallback,
   useEffect,
   useState,
-  useRef,
   useMemo,
 } from "react";
 import { Database } from "../models/supabase.types";
 import { signInUser } from "../services/authService";
 import { supabase } from "../services/supabaseService";
 import { AuthContext } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 type UserDetails = Database["public"]["Tables"]["user_profiles"]["Row"];
 
 export interface AuthContextType {
   session: Session | null;
-  userDetails: UserDetails | null;
+  user: UserDetails | null;
   isLoading: boolean;
   error: string | null;
   login: (
@@ -33,9 +33,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const validSessionRef = useRef<string | null>(null);
-
+  const navigate = useNavigate();
   const login = useCallback(
     async (name: string, role: string, latitude: number, longitude: number) => {
       setIsLoading(true);
@@ -47,10 +45,6 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
           longitude,
         );
         if (error) throw error;
-
-        if (session?.access_token) {
-          validSessionRef.current = session.access_token;
-        }
 
         setSession(session);
         setError(null);
@@ -66,109 +60,49 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const logout = useCallback(async () => {
     try {
+      setSession(null);
       await supabase.auth.signOut({
         scope: "local",
       });
-      setSession(null);
-      setError(null);
-      validSessionRef.current = null;
-      const hashedKey = "sb-abangbakso-auth-token";
-      if (hashedKey) {
-        window.sessionStorage.removeItem(hashedKey);
-      }
+      navigate("/login");
     } catch (error) {
       console.error("Error during logout:", error);
       setError("Failed to logout");
     }
-  }, []);
-
-  const validateSessionIntegrity = useCallback(async () => {
-    try {
-      if (!supabase.auth.getUser()) {
-        console.error("Invalid session token structure.");
-        setError("Invalid session token. Please login again.");
-        await logout();
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      console.error("Error validating session integrity:", error);
-      setError("Error validating session integrity. Please login again.");
-      await logout();
-      return false;
-    }
-  }, [logout]);
-
-  const handleAuthStateChange = useCallback(
-    async (_event: string, newSession: Session | null) => {
-      const isValid = await validateSessionIntegrity();
-      if (isValid) {
-        setSession(newSession);
-      } else {
-        await logout();
-      }
-    },
-    [validateSessionIntegrity, logout],
-  );
+  }, [navigate]);
 
   useEffect(() => {
-    const initializeAuth = async () => {
-      setIsLoading(true);
-      try {
-        const {
-          data: { session: initialSession },
-          error,
-        } = await supabase.auth.getSession();
-        if (error) {
-          console.error("Error getting initial session:", error);
-          setError("Failed to get initial session");
-        } else {
-          if (initialSession?.access_token) {
-            validSessionRef.current = initialSession.access_token;
-          }
-          setSession(initialSession);
-        }
-      } catch (error) {
-        console.error("Error getting initial session:", error);
-        setError("Failed to get initial session");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    initializeAuth();
-
-    const handleStorageChange = async (event: StorageEvent) => {
-      if (event.key?.includes("sb-abangbakso-auth-token")) {
-        const isValid = await validateSessionIntegrity();
-        if (!isValid) {
-          await logout();
-        }
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-
-    const validationInterval = setInterval(validateSessionIntegrity, 30000); // Check every 30 seconds
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(handleAuthStateChange);
+    } = supabase.auth.onAuthStateChange(
+      async (event: string, newSession: Session | null) => {
+        if (event === "SIGNED_IN") {
+          setSession(newSession);
+        }
+        if (event === "SIGNED_OUT") {
+          await supabase.auth.signOut({
+            scope: "local",
+          });
+          setSession(null);
+        }
+      },
+    );
 
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      clearInterval(validationInterval);
       subscription.unsubscribe();
     };
-  }, [handleAuthStateChange, validateSessionIntegrity, logout]);
+  }, []);
 
-  const isAuthenticated = !!session;
+  const isAuthenticated = !!session?.user;
 
   const values = useMemo(
     () => ({
       session,
-      userDetails: null,
+      user: null,
       isLoading,
       error,
       login,

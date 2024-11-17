@@ -4,181 +4,137 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never;
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string;
+          query?: string;
+          variables?: Json;
+          extensions?: Json;
+        };
+        Returns: Json;
+      };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
   public: {
     Tables: {
-      pokes: {
+      messages: {
         Row: {
-          buyer_id: string | null
-          created_at: string | null
-          expiry_at: string | null
-          id: string
-          is_read: boolean | null
-          seller_id: string | null
-        }
+          created_at: string;
+          id: number;
+          message: string;
+          region_id: string;
+          status: string;
+          target_user_id: string;
+          updated_at: string;
+          user_id: string;
+        };
         Insert: {
-          buyer_id?: string | null
-          created_at?: string | null
-          expiry_at?: string | null
-          id?: string
-          is_read?: boolean | null
-          seller_id?: string | null
-        }
+          created_at?: string;
+          id?: never;
+          message: string;
+          region_id: string;
+          status?: string;
+          target_user_id: string;
+          updated_at?: string;
+          user_id: string;
+        };
         Update: {
-          buyer_id?: string | null
-          created_at?: string | null
-          expiry_at?: string | null
-          id?: string
-          is_read?: boolean | null
-          seller_id?: string | null
-        }
+          created_at?: string;
+          id?: never;
+          message?: string;
+          region_id?: string;
+          status?: string;
+          target_user_id?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "pokes_buyer_id_fkey"
-            columns: ["buyer_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            foreignKeyName: "messages_target_user_id_fkey";
+            columns: ["target_user_id"];
+            isOneToOne: false;
+            referencedRelation: "user_profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "pokes_seller_id_fkey"
-            columns: ["seller_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            foreignKeyName: "messages_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "user_profiles";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       user_profiles: {
         Row: {
-          bakso_type: string | null
-          created_at: string
-          id: string
-          is_online: boolean | null
-          last_location: unknown | null
-          last_seen: string | null
-          latitude: number | null
-          longitude: number | null
-          name: string | null
-          role: string | null
-        }
+          created_at: string;
+          id: string;
+          is_online: boolean | null;
+          last_location: unknown | null;
+          last_seen: string | null;
+          latitude: number | null;
+          longitude: number | null;
+          name: string | null;
+          role: string | null;
+        };
         Insert: {
-          bakso_type?: string | null
-          created_at?: string
-          id: string
-          is_online?: boolean | null
-          last_location?: unknown | null
-          last_seen?: string | null
-          latitude?: number | null
-          longitude?: number | null
-          name?: string | null
-          role?: string | null
-        }
+          created_at?: string;
+          id: string;
+          is_online?: boolean | null;
+          last_location?: unknown | null;
+          last_seen?: string | null;
+          latitude?: number | null;
+          longitude?: number | null;
+          name?: string | null;
+          role?: string | null;
+        };
         Update: {
-          bakso_type?: string | null
-          created_at?: string
-          id?: string
-          is_online?: boolean | null
-          last_location?: unknown | null
-          last_seen?: string | null
-          latitude?: number | null
-          longitude?: number | null
-          name?: string | null
-          role?: string | null
-        }
-        Relationships: []
-      }
-      users: {
-        Row: {
-          created_at: string | null
-          email: string | null
-          id: string
-          is_active: boolean | null
-          last_seen: string | null
-          location: unknown | null
-          name: string | null
-          rating: number | null
-          role: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          email?: string | null
-          id?: string
-          is_active?: boolean | null
-          last_seen?: string | null
-          location?: unknown | null
-          name?: string | null
-          rating?: number | null
-          role?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          email?: string | null
-          id?: string
-          is_active?: boolean | null
-          last_seen?: string | null
-          location?: unknown | null
-          name?: string | null
-          rating?: number | null
-          role?: string | null
-        }
-        Relationships: []
-      }
-    }
+          created_at?: string;
+          id?: string;
+          is_online?: boolean | null;
+          last_location?: unknown | null;
+          last_seen?: string | null;
+          latitude?: number | null;
+          longitude?: number | null;
+          name?: string | null;
+          role?: string | null;
+        };
+        Relationships: [];
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
-      create_poke: {
-        Args: {
-          p_buyer_id: string
-          p_seller_id: string
-          p_expiry_minutes: number
-        }
-        Returns: undefined
-      }
-      find_nearby_users: {
-        Args: {
-          user_id: string
-          p_longitude: number
-          p_latitude: number
-          radius_meters: number
-          active_within_minutes: number
-          min_rating: number
-          max_results: number
-        }
-        Returns: {
-          id: string
-          name: string
-          email: string
-          user_role: string
-          is_active: boolean
-          last_seen: string
-          rating: number
-          longitude: number
-          latitude: number
-          distance: number
-        }[]
-      }
-    }
+      [_ in never]: never;
+    };
     Enums: {
-      poke_status_type:
-        | "pending"
-        | "accepted"
-        | "rejected"
-        | "expired"
-        | "completed"
-      user_status_type: "available" | "busy" | "offline" | "in_transaction"
-    }
+      [_ in never]: never;
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+      [_ in never]: never;
+    };
+  };
+};
 
-type PublicSchema = Database[Extract<keyof Database, "public">]
+type PublicSchema = Database[Extract<keyof Database, "public">];
 
 export type Tables<
   PublicTableNameOrOptions extends
@@ -191,7 +147,7 @@ export type Tables<
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
@@ -199,11 +155,11 @@ export type Tables<
         PublicSchema["Views"])
     ? (PublicSchema["Tables"] &
         PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R
+        Row: infer R;
       }
       ? R
       : never
-    : never
+    : never;
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
@@ -214,17 +170,17 @@ export type TablesInsert<
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I
+        Insert: infer I;
       }
       ? I
       : never
-    : never
+    : never;
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
@@ -235,17 +191,17 @@ export type TablesUpdate<
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U
+        Update: infer U;
       }
       ? U
       : never
-    : never
+    : never;
 
 export type Enums<
   PublicEnumNameOrOptions extends
@@ -258,14 +214,14 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
-    : never
+    : never;
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof PublicSchema["CompositeTypes"]
     | { schema: keyof Database },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof Database;
   }
     ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
@@ -273,4 +229,4 @@ export type CompositeTypes<
   ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never
+    : never;
