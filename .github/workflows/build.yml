@@ -107,7 +107,7 @@ jobs:
 
 
   build:
-    needs: test
+    needs: quality
     name: Build Application
     runs-on: ubuntu-latest
     steps:
