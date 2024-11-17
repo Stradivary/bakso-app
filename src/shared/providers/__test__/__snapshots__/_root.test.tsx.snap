@@ -8,12 +8,14 @@ exports[`Root component > renders correctly 1`] = `
       <div>
         Mocked RouteProvider
       </div>
+       
     </div>
   </body>,
   "container": <div>
     <div>
       Mocked RouteProvider
     </div>
+     
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],

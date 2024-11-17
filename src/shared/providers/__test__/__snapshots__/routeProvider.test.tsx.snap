@@ -2,183 +2,47 @@
 
 exports[`RouteProvider > renders without crashing 1`] = `
 <div>
-  <style
-    data-mantine-styles="true"
+  <h2>
+    Unexpected Application Error!
+  </h2>
+  <h3
+    style="font-style: italic;"
   >
-    :root{--mantine-font-family: 'Poppins', system-ui, sans-serif;--mantine-font-family-headings: 'Telkomsel Batik Sans', system-ui, sans-serif;--mantine-radius-default: calc(0.5rem * var(--mantine-scale));--mantine-primary-color-filled: var(--mantine-color-primary-filled);--mantine-primary-color-filled-hover: var(--mantine-color-primary-filled-hover);--mantine-primary-color-light: var(--mantine-color-primary-light);--mantine-primary-color-light-hover: var(--mantine-color-primary-light-hover);--mantine-primary-color-light-color: var(--mantine-color-primary-light-color);--mantine-primary-color-0: var(--mantine-color-primary-0);--mantine-primary-color-1: var(--mantine-color-primary-1);--mantine-primary-color-2: var(--mantine-color-primary-2);--mantine-primary-color-3: var(--mantine-color-primary-3);--mantine-primary-color-4: var(--mantine-color-primary-4);--mantine-primary-color-5: var(--mantine-color-primary-5);--mantine-primary-color-6: var(--mantine-color-primary-6);--mantine-primary-color-7: var(--mantine-color-primary-7);--mantine-primary-color-8: var(--mantine-color-primary-8);--mantine-primary-color-9: var(--mantine-color-primary-9);--mantine-color-primary-0: #ffe8ed;--mantine-color-primary-1: #ffcfd7;--mantine-color-primary-2: #fe9cab;--mantine-color-primary-3: #fd677d;--mantine-color-primary-4: #fc3a56;--mantine-color-primary-5: #fb203e;--mantine-color-primary-6: #fc1131;--mantine-color-primary-7: #e10224;--mantine-color-primary-8: #c9001f;--mantine-color-primary-9: #b00018;--mantine-color-secondary-0: #ebf4ff;--mantine-color-secondary-1: #d4e5fa;--mantine-color-secondary-2: #a3c9f7;--mantine-color-secondary-3: #71abf6;--mantine-color-secondary-4: #4b92f5;--mantine-color-secondary-5: #3782f5;--mantine-color-secondary-6: #2e7af6;--mantine-color-secondary-7: #2368dc;--mantine-color-secondary-8: #195dc5;--mantine-color-secondary-9: #0050ad;}:root[data-mantine-color-scheme="dark"]{--mantine-color-anchor: var(--mantine-color-primary-4);--mantine-color-primary-text: var(--mantine-color-primary-4);--mantine-color-primary-filled: var(--mantine-color-primary-8);--mantine-color-primary-filled-hover: var(--mantine-color-primary-9);--mantine-color-primary-light: rgba(252, 17, 49, 0.15);--mantine-color-primary-light-hover: rgba(252, 17, 49, 0.2);--mantine-color-primary-light-color: var(--mantine-color-primary-3);--mantine-color-primary-outline: var(--mantine-color-primary-4);--mantine-color-primary-outline-hover: rgba(252, 58, 86, 0.05);--mantine-color-secondary-text: var(--mantine-color-secondary-4);--mantine-color-secondary-filled: var(--mantine-color-secondary-8);--mantine-color-secondary-filled-hover: var(--mantine-color-secondary-9);--mantine-color-secondary-light: rgba(46, 122, 246, 0.15);--mantine-color-secondary-light-hover: rgba(46, 122, 246, 0.2);--mantine-color-secondary-light-color: var(--mantine-color-secondary-3);--mantine-color-secondary-outline: var(--mantine-color-secondary-4);--mantine-color-secondary-outline-hover: rgba(75, 146, 245, 0.05);}:root[data-mantine-color-scheme="light"]{--mantine-color-anchor: var(--mantine-color-primary-6);--mantine-color-primary-text: var(--mantine-color-primary-filled);--mantine-color-primary-filled: var(--mantine-color-primary-6);--mantine-color-primary-filled-hover: var(--mantine-color-primary-7);--mantine-color-primary-light: rgba(252, 17, 49, 0.1);--mantine-color-primary-light-hover: rgba(252, 17, 49, 0.12);--mantine-color-primary-light-color: var(--mantine-color-primary-6);--mantine-color-primary-outline: var(--mantine-color-primary-6);--mantine-color-primary-outline-hover: rgba(252, 17, 49, 0.05);--mantine-color-secondary-text: var(--mantine-color-secondary-filled);--mantine-color-secondary-filled: var(--mantine-color-secondary-6);--mantine-color-secondary-filled-hover: var(--mantine-color-secondary-7);--mantine-color-secondary-light: rgba(46, 122, 246, 0.1);--mantine-color-secondary-light-hover: rgba(46, 122, 246, 0.12);--mantine-color-secondary-light-color: var(--mantine-color-secondary-6);--mantine-color-secondary-outline: var(--mantine-color-secondary-6);--mantine-color-secondary-outline-hover: rgba(46, 122, 246, 0.05);}
-  </style>
-  <style
-    data-mantine-styles="classes"
+    useAuth must be used within an AuthProvider
+  </h3>
+  <pre
+    style="padding: 0.5rem; background-color: rgba(200, 200, 200, 0.5);"
   >
-    @media (max-width: 35.99375em) {.mantine-visible-from-xs {display: none !important;}}@media (min-width: 36em) {.mantine-hidden-from-xs {display: none !important;}}@media (max-width: 47.99375em) {.mantine-visible-from-sm {display: none !important;}}@media (min-width: 48em) {.mantine-hidden-from-sm {display: none !important;}}@media (max-width: 61.99375em) {.mantine-visible-from-md {display: none !important;}}@media (min-width: 62em) {.mantine-hidden-from-md {display: none !important;}}@media (max-width: 74.99375em) {.mantine-visible-from-lg {display: none !important;}}@media (min-width: 75em) {.mantine-hidden-from-lg {display: none !important;}}@media (max-width: 87.99375em) {.mantine-visible-from-xl {display: none !important;}}@media (min-width: 88em) {.mantine-hidden-from-xl {display: none !important;}}
-  </style>
-  <div
-    class="m_8bffd616 mantine-Flex-root __m__-r4"
-    style="align-items: center; background: rgb(239, 241, 244);"
-  >
-    <div
-      class="m_7485cace mantine-Container-root"
-      data-size="xs"
-      style="--container-size: var(--container-size-xs); margin-inline: auto; text-align: center;"
+    Error: useAuth must be used within an AuthProvider
+    at Module.useAuth (/workspaces/bakso-app/src/shared/hooks/useAuth.ts:9:11)
+    at ProtectedRoute (/workspaces/bakso-app/src/shared/components/ProtectedRoute.tsx:8:31)
+    at renderWithHooks (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:20103:13)
+    at beginWork (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:21626:16)
+    at beginWork$1 (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:27465:14)
+    at performUnitOfWork (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:26599:12)
+    at workLoopSync (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:26505:5)
+    at renderRootSync (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:26473:7)
+    at recoverFromConcurrentError (/workspaces/bakso-app/node_modules/react-dom/cjs/react-dom.development.js:25889:20)
+  </pre>
+  <p>
+    💿 Hey developer 👋
+  </p>
+  <p>
+    You can provide a way better UX than this when your app throws errors by providing your own 
+    <code
+      style="padding: 2px 4px; background-color: rgba(200, 200, 200, 0.5);"
     >
-      <div
-        class=""
-      >
-        <img
-          alt="Illustration"
-          class="m_9e117634 mantine-Image-root"
-          src="/video.png"
-          style="margin-inline: auto;"
-        />
-      </div>
-      <h2
-        class="m_8a5d1357 mantine-Title-root"
-        data-order="2"
-        style="--title-fw: var(--mantine-h2-font-weight); --title-lh: var(--mantine-h2-line-height); --title-fz: var(--mantine-h2-font-size);"
-      >
-        Verifikasi
-      </h2>
-      <p
-        class="mantine-focus-auto m_b6d8b162 mantine-Text-root"
-      >
-        Masukkan nama dan role Anda di bawah ini:
-      </p>
-      <form>
-        <div
-          class="m_6d731127 mantine-Stack-root"
-          style="--stack-gap: calc(1rem * var(--mantine-scale)); --stack-align: stretch; --stack-justify: flex-start; text-align: start;"
-        >
-          <div
-            class="m_46b77525 mantine-InputWrapper-root mantine-TextInput-root"
-          >
-            <label
-              class="m_8fdc1311 mantine-InputWrapper-label mantine-TextInput-label"
-              for=""
-              id=""
-            >
-              Nama
-            </label>
-            <div
-              class="m_6c018570 mantine-Input-wrapper mantine-TextInput-wrapper"
-              data-variant="default"
-            >
-              <input
-                aria-invalid="false"
-                class="m_8fb7ebe7 mantine-Input-input mantine-TextInput-input"
-                data-variant="default"
-                id=""
-                name="name"
-                placeholder="Masukkan nama"
-                value=""
-              />
-            </div>
-          </div>
-          <div
-            class="m_46b77525 mantine-InputWrapper-root mantine-Select-root"
-          >
-            <label
-              class="m_8fdc1311 mantine-InputWrapper-label mantine-Select-label"
-              for=""
-              id=""
-            >
-              Role
-            </label>
-            <div
-              class="m_6c018570 mantine-Input-wrapper mantine-Select-wrapper"
-              data-pointer="true"
-              data-variant="default"
-              data-with-right-section="true"
-              style="--input-right-section-pointer-events: none;"
-            >
-              <input
-                aria-haspopup="listbox"
-                aria-invalid="false"
-                autocomplete="off"
-                class="m_8fb7ebe7 mantine-Input-input mantine-Select-input"
-                data-variant="default"
-                id=""
-                placeholder="Masukkan role"
-                readonly=""
-                value=""
-              />
-              <div
-                class="m_82577fc2 mantine-Input-section mantine-Select-section"
-                data-position="right"
-              />
-            </div>
-          </div>
-          <input
-            name="role"
-            type="hidden"
-            value=""
-          />
-          <div
-            class="m_bf2d988c mantine-Checkbox-root m_5f75b09e mantine-Checkbox-root"
-            data-label-position="right"
-            style="--checkbox-color: var(--mantine-color-secondary-9);"
-          >
-            <div
-              class="m_5f6e695e mantine-Checkbox-body"
-            >
-              <div
-                class="m_26062bec mantine-Checkbox-inner"
-                data-label-position="right"
-              >
-                <input
-                  class="mantine-focus-auto m_26063560 mantine-Checkbox-input"
-                  id=""
-                  name="agreed"
-                  type="checkbox"
-                />
-                <svg
-                  aria-hidden="true"
-                  class="m_bf295423 mantine-Checkbox-icon"
-                  fill="none"
-                  viewBox="0 0 10 7"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    clip-rule="evenodd"
-                    d="M4 4.586L1.707 2.293A1 1 0 1 0 .293 3.707l3 3a.997.997 0 0 0 1.414 0l5-5A1 1 0 1 0 8.293.293L4 4.586z"
-                    fill="currentColor"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-              </div>
-              <div
-                class="m_d3ea56bb mantine-Checkbox-labelWrapper"
-              >
-                <label
-                  class="m_8ee546b8 mantine-Checkbox-label"
-                  for=""
-                >
-                  Dengan menggunakan aplikasi ini Anda telah setuju untuk membagikan lokasi Anda kepada para tukang Bakso Keliling.
-                </label>
-              </div>
-            </div>
-          </div>
-          <button
-            class="mantine-focus-auto m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
-            data-block="true"
-            data-disabled="true"
-            data-size="md"
-            disabled=""
-            style="--button-height: var(--button-height-md); --button-padding-x: var(--button-padding-x-md); --button-fz: var(--mantine-font-size-md); --button-radius: calc(3.5rem * var(--mantine-scale)); --button-bg: var(--mantine-color-red-filled); --button-hover: var(--mantine-color-red-filled-hover); --button-color: var(--mantine-color-white); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
-            type="submit"
-          >
-            <span
-              class="m_80f1301b mantine-Button-inner"
-            >
-              <span
-                class="m_811560b9 mantine-Button-label"
-              >
-                Join
-              </span>
-            </span>
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+      ErrorBoundary
+    </code>
+     or
+     
+    <code
+      style="padding: 2px 4px; background-color: rgba(200, 200, 200, 0.5);"
+    >
+      errorElement
+    </code>
+     prop on your route.
+  </p>
 </div>
 `;

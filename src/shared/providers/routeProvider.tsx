@@ -1,23 +1,23 @@
-import { Container } from "@mantine/core";
 import { BroadcastMapPage } from "@/pages/map";
+import LoginView from "@/shared/views/LoginView";
+import { Container } from "@mantine/core";
 import {
   createBrowserRouter,
   Outlet,
   RouteObject,
   RouterProvider,
 } from "react-router-dom";
-import LoginView from "@/shared/views/LoginView";
-import { Contexts } from "./_root";
 import { OfflineHandler } from "../components/OfflineHandler";
+import { ThemeProvider } from "./themeProvider";
 
 const routes: RouteObject[] = [
   {
     path: "/",
     element: (
-      <Contexts>
+      <ThemeProvider>
         <Outlet />
         <OfflineHandler />
-      </Contexts>
+      </ThemeProvider>
     ),
     children: [
       {

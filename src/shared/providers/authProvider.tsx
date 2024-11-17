@@ -3,14 +3,14 @@ import {
   PropsWithChildren,
   useCallback,
   useEffect,
-  useState,
   useMemo,
+  useState,
 } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../hooks/useAuth";
 import { Database } from "../models/supabase.types";
 import { signInUser } from "../services/authService";
 import { supabase } from "../services/supabaseService";
-import { AuthContext } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
 
 type UserDetails = Database["public"]["Tables"]["user_profiles"]["Row"];
 
@@ -33,20 +33,49 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [initialized, setInitialized] = useState(false);
   const navigate = useNavigate();
+
+  // Initialize auth state
+  useEffect(() => {
+    const initializeAuth = async () => {
+      try {
+        // Check for existing session
+        const {
+          data: { session: existingSession },
+          error: sessionError,
+        } = await supabase.auth.getSession();
+
+        if (sessionError) throw sessionError;
+
+        if (existingSession) {
+          setSession(existingSession);
+        }
+      } catch (error) {
+        console.error("Error initializing auth:", error);
+        setError("Failed to initialize authentication");
+      } finally {
+        setIsLoading(false);
+        setInitialized(true);
+      }
+    };
+
+    initializeAuth();
+  }, []);
+
   const login = useCallback(
     async (name: string, role: string, latitude: number, longitude: number) => {
       setIsLoading(true);
       try {
-        const { session, error } = await signInUser(
+        const { session: newSession, error: signInError } = await signInUser(
           name,
           role,
           latitude,
           longitude,
         );
-        if (error) throw error;
+        if (signInError) throw signInError;
 
-        setSession(session);
+        setSession(newSession);
         setError(null);
       } catch (error) {
         console.error("Error during login:", error);
@@ -60,10 +89,13 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const logout = useCallback(async () => {
     try {
-      setSession(null);
-      await supabase.auth.signOut({
+      const { error: signOutError } = await supabase.auth.signOut({
         scope: "local",
       });
+
+      if (signOutError) throw signOutError;
+
+      setSession(null);
       navigate("/login");
     } catch (error) {
       console.error("Error during logout:", error);
@@ -72,33 +104,33 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }, [navigate]);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
+    if (!initialized) return;
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(
-      async (event: string, newSession: Session | null) => {
-        if (event === "SIGNED_IN") {
-          if (newSession?.user.id === session?.user.id) setSession(newSession);
-        }
-        if (event === "SIGNED_OUT") {
-          if (newSession?.user.id === session?.user.id) {
-            await supabase.auth.signOut({
-              scope: "local",
-            });
+    } = supabase.auth.onAuthStateChange(async (event, newSession) => {
+      console.log("Auth state changed:", event, newSession?.user?.id);
 
-            setSession(null);
-          }
-        }
-      },
-    );
+      switch (event) {
+        case "SIGNED_IN":
+          setSession(newSession);
+          break;
+        case "SIGNED_OUT":
+          setSession(null);
+          break;
+        case "TOKEN_REFRESHED":
+          setSession(newSession);
+          break;
+        case "USER_UPDATED":
+          setSession(newSession);
+          break;
+      }
+    });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [session?.user.id]);
+  }, [initialized]);
 
   const isAuthenticated = !!session?.user;
 

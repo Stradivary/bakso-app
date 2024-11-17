@@ -21,9 +21,27 @@ vi.mock("react-router-dom", async (importOriginal) => {
   };
 });
 
-vi.mock("src/shared/components/ProtectedRoute.tsx", () => {
+vi.mock("../../shared/hooks/useAuth", () => ({
+  useAuth: () => ({
+    session: {
+      user: {
+        id: "test-id",
+        user_metadata: { name: "Test User" },
+      },
+    },
+    logout: vi.fn(),
+  }),
+}));
+
+vi.mock("../../shared/hooks/useLocation", () => ({
+  useLocation: () => ({
+    location: { latitude: 0, longitude: 0 },
+  }),
+}));
+
+vi.mock("../../shared/components/ProtectedRoute.tsx", () => {
   return {
-    ProtectedRoute: vi.fn(({ children }) => ({ children })),
+    ProtectedRoute: vi.fn(({ children }) => <div>{children}</div>),
   };
 });
 

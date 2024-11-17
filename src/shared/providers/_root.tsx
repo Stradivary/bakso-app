@@ -8,13 +8,13 @@ import { ThemeProvider } from "./themeProvider";
 import { PropsWithChildren } from "react";
 
 export function Contexts({ children }: PropsWithChildren) {
-  return (
-    <AuthProvider>
-      <ThemeProvider>{children}</ThemeProvider>
-    </AuthProvider>
-  );
+  return <ThemeProvider>{children}</ThemeProvider>;
 }
 
 export function Root() {
-  return <RouteProvider />;
+  return (
+    <AuthProvider>
+      <RouteProvider />{" "}
+    </AuthProvider>
+  );
 }
