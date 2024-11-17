@@ -215,7 +215,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     };
   }, [initialized, fetchUserProfile]);
 
-  const isAuthenticated = !!session?.user;
+  const isAuthenticated = !!session?.user?.id && !isLoading;
 
   const values = useMemo(
     () => ({

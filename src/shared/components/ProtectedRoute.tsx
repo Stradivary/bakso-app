@@ -1,16 +1,23 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Box, LoadingOverlay } from "@mantine/core";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 export const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({
   children,
 }) => {
   const { isAuthenticated, isLoading } = useAuth();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!isAuthenticated && !isLoading) {
-      navigate?.("/login");
-    }
-  }, [isAuthenticated, navigate]);
+
+  if (isLoading) {
+    return (
+      <Box h="100dvh">
+        <LoadingOverlay visible />
+      </Box>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
   return children;
 };
