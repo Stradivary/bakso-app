@@ -18,7 +18,6 @@ const BroadcastMapView: React.FC = () => {
     location,
     nearbyUsers,
     handleLocationUpdate,
-    handlePing,
     notifications,
     exitModalOpened,
     openModal,
@@ -66,9 +65,7 @@ const BroadcastMapView: React.FC = () => {
 
         <NearbyUsersMarker
           nearbyUsers={nearbyUsers}
-          handleMarkerClick={(nearbyUser) =>
-            handleMarkerClick(nearbyUser, location, handlePing)
-          }
+          handleMarkerClick={handleMarkerClick}
         />
       </MapContainer>
 

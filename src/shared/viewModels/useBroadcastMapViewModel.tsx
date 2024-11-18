@@ -35,9 +35,9 @@ export const useBroadcastMapViewModel = () => {
 
   const {
     nearbyUsers,
-    handleLocationUpdate,
-    handlePing,
+    sendPing,
     notifications,
+    handleLocationUpdate,
     deactivateUser,
   } = useTracker(
     userId,
@@ -69,12 +69,7 @@ export const useBroadcastMapViewModel = () => {
   }, [deactivateUser, exitModalClose, logout]);
 
   const handleMarkerClick = useCallback(
-    (
-      nearbyUser: User,
-      location: { latitude: number; longitude: number },
-      handlePing: (buyerId: string, buyerName: string) => void,
-    ) => {
-      console.log("hehe");
+    (nearbyUser: User) => {
       if (nearbyUser.role === "seller") {
         const buyerLocation = new L.LatLng(
           location?.latitude ?? 0,
@@ -107,7 +102,7 @@ export const useBroadcastMapViewModel = () => {
           ),
           labels: { cancel: "Batal", confirm: "Pesan" },
           onConfirm: () => {
-            handlePing?.(nearbyUser.user_id, nearbyUser.userName);
+            sendPing(nearbyUser.user_id);
             notify.show({
               title: "Pesan Bakso",
               message: "Pesan bakso telah dikirim",
@@ -117,7 +112,7 @@ export const useBroadcastMapViewModel = () => {
         });
       }
     },
-    [],
+    [location, sendPing],
   );
 
   const centerLocation = useMemo(
@@ -133,7 +128,6 @@ export const useBroadcastMapViewModel = () => {
     location,
     nearbyUsers,
     handleLocationUpdate,
-    handlePing,
     notifications,
     exitModalOpened,
     openModal,

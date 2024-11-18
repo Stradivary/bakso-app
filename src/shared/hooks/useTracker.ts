@@ -8,7 +8,7 @@ import { RealtimeChannel } from "@supabase/supabase-js";
 import { LatLng } from "leaflet";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPingPayload } from "../services/trackerServices";
-import { Notification, useNotifications } from "./useNotification";
+import { useNotifications } from "./useNotification";
 
 export const useTracker = (
   userId: string,
@@ -17,11 +17,8 @@ export const useTracker = (
   userName: string,
 ) => {
   const [nearbyUsers, setNearbyUsers] = useState<User[]>([]);
-  const [selectedSeller, setSelectedSeller] = useState<string | null>(null);
-  const [localNotifications, setLocalNotifications] = useState<Notification[]>(
-    [],
-  );
-  const { markAsRead } = useNotifications(userId, localNotifications);
+  const { notifications, markAsRead, addNotification } =
+    useNotifications(userId);
 
   const regionRef = useRef<string>("");
   const channelRef = useRef<RealtimeChannel | null>(null);
@@ -45,6 +42,7 @@ export const useTracker = (
     [userRole, userId, initialLocation],
   );
 
+  // Function to handle receiving pings (for sellers)
   const handlePing = useCallback(
     (buyerId: string, buyerName: string) => {
       const notification = createPingPayload({
@@ -52,10 +50,27 @@ export const useTracker = (
         buyer_name: buyerName,
         user_id: userId,
       });
-      setLocalNotifications((prev) => [...prev, notification]);
-      setSelectedSeller(userId);
+      addNotification(notification);
     },
-    [userId],
+    [userId, addNotification],
+  );
+
+  // Function to send pings (for buyers)
+  const sendPing = useCallback(
+    (sellerId: string) => {
+      if (channelRef.current) {
+        channelRef.current.send({
+          type: "broadcast",
+          event: "ping",
+          payload: {
+            seller_id: sellerId,
+            buyer_id: userId,
+            buyer_name: userName,
+          },
+        });
+      }
+    },
+    [userId, userName],
   );
 
   const handleLocationUpdate = useCallback(
@@ -105,11 +120,10 @@ export const useTracker = (
 
   return {
     nearbyUsers,
-    selectedSeller,
-    markAsRead,
-    handlePing,
+    sendPing,
     handleLocationUpdate,
-    notifications: localNotifications,
+    notifications,
+    markAsRead,
     deactivateUser: handleUnsubscribe,
   };
 };

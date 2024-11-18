@@ -2,6 +2,7 @@
 
 exports[`useNotifications > should initialize with empty notifications 1`] = `
 {
+  "addNotification": [Function],
   "markAsRead": [Function],
   "notifications": [],
   "unreadCount": 0,
@@ -10,6 +11,7 @@ exports[`useNotifications > should initialize with empty notifications 1`] = `
 
 exports[`useNotifications > should initialize with provided notifications 1`] = `
 {
+  "addNotification": [Function],
   "markAsRead": [Function],
   "notifications": [
     {
@@ -28,6 +30,7 @@ exports[`useNotifications > should initialize with provided notifications 1`] = 
 
 exports[`useNotifications > should mark notification as read 1`] = `
 {
+  "addNotification": [Function],
   "markAsRead": [Function],
   "notifications": [
     {

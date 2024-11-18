@@ -2,12 +2,12 @@ import {
   ActionIcon,
   Button,
   Card,
+  Group,
   Indicator,
   Popover,
   ScrollArea,
   Stack,
   Text,
-  Group,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";

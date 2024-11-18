@@ -108,7 +108,9 @@ export const initSupabaseChannel = async (
 
   channel.on("broadcast", { event: "ping" }, (payload) => {
     const { seller_id, buyer_name, buyer_id } = payload.payload;
-    if (seller_id === user.userId) handlers.handlePing(buyer_id, buyer_name);
+    if (seller_id === user.userId) {
+      handlers.handlePing(buyer_id, buyer_name);
+    }
   });
 
   channel.subscribe((status) => {
