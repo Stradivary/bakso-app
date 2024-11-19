@@ -120,7 +120,6 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       });
 
       if (signOutError) throw signOutError;
-      sessionStorage.removeItem("abangbakso-role");
       setSession(null);
       setUser(null);
     } catch (error) {
@@ -137,39 +136,38 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       const currentSession = event.newValue;
       const previousSession = event.oldValue;
 
-      // Check if the changed key is the Supabase session
-      if (event.key === "abangbakso-role") {
-        if (currentSession !== previousSession) {
-          console.warn("Session storage change detected");
-
-          logout();
+      if (event.key === "abangbakso-session") {
+        if (!previousSession) {
           notifications.show({
             title: "Warning",
-            message: "Possible role tampering detected",
+            message: "Possible session injection detected",
             color: "orange",
           });
+          logout();
+          setError("Session security violation detected");
+          return;
         }
-      }
 
-      if (event.key === "abangbakso-session") {
+        if (!currentSession) {
+          notifications.show({
+            title: "Warning",
+            message: "Possible session removal detected",
+            color: "orange",
+          });
+          logout();
+          setError("Session security violation detected");
+          return;
+        }
         // If session was changed externally
         if (currentSession !== previousSession) {
-          console.warn("Session storage change detected");
+          notifications.show({
+            title: "Warning",
+            message: "Possible session tampering detected",
+            color: "orange",
+          });
+          logout();
+          setError("Session security violation detected");
 
-          // If session was removed or tampered
-          if (
-            !currentSession ||
-            (previousSession && currentSession !== previousSession)
-          ) {
-            notifications.show({
-              title: "Warning",
-              message: "Possible session tampering detected",
-              color: "orange",
-            });
-
-            logout();
-            setError("Session security violation detected");
-          }
         }
       }
     };
@@ -188,7 +186,6 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, newSession) => {
-      console.log("Auth state changed:", newSession?.user?.id, event);
       if (newSession?.user.id !== session?.user.id) {
         return;
       }
