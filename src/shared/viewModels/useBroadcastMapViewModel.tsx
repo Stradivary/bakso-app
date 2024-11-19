@@ -17,20 +17,28 @@ export const useBroadcastMapViewModel = (
 ) => {
   const { session, logout } = useAuth();
   const userId = session?.user?.id as string;
-  const userName = session?.user?.user_metadata?.name;
-  const userRole = sessionStorage.getItem("abangbakso-role") as
+  const userName = session?.user?.user_metadata?.display_name;
+  const userRole = session?.user?.user_metadata?.role as
     | "seller"
     | "buyer";
+  const userLocation = [session?.user?.user_metadata?.latitude, session?.user?.user_metadata?.longitude];
   const [exitModalOpened, { close: exitModalClose, open: openModal }] =
     useDisclosure();
   const [lastValidLatLng, setLastValidLatLng] = useState<LatLng | null>(null);
 
-  const fixedLocation = useMemo(() => {
-    if (!location?.latitude || !location?.longitude) {
-      return lastValidLatLng;
+  const fixedLocation = useMemo<LatLng>(() => {
+    if (userRole === 'buyer') {
+      return new L.LatLng(userLocation[0], userLocation[1]);
     }
+
+    if (!location?.latitude || !location?.longitude && lastValidLatLng) {
+      return lastValidLatLng ?? new L.LatLng(0, 0);
+    }
+
     const LatLng = new L.LatLng(location?.latitude, location?.longitude);
+
     setLastValidLatLng(LatLng);
+
     return LatLng;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location?.latitude, location?.longitude]);
@@ -52,7 +60,7 @@ export const useBroadcastMapViewModel = (
 
   const handleRecenter = React.useCallback(() => {
     if (mapRef && location) {
-      const newLocation = [location?.latitude || 0, location?.longitude || 0];
+      const newLocation = [location?.latitude ?? 0, location?.longitude ?? 0];
       mapRef.setView(
         new L.LatLng(newLocation[0], newLocation[1]),
         mapRef.getZoom(),
@@ -118,7 +126,14 @@ export const useBroadcastMapViewModel = (
   );
 
   const centerLocation = useMemo(
-    () => new L.LatLng(location?.latitude || 0, location?.longitude || 0),
+    () => {
+
+      if (userRole === "buyer" && fixedLocation)
+        return fixedLocation;
+
+      return new L.LatLng(location?.latitude ?? 0, location?.longitude ?? 0);
+
+    },
     [location],
   );
 
@@ -138,6 +153,7 @@ export const useBroadcastMapViewModel = (
     handleExit,
     handleMarkerClick,
     setMapRef,
+    fixedLocation,
     centerLocation,
   };
 };

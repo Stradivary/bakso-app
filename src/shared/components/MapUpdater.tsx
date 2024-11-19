@@ -54,12 +54,12 @@ export function UserMarker({
   location,
   userRole,
 }: Readonly<{
-  location: { latitude: number; longitude: number };
+  location: LatLng;
   userRole: string;
 }>) {
   return (
     <Marker
-      position={new LatLng(location?.latitude ?? 0, location?.longitude ?? 0)}
+      position={location}
       icon={userRole === "seller" ? iconBakso : iconPerson}
     >
       <Tooltip permanent direction="bottom" offset={new Point(0, 12)}>

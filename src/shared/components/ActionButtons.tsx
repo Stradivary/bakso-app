@@ -22,8 +22,19 @@ export const ActionButtons = ({
       padding: 8,
     }}
   >
-    <Flex direction="column">
-      <Stack m={16} style={{ flexGrow: 1 }} align="end">
+    <Flex direction="row">
+      <Group justify="end" align="start" m={8} gap={6} style={{
+        userSelect: 'none',
+        pointerEvents: 'painted'
+      }}>
+        <Badge color={role === "seller" ? "green" : "blue"}>
+          {role === "seller" ? "Tukang Bakso" : "Customer"}
+        </Badge>
+        <Badge variant="filled" color="teal">
+          {name}
+        </Badge>
+      </Group>
+      <Stack m={8} style={{ flexGrow: 1 }} align="end">
         <Button onClick={onRecenter} variant="white" size="compact-lg" w={50}>
           <LocateFixed size={20} />
         </Button>
@@ -40,14 +51,7 @@ export const ActionButtons = ({
           <NotificationCenter notifications={notifications} />
         )}
       </Stack>
-      <Group justify="end" align="end" m={16}>
-        <Badge color={role === "seller" ? "green" : "blue"}>
-          {role === "seller" ? "Tukang Bakso" : "Customer"}
-        </Badge>
-        <Badge variant="filled" color="teal">
-          {name}
-        </Badge>
-      </Group>
+
     </Flex>
   </Box>
 );

@@ -39,7 +39,6 @@ export const signInUser = async (
         password,
       });
 
-    sessionStorage.setItem("abangbakso-role", role);
     // If user doesn't exist, sign them up
     if (signInError?.message?.includes("Invalid login credentials")) {
       const { data: signUpData, error: signUpError } =
@@ -48,7 +47,7 @@ export const signInUser = async (
           password,
           options: {
             data: {
-              name,
+              display_name: name,
               role,
               latitude,
               longitude,

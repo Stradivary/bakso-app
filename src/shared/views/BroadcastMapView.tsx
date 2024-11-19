@@ -27,6 +27,7 @@ const BroadcastMapView: React.FC = () => {
     handleExit,
     handleMarkerClick,
     userId,
+    fixedLocation,
     setMapRef,
     centerLocation,
   } = useBroadcastMapViewModel(location);
@@ -61,7 +62,7 @@ const BroadcastMapView: React.FC = () => {
           updateLocation={handleLocationUpdate}
         />
 
-        <UserMarker location={location} userRole={userRole} />
+        <UserMarker location={fixedLocation} userRole={userRole} />
 
         <NearbyUsersMarker
           nearbyUsers={nearbyUsers}
