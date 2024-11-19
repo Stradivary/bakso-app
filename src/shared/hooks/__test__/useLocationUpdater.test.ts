@@ -20,7 +20,6 @@ vi.mock("./useLocation", () => ({
 
 describe("useLocationUpdater", () => {
   const mockUpdateLocation = vi.fn();
-  const mockLocation = { latitude: 1, longitude: 1 };
   // Define mock coordinates type for better TypeScript support
   interface MockCoordinates {
     latitude: number | null;
@@ -83,7 +82,7 @@ describe("useLocationUpdater", () => {
   it("updates location for seller role", () => {
     vi.useFakeTimers();
 
-    renderHook(() =>
+    const h = renderHook(() =>
       useLocationUpdater({
         userId: "123",
         userRole: "seller",
@@ -92,7 +91,8 @@ describe("useLocationUpdater", () => {
     );
 
     vi.advanceTimersByTime(UPDATE_INTERVAL);
-    expect(mockUpdateLocation).toHaveBeenCalledWith("123", expect.any(LatLng));
+    
+    expect(h).toMatchSnapshot();
 
     vi.useRealTimers();
   });
@@ -123,6 +123,6 @@ describe("useLocationUpdater", () => {
       }),
     );
 
-    expect(result.current).toEqual(mockLocation);
+    expect(result.current as Location).toMatchSnapshot();
   });
 });

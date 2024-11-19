@@ -43,6 +43,7 @@ describe("useLoginViewModel", () => {
       name: "",
       agreed: "",
       role: "",
+      verified: "",
     });
     expect(result.current.isValid).toBeFalsy();
   });
@@ -55,6 +56,7 @@ describe("useLoginViewModel", () => {
         name: "Test User",
         role: "buyer",
         agreed: true,
+        verified: false,
       };
 
       await result.current.handleAuth(formData);
@@ -63,6 +65,7 @@ describe("useLoginViewModel", () => {
         name: "Test User",
         role: "buyer",
         agreed: false,
+        verified: false,
       };
 
       await result.current.handleAuth(formData2);

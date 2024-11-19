@@ -1,0 +1,43 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useLocationUpdater > returns location from useLocation hook 1`] = `
+Location {
+  "assign": [Function],
+  "hash": "",
+  "host": "localhost:3000",
+  "hostname": "localhost",
+  "href": "http://localhost:3000/",
+  "origin": "http://localhost:3000",
+  "pathname": "/",
+  "port": "3000",
+  "protocol": "http:",
+  "reload": [Function],
+  "replace": [Function],
+  "search": "",
+  "toString": [Function],
+}
+`;
+
+exports[`useLocationUpdater > updates location for seller role 1`] = `
+{
+  "rerender": [Function],
+  "result": {
+    "current": Location {
+      "assign": [Function],
+      "hash": "",
+      "host": "localhost:3000",
+      "hostname": "localhost",
+      "href": "http://localhost:3000/",
+      "origin": "http://localhost:3000",
+      "pathname": "/",
+      "port": "3000",
+      "protocol": "http:",
+      "reload": [Function],
+      "replace": [Function],
+      "search": "",
+      "toString": [Function],
+    },
+  },
+  "unmount": [Function],
+}
+`;

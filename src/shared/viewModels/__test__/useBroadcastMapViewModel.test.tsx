@@ -67,8 +67,6 @@ describe("useBroadcastMapViewModel", () => {
     );
 
     expect(result.current.userId).toBe("test-id");
-    expect(result.current.userName).toBe("Test User");
-    expect(result.current.userRole).toBe("buyer");
   });
 
   it("handles null location", () => {

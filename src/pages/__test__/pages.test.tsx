@@ -26,7 +26,7 @@ vi.mock("../../shared/hooks/useAuth", () => ({
     session: {
       user: {
         id: "test-id",
-        user_metadata: { name: "Test User" },
+        user_metadata: { display_name: "Test User" },
       },
     },
     logout: vi.fn(),

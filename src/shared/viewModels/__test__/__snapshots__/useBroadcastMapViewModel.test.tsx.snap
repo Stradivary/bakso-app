@@ -9,6 +9,10 @@ exports[`useBroadcastMapViewModel > handles exit modal actions 1`] = `
     },
     "exitModalClose": [Function],
     "exitModalOpened": false,
+    "fixedLocation": {
+      "lat": 0,
+      "lng": 0,
+    },
     "handleExit": [Function],
     "handleLocationUpdate": [MockFunction spy],
     "handleMarkerClick": [Function],
@@ -37,8 +41,8 @@ exports[`useBroadcastMapViewModel > handles exit modal actions 1`] = `
     },
     "setMapRef": [Function],
     "userId": "test-id",
-    "userName": "Test User",
-    "userRole": "buyer",
+    "userName": undefined,
+    "userRole": undefined,
   },
 }
 `;

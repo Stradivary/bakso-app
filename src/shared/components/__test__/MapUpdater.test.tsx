@@ -106,7 +106,7 @@ describe("UserMarker", () => {
   it("renders user location marker", () => {
     render(
       <MantineProvider>
-        <UserMarker location={{ latitude: 1, longitude: 1 }} userRole="buyer" />
+        <UserMarker location={new LatLng(1, 1)} userRole="buyer" />
       </MantineProvider>,
     );
 
@@ -124,10 +124,7 @@ describe("UserMarker", () => {
     render(
       <MantineProvider>
         <UserMarker
-          location={{
-            latitude: undefined as unknown as number,
-            longitude: undefined as unknown as number,
-          }}
+          location={new LatLng(0, 0)}
           userRole="seller"
         />
       </MantineProvider>,
@@ -143,10 +140,7 @@ describe("UserMarker", () => {
     render(
       <MantineProvider>
         <UserMarker
-          location={{
-            latitude: null as unknown as number,
-            longitude: null as unknown as number,
-          }}
+          location={new LatLng(0, 0)}
           userRole="seller"
         />
       </MantineProvider>,
