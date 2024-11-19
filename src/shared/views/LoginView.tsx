@@ -11,6 +11,8 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile';
+import { useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 import { useLoginViewModel } from "../viewModels/useLoginViewModel";
 
@@ -22,8 +24,13 @@ export function LoginView() {
     errors,
     isSubmitting,
     canJoin,
+    setValue,
     handleOnChange,
   } = useLoginViewModel();
+
+  const turnstileRef = useRef<TurnstileInstance>(null);
+ 
+	const [token, setToken] = useState<string>()
 
   return (
     <Flex h="100dvh" align="center" bg="#EFF1F4">
@@ -38,6 +45,7 @@ export function LoginView() {
 
         <form onSubmit={handleSubmit(handleAuth)}>
           <Stack gap={16} ta="start">
+            <input type="hidden" name="token" value={token} />
             <Controller
               name="name"
               control={control}
@@ -92,7 +100,24 @@ export function LoginView() {
                 />
               )}
             />
+            <Turnstile ref={turnstileRef} siteKey='0x4AAAAAAA0a2jjKL7pnbfjV' options={{
+              action: 'submit-form',
+              theme: 'light',
+              size: 'flexible',
+              
+              language: 'id',
 
+            }}
+              scriptOptions={{
+                appendTo: 'body',
+                defer: true,
+              }}
+              onSuccess={token => {
+                setToken(token);
+                setValue('verified', true);
+              }}
+            />
+            
             <Button
               fullWidth
               disabled={canJoin}
@@ -108,6 +133,7 @@ export function LoginView() {
         </form>
       </Container>
     </Flex>
+
   );
 }
 
