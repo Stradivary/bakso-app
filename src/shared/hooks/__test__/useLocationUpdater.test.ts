@@ -1,5 +1,4 @@
 import { renderHook } from "@testing-library/react";
-import { LatLng } from "leaflet";
 import {
   afterAll,
   afterEach,
