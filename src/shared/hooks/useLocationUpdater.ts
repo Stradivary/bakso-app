@@ -1,6 +1,6 @@
-import { useEffect } from "react";
 import { LatLng } from "leaflet";
-import { useLocation } from "./useLocation";
+import { useEffect } from "react";
+import { useRequestLocation } from "./useRequestLocation";
 
 export const UPDATE_INTERVAL = 2000;
 
@@ -13,26 +13,29 @@ export function useLocationUpdater({
   userRole: string;
   updateLocation: (userId: string, location: LatLng) => void;
 }) {
-  const { location } = useLocation();
-
+  const { latitude, longitude, isLoading, requestLocation } = useRequestLocation();
+  useEffect(() => {
+    if (isLoading) return;
+    updateLocation(
+      userId,
+      new LatLng(latitude ?? 0, longitude ?? 0),
+    );
+  }, [latitude, longitude, isLoading])
   useEffect(() => {
     if (userRole !== "seller") {
       return;
     }
 
     const updateInterval = setInterval(() => {
-      updateLocation(
-        userId,
-        new LatLng(location?.latitude ?? 0, location?.longitude ?? 0),
-      );
+      requestLocation();
     }, UPDATE_INTERVAL);
 
     return () => clearInterval(updateInterval);
   }, [
     userRole,
     updateLocation,
-    location?.latitude,
-    location?.longitude,
+    requestLocation,
+    isLoading,
     userId,
   ]);
 
