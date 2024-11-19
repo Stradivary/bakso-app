@@ -82,7 +82,6 @@ describe("RouteProvider", () => {
         <AuthProvider>
           <RouteProvider />
         </AuthProvider>
-        ,
       </ThemeProvider>,
     );
     expect(container).toMatchSnapshot();
