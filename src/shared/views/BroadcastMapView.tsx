@@ -9,13 +9,14 @@ import {
   NearbyUsersMarker,
   UserMarker,
 } from "../components/MapUpdater";
+import { useLocation } from "../hooks/useLocation";
 import { useBroadcastMapViewModel } from "../viewModels/useBroadcastMapViewModel";
 
 const BroadcastMapView: React.FC = () => {
+  const { location } = useLocation();
   const {
     userName,
     userRole,
-    location,
     nearbyUsers,
     handleLocationUpdate,
     notifications,
@@ -28,7 +29,7 @@ const BroadcastMapView: React.FC = () => {
     userId,
     setMapRef,
     centerLocation,
-  } = useBroadcastMapViewModel();
+  } = useBroadcastMapViewModel(location);
 
   if (!location) {
     return (
@@ -55,7 +56,6 @@ const BroadcastMapView: React.FC = () => {
         />
 
         <MapUpdater
-          disabled={userRole !== "seller"}
           userId={userId}
           userRole={userRole}
           updateLocation={handleLocationUpdate}

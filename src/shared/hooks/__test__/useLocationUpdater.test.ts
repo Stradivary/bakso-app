@@ -85,7 +85,6 @@ describe("useLocationUpdater", () => {
 
     renderHook(() =>
       useLocationUpdater({
-        disabled: false,
         userId: "123",
         userRole: "seller",
         updateLocation: mockUpdateLocation,
@@ -103,9 +102,8 @@ describe("useLocationUpdater", () => {
 
     renderHook(() =>
       useLocationUpdater({
-        disabled: true,
         userId: "123",
-        userRole: "seller",
+        userRole: "buyer",
         updateLocation: mockUpdateLocation,
       }),
     );
@@ -119,7 +117,6 @@ describe("useLocationUpdater", () => {
   it("returns location from useLocation hook", () => {
     const { result } = renderHook(() =>
       useLocationUpdater({
-        disabled: false,
         userId: "123",
         userRole: "seller",
         updateLocation: mockUpdateLocation,

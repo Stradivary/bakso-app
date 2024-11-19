@@ -5,12 +5,10 @@ import { useLocation } from "./useLocation";
 export const UPDATE_INTERVAL = 2000;
 
 export function useLocationUpdater({
-  disabled,
   userId,
   userRole,
   updateLocation,
 }: {
-  disabled: boolean;
   userId: string;
   userRole: string;
   updateLocation: (userId: string, location: LatLng) => void;
@@ -18,7 +16,7 @@ export function useLocationUpdater({
   const { location } = useLocation();
 
   useEffect(() => {
-    if (userRole !== "seller" || disabled) {
+    if (userRole !== "seller") {
       return;
     }
 
@@ -35,7 +33,6 @@ export function useLocationUpdater({
     updateLocation,
     location?.latitude,
     location?.longitude,
-    disabled,
     userId,
   ]);
 

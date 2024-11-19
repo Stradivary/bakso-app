@@ -5,12 +5,16 @@ import { notifications as notify } from "@mantine/notifications";
 import L, { LatLng } from "leaflet";
 import React, { useCallback, useMemo, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { useLocation } from "../hooks/useLocation";
 import { useTracker } from "../hooks/useTracker";
 import { User } from "../models/BroadcastMapModel";
 import { calculateDistance } from "../services/trackerServices";
 
-export const useBroadcastMapViewModel = () => {
+export const useBroadcastMapViewModel = (
+  location: {
+    latitude: number;
+    longitude: number;
+  } | null,
+) => {
   const { session, logout } = useAuth();
   const userId = session?.user?.id as string;
   const userName = session?.user?.user_metadata?.name;
@@ -20,8 +24,6 @@ export const useBroadcastMapViewModel = () => {
   const [exitModalOpened, { close: exitModalClose, open: openModal }] =
     useDisclosure();
   const [lastValidLatLng, setLastValidLatLng] = useState<LatLng | null>(null);
-
-  const { location } = useLocation();
 
   const fixedLocation = useMemo(() => {
     if (!location?.latitude || !location?.longitude) {

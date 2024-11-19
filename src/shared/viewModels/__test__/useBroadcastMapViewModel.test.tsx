@@ -62,7 +62,9 @@ describe("useBroadcastMapViewModel", () => {
   });
 
   it("initializes with correct default values", () => {
-    const { result } = renderHook(() => useBroadcastMapViewModel());
+    const { result } = renderHook(() =>
+      useBroadcastMapViewModel({ latitude: 0, longitude: 0 }),
+    );
 
     expect(result.current.userId).toBe("test-id");
     expect(result.current.userName).toBe("Test User");
@@ -70,13 +72,17 @@ describe("useBroadcastMapViewModel", () => {
   });
 
   it("handles null location", () => {
-    const { result } = renderHook(() => useBroadcastMapViewModel());
+    const { result } = renderHook(() =>
+      useBroadcastMapViewModel({ latitude: 0, longitude: 0 }),
+    );
 
     expect(result.current.centerLocation).toEqual(new L.LatLng(0, 0));
   });
 
   it("handles marker click for seller with location", () => {
-    const { result } = renderHook(() => useBroadcastMapViewModel());
+    const { result } = renderHook(() =>
+      useBroadcastMapViewModel({ latitude: 0, longitude: 0 }),
+    );
     const seller = {
       user_id: "seller-id",
       userName: "Seller",
@@ -92,7 +98,9 @@ describe("useBroadcastMapViewModel", () => {
   });
 
   it("handles location updates", () => {
-    const { result, rerender } = renderHook(() => useBroadcastMapViewModel());
+    const { result, rerender } = renderHook(() =>
+      useBroadcastMapViewModel({ latitude: 0, longitude: 0 }),
+    );
 
     rerender();
 
@@ -100,7 +108,9 @@ describe("useBroadcastMapViewModel", () => {
   });
 
   it("handles exit modal actions", () => {
-    const { result } = renderHook(() => useBroadcastMapViewModel());
+    const { result } = renderHook(() =>
+      useBroadcastMapViewModel({ latitude: 0, longitude: 0 }),
+    );
 
     act(() => {
       result.current.handleExit();
@@ -110,7 +120,9 @@ describe("useBroadcastMapViewModel", () => {
   });
 
   it("confirms ping sending on seller marker click confirmation", () => {
-    const { result } = renderHook(() => useBroadcastMapViewModel());
+    const { result } = renderHook(() =>
+      useBroadcastMapViewModel({ latitude: 0, longitude: 0 }),
+    );
     const seller = {
       user_id: "seller-id",
       userName: "Seller",
@@ -130,7 +142,9 @@ describe("useBroadcastMapViewModel", () => {
   });
 
   it("maintains last valid location when location becomes null", () => {
-    const { result, rerender } = renderHook(() => useBroadcastMapViewModel());
+    const { result, rerender } = renderHook(() =>
+      useBroadcastMapViewModel({ latitude: 0, longitude: 0 }),
+    );
 
     // First render with valid location
     expect(result.current.centerLocation).toEqual(new L.LatLng(0, 0));

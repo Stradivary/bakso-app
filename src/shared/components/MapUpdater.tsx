@@ -6,17 +6,15 @@ import { User } from "../models/BroadcastMapModel";
 import { iconBakso, iconPerson } from "./Icon";
 
 export const MapUpdater = ({
-  disabled,
   userId,
   userRole,
   updateLocation,
 }: Readonly<{
-  disabled: boolean;
   userId: string;
   userRole: string;
   updateLocation: (userId: string, location: LatLng) => void;
 }>) => {
-  useLocationUpdater({ disabled, userId, userRole, updateLocation });
+  useLocationUpdater({ userId, userRole, updateLocation });
   return null;
 };
 
