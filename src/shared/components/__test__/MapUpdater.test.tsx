@@ -34,7 +34,6 @@ describe("MapUpdater", () => {
 
     const { container } = render(
       <MapUpdater
-        disabled={false}
         userId="123"
         userRole="seller"
         updateLocation={mockUpdateLocation}
@@ -51,7 +50,6 @@ describe("MapUpdater", () => {
 
     render(
       <MapUpdater
-        disabled={true}
         userId="123"
         userRole="seller"
         updateLocation={mockUpdateLocation}
