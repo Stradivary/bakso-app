@@ -162,11 +162,9 @@ exports[`LoginView > renders login form correctly 1`] = `
             style="min-width: 300px; width: 100%; height: 65px;"
           />
           <button
-            class="mantine-focus-auto m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+            class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
             data-block="true"
-            data-disabled="true"
             data-size="md"
-            disabled=""
             style="--button-height: var(--button-height-md); --button-padding-x: var(--button-padding-x-md); --button-fz: var(--mantine-font-size-md); --button-radius: calc(3.5rem * var(--mantine-scale)); --button-bg: var(--mantine-color-red-filled); --button-hover: var(--mantine-color-red-filled-hover); --button-color: var(--mantine-color-white); --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;"
             type="submit"
           >
