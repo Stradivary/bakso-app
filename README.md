@@ -1,10 +1,8 @@
-Here’s an advanced, organized structure for the **AbangBakso** project documentation based on the initial README:
-
----
-
 # **AbangBakso 🍜**
 
 [![Build, Test, and Deploy](https://github.com/Stradivary/bakso-app/actions/workflows/build.yml/badge.svg)](https://github.com/Stradivary/bakso-app/actions/workflows/build.yml)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Stradivary_bakso-app&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Stradivary_bakso-app)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Stradivary_bakso-app&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Stradivary_bakso-app)
 
 A real-time location-based app connecting Bakso sellers and customers in Indonesia. Discover Bakso sellers nearby, or help sellers find potential customers in their vicinity — all in one app.
 
@@ -36,10 +34,9 @@ A real-time location-based app connecting Bakso sellers and customers in Indones
 
 ### Prerequisites 📋
 
-- Docker & Docker Compose
 - Git
 - Node.js (v18 or above)
-- Make (optional)
+- Vite
 
 ### Setup Instructions 🛠️
 
@@ -55,14 +52,18 @@ A real-time location-based app connecting Bakso sellers and customers in Indones
    # Update .env with your configurations
    ```
 
-3. **Start all services**
+3. **Install dependencies**
    ```bash
-   docker compose up -d
+   npm install
    ```
 
-4. **Access the application**
-   - Frontend: [http://localhost:5173](http://localhost:5173)  
-   - Supabase Studio: [http://localhost:8000](http://localhost:8000)
+4. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+5. **Access the application**
+   - Frontend: [http://localhost:5173](http://localhost:5173)
 
 ---
 
@@ -72,7 +73,7 @@ A real-time location-based app connecting Bakso sellers and customers in Indones
 - Interactive map powered by Leaflet.js
 - Role-based views for **customers** and **sellers**
 - Works offline with Progressive Web App (PWA) support
-- Secure backend powered by Supabase
+- Secure backend powered by Supabase Cloud
 - Optimized for mobile and desktop experiences
 
 ---
@@ -82,7 +83,6 @@ A real-time location-based app connecting Bakso sellers and customers in Indones
 ```plaintext
 bakso-app/
 ├── src/                # Vite React application
-├── backend/            # Backend logic, including Supabase setup
 ├── public/             # Static assets and diagrams
 ├── LICENSE             # Licensing information
 └── README.md           # Project documentation
@@ -100,18 +100,17 @@ bakso-app/
 - **Vite**: Build tooling
 
 ### **Backend**
-- **Supabase**: Auth Database and API
+- **Supabase Cloud**: Auth, database, and real-time API
 - **PostgreSQL**: Database with PostGIS for geospatial queries
-- **Supabase/realtime**: Real-time api with supabase
 
 ### **DevOps**
-- Static Site Generation with Vite
-- Dockerized Backend architecture with Docker Compose
-- Nginx for reverse proxy and SSL termination
-- Automated CI/CD pipelines with GitHub Actions
+- Supabase Cloud for database and authentication
+- VPS hosting for custom backend and proxy configurations
+- CI/CD pipelines with GitHub Actions
+- SonarCloud for code quality and coverage analysis
 
 ---
-
+ 
 ## **Application Workflows 📜**
 
 ### Sequence Diagrams
@@ -119,25 +118,50 @@ bakso-app/
 #### **Customer Workflow**
 ```mermaid
 sequenceDiagram
-    Customer->>App: Open AbangBakso
-    App->>App: Fetch location
-    App->>Server: Request nearby sellers
-    Server->>App: Return sellers' locations
-    Customer->>App: Select a seller
-    App->>Server: Request seller details
-    Server->>App: Return seller details
-```
+    participant Buyer
+    participant App
+    participant Server
+    participant Seller
 
-#### **Seller Workflow**
-```mermaid
-sequenceDiagram
-    Seller->>App: Open AbangBakso
-    App->>Server: Post location
-    App->>Server: Fetch nearby customers
-    Server->>App: Return customers' locations
-    Seller->>App: Select customer
-    App->>Server: Retrieve customer details
-    Server->>App: Send customer details
+    %% Buyer Login and Location Flow
+    Note over  Server, Buyer: Buyer Login  
+    Buyer->>App: Login
+    App->>Server: Authenticate buyer
+    Server-->>App: Authentication success
+    App-->>Buyer: Redirect to map view
+
+    Buyer->>App: Send current location (on login)
+    App->>Server: Save buyer's location
+    Server-->>App: Acknowledge location update
+
+    %% Seller Login and Location Flow
+    Note over  App, Seller: Seller Login  
+    Seller->>App: Login
+    Server->>Seller: Broadcast buyer's presence and location (via WebSocket)
+    App->>Server: Authenticate seller
+    Server-->>App: Authentication success
+    App-->>Seller: Redirect to map view
+
+    loop Periodic Updates
+        Seller->>App: Send current location (interval-based)
+        App->>Server: Update seller's location
+        Server-->>App: Acknowledge location update
+        Server->>Buyer: Broadcast seller's presence and location (via WebSocket)
+    end
+
+    %% Ping Notification System
+    
+    Note over Buyer, Seller: Ping Strategy
+    Buyer->>App: Send "ping" to seller
+    App->>Server: Broadcast ping notification
+    Server->>Seller: Notify "ping" with buyer details
+    Seller-->>Server: Acknowledge ping
+    Server->>Buyer: Confirm ping delivered
+
+    %% Real-Time Updates on Map
+    Note over Buyer,Seller: Map displays real-time locations of counterparts
+    Server-->>Buyer: Stream sellers' updated locations
+
 ```
 
 ### Use Cases
@@ -153,22 +177,37 @@ sequenceDiagram
 
 ## **Database Design 💾**
  
-> TBD
+erDiagram
+    USER_PROFILES {
+        uuid id(PK)  "Primary key, references auth.users"
+        text role "Role: 'seller' or 'buyer'"
+        geometry last_location "Last known location (Point, SRID 4326)"
+        timestamptz last_seen "Last active timestamp"
+        boolean is_online "Online status"
+        timestamptz created_at "Record creation timestamp"
+        text name "User's name (max 60 characters)"
+        float8 latitude "Latitude of the user"
+        float8 longitude "Longitude of the user"
+    }
+
 ---
 
 ## **Setup and Deployment 🐳**
 
 ### Development
-- Clone the repository
-- Start services with `docker compose up -d`
-- Access the app on [localhost:5173](http://localhost:5173)
+1. Clone the repository and install dependencies.
+2. Run the app locally with `npm run dev`.
+3. The app is served at [localhost:5173](http://localhost:5173).
 
 ### Production
-- Configure production `.env.prod`
-- Build and deploy with:
-  ```bash
-  docker compose -f docker-compose.prod.yml up -d
-  ```
+1. Deploy the frontend to your VPS or preferred hosting platform.
+   ```bash
+   npm run build
+   rsync -avz dist/ your-vps:/var/www/html
+   ```
+2. Configure Nginx (or another reverse proxy) to serve the `dist/` folder.
+
+3. Backend services (database and API) are managed via **Supabase Cloud**. Ensure your environment variables point to the live instance.
 
 ---
 
@@ -184,10 +223,10 @@ sequenceDiagram
 ## **Security Considerations 🔒**
 
 - **Data Protection**: Row Level Security (RLS) for user privacy
-- **SSL Encryption**: For production deployments
-- **Containerized Architecture**: Ensures isolation
+- **SSL Encryption**: Ensure HTTPS for frontend and API
+- **Environment Isolation**: Separate environments for development and production
 
----
+--- 
 
 ## **Testing 🧪**
 
