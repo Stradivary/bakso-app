@@ -189,7 +189,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     } = supabase.auth.onAuthStateChange(async (event, newSession) => { 
 
       if (!newSession?.user.id) return;
-      if ((newSession?.user.id && newSession?.user.id) && newSession?.user.id !== session?.user.id) {
+      if ((newSession?.user.id && session?.user.id) && newSession?.user.id !== session?.user.id) {
         return;
       }
       switch (event) {
