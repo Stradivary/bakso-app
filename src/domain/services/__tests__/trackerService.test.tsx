@@ -1,9 +1,9 @@
 import { LatLng } from "leaflet";
 import { describe, expect, it } from "vitest";
-import { calculateRegion } from "../use-cases/calculateRegion";
-import { calculateDistance } from "../use-cases/calculateDistance";
-import { createPingPayload } from "../use-cases/createPingPayload";
-import { filterNearbyUsers } from "../use-cases/filterNearbyUsers";
+import { calculateRegion } from "../../use-cases/calculateRegion";
+import { calculateDistance } from "../../use-cases/calculateDistance";
+import { createPingPayload } from "../../use-cases/createPingPayload";
+import { filterNearbyUsers } from "../../use-cases/filterNearbyUsers";
 describe("trackerServices", () => {
   describe("calculateRegion", () => {
     it("should calculate region based on latitude and longitude", () => {

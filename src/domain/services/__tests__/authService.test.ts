@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { supabase } from "../supabaseService";
 import { signInUser } from "../authService";
 
-vi.mock("../services/supabaseService", () => ({
+vi.mock("../supabaseService", () => ({
   supabase: {
     auth: {
       signInWithPassword: vi.fn(),
