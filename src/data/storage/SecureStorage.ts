@@ -1,7 +1,6 @@
-import CryptoJS from 'crypto-js';
+import CryptoJS from "crypto-js";
 
-const SECRET_KEY = process.env.VITE_SESSION_SECRET_KEY ?? 'default-secret-key';
-
+const SECRET_KEY = process.env.VITE_SESSION_SECRET_KEY ?? "default-secret-key";
 
 export class SecureStorage {
   /**
@@ -11,13 +10,10 @@ export class SecureStorage {
    */
   static encrypt(data: any): string {
     try {
-      return CryptoJS.AES.encrypt(
-        JSON.stringify(data), 
-        SECRET_KEY
-      ).toString();
+      return CryptoJS.AES.encrypt(JSON.stringify(data), SECRET_KEY).toString();
     } catch (error) {
-      console.error('Encryption error:', error);
-      return '';
+      console.error("Encryption error:", error);
+      return "";
     }
   }
 
@@ -31,7 +27,7 @@ export class SecureStorage {
       const bytes = CryptoJS.AES.decrypt(encryptedData, SECRET_KEY);
       return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
     } catch (error) {
-      console.error('Decryption error:', error);
+      console.error("Decryption error:", error);
       return null;
     }
   }
@@ -45,7 +41,7 @@ export class SecureStorage {
     try {
       sessionStorage.setItem(key, this.encrypt(data));
     } catch (error) {
-      console.error('Error storing encrypted data:', error);
+      console.error("Error storing encrypted data:", error);
     }
   }
 
@@ -59,7 +55,7 @@ export class SecureStorage {
       const encryptedData = sessionStorage.getItem(key);
       return encryptedData ? this.decrypt(encryptedData) : null;
     } catch (error) {
-      console.error('Error retrieving encrypted data:', error);
+      console.error("Error retrieving encrypted data:", error);
       return null;
     }
   }

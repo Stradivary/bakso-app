@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { SecureStorage } from "../SecureStorage";
+import { SecureStorage } from "../../../data/storage/SecureStorage";
 import CryptoJS from "crypto-js"; // Import CryptoJS
 
 // Mock sessionStorage
