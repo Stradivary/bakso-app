@@ -28,7 +28,7 @@ nav_order: 2
    - Update `.env` with your configurations:
      - `VITE_SUPABASE_URL`
      - `VITE_SUPABASE_ANON_KEY`
-     - Other necessary variables
+     - 'VITE_SECRET_KEY'
 
 3. **Install dependencies**
    ```bash

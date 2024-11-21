@@ -12,57 +12,63 @@ nav_order: 4
 - `tsconfig.json`: TypeScript configuration
 - `vite.config.ts`: Vite build configuration
 - `vitest.config.ts`: Testing configuration
-- `eslint.config.js`: Linting configuration
-- `ecosystem.config.js`: Likely PM2 process management configuration
+- `eslint.config.js`: Linting configuration 
 - `commitlint.config.js`: Commit message linting
 - `sonar-project.properties`: SonarQube configuration
 
 ## Project Architecture
 ```
 bakso-app/
+├── docs/                # Documentation
 ├── src/                # Vite React application
-|   ├── data/           # Data models and type definitions
-|   ├── domain/         # Business logic and services
-|   ├── presentation/   # React components and views
+|   ├── models/         # Data models and type definitions
+|   ├── views/          # React components and views
+|   ├── viewmodels/     # Business logic and services 
 |   └── shared/         # Reusable utilities and hooks
-├── public/             # Static assets and diagrams
-├── LICENSE             # Licensing information
-└── README.md           # Project documentation
+└── public/             # Static assets and diagrams 
 ```
 
-## Key Architectural Components
+## Architectural Overview
 
-### 1. Data Layer (`src/data/`)
-- Defines TypeScript interfaces and types
-- Key models:
-  - `LoginModel.ts`
-  - `BroadcastMapModel.ts`
-  - `supabase.types.ts`
+### Model-View-ViewModel (MVVM)
 
-### 2. Domain Layer (`src/domain/`)
-- Services:
-  - `authService.ts`: Authentication logic
-  - `supabaseService.ts`: Supabase interaction
-  - `trackerServices.ts`: Tracking-related operations
+- **Model**: Represents the data and business logic of the application. It defines the structures for data storage and retrieval, independent of the user interface.
+- **View**: Consists of the user interface components. It displays data to the user and captures user interactions.
+- **ViewModel**: Acts as an intermediary between the Model and the View. It handles the presentation logic, prepares data for display, and processes user input.
 
-- Use Cases:
-  - `calculateDistance.ts`
-  - `calculateRegion.ts`
-  - `createPingPayload.ts`
-  - `filterNearbyUsers.ts`
 
-### 3. Presentation Layer (`src/presentation/`)
-- Components:
-  - Reusable components like `ProtectedRoute.tsx`
-  - Providers for authentication, routing, and theming
-- Views:
-  - `LoginView`
-  - `MapView`
+### Model
 
-### 4. Shared Resources (`src/shared/`)
-- Hooks:
-  - `useLocation.ts`
-  - `useLocationUpdater.ts`
-  - `useNotification.ts`
-- Utilities:
-  - `constants.ts`
+- **Purpose**: Encapsulates the application's data structures and business entities.
+- **Characteristics**:
+  - **Independence**: Does not rely on external components or frameworks.
+  - **Reusability**: Can be utilized across different parts of the application or even in other projects.
+- **Responsibilities**:
+  - Define data models and types.
+  - Implement core business logic and validation.
+  - Interact with data sources, such as APIs or databases, abstracting the details from other layers.
+
+### ViewModel
+
+- **Purpose**: Serves as the application's presentation logic layer, mediating between the Model and the View.
+- **Characteristics**:
+  - **State Management**: Holds and manages the state required by the View.
+  - **Binding**: Exposes data and commands to the View through observable properties.
+- **Responsibilities**:
+  - Fetch and manipulate data from the Model.
+  - Process user input from the View.
+  - Implement application-specific logic, such as form validation or navigation handling.
+  - Ensure that the View remains as passive as possible, focusing solely on rendering UI elements.
+
+### View
+
+- **Purpose**: Renders the user interface and handles user interactions.
+- **Characteristics**:
+  - **Declarative UI**: Defines what the UI should look like based on the current state provided by the ViewModel.
+  - **Event Handling**: Captures user interactions and forwards them to the ViewModel.
+- **Responsibilities**:
+  - Bind to the ViewModel's properties and commands.
+  - Display data to the user.
+  - Collect user input and pass it to the ViewModel.
+  - Maintain a clear separation from business logic to simplify UI changes.
+ 
