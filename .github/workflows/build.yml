@@ -9,6 +9,7 @@ on:
 env:
   NODE_VERSION: '20' 
   BUILD_DIR: '/var/www/abangbakso'
+  PRODUCTION_DEPLOYMENT_URL: "https://abangbakso.ahmadmuzaki.dev/"
 
 jobs:
 
@@ -187,3 +188,17 @@ jobs:
       - name: Cleanup
         if: always()
         run: rm -f ~/.ssh/deploy.key
+  zap_scan: # Job untuk melakukan Security Scan
+    name: Security Scan
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: ZAP Scan
+        uses: zaproxy/action-baseline@master
+        with:
+          target: ${{ env.PRODUCTION_DEPLOYMENT_URL }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          cmd_options: '-a -z "-config view.locale=id_ID"'
