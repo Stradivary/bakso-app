@@ -13,7 +13,7 @@ import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
 import { Bell, CheckCheck } from "lucide-react";
 import { useCallback } from "react";
-import { Notification } from "@/shared/hooks/useNotification";
+import { Notification } from "@/domain/use-cases/useNotification";
 
 export function NotificationCenter({
   notifications,

@@ -89,8 +89,9 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }, [fetchUserProfile]);
   const login = useCallback(
     async (name: string, role: string, latitude: number, longitude: number) => {
-      setIsLoading(true);
+     
       try {
+        setIsLoading(true);
         const { session: newSession, error: signInError } = await signInUser(
           name,
           role,
@@ -185,8 +186,10 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, newSession) => {
-      if (newSession?.user.id !== session?.user.id) {
+    } = supabase.auth.onAuthStateChange(async (event, newSession) => { 
+
+      if (!newSession?.user.id) return;
+      if ((newSession?.user.id && newSession?.user.id) && newSession?.user.id !== session?.user.id) {
         return;
       }
       switch (event) {

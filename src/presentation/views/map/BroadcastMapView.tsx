@@ -1,4 +1,4 @@
-import { useLocation } from "@/shared/hooks/useLocation";
+import { useLocation } from "@/domain/use-cases/useLocation";
 import { Text } from "@mantine/core";
 import React from "react";
 import { MapContainer, TileLayer } from "react-leaflet";

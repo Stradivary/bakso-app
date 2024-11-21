@@ -1,5 +1,5 @@
 import { User } from "@/data/models/BroadcastMapModel";
-import { useLocationUpdater } from "@/shared/hooks/useLocationUpdater";
+import { useLocationUpdater } from "@/domain/use-cases/useLocationUpdater";
 import { Stack, Text } from "@mantine/core";
 import { LatLng, Point } from "leaflet";
 import { Marker, Tooltip } from "react-leaflet";

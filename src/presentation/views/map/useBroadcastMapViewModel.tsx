@@ -1,7 +1,7 @@
 import { User } from "@/data/models/BroadcastMapModel";
 import { calculateDistance } from "@/domain/use-cases/calculateDistance";
 import { useAuth } from "@/presentation/components/providers/authProvider";
-import { useTracker } from "@/shared/hooks/useTracker";
+import { useTracker } from "@/domain/use-cases/useTracker";
 import { Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { modals } from "@mantine/modals";

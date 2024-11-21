@@ -1,4 +1,4 @@
-import { Notification } from "@/shared/hooks/useNotification";
+import { Notification } from "@/domain/use-cases/useNotification";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { ActionButtons } from "../../views/map/components/ActionButtons";

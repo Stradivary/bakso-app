@@ -1,4 +1,4 @@
-import { Notification } from "@/shared/hooks/useNotification";
+import { Notification } from "@/domain/use-cases/useNotification";
 
 export type ActionButtonProps = {
   onRecenter: () => void;

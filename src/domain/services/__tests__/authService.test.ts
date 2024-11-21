@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { supabase } from "../services/supabaseService";
-import { signInUser } from "../services/authService";
+import { supabase } from "../supabaseService";
+import { signInUser } from "../authService";
 
 vi.mock("../services/supabaseService", () => ({
   supabase: {

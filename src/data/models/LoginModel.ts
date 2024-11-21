@@ -19,6 +19,6 @@ export const loginSchema = z.object({
     .max(60, "Nama harus kurang dari 60 karakter"),
   agreed: z.boolean({
     required_error: "Anda harus menyetujui pernyataan di atas",
-  }),
-  verified: z.boolean(),
+  }).refine((x) => x, 'Anda harus menyetujui pernyataan di atas'),
+  verified: z.boolean()
 });
