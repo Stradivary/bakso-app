@@ -3,11 +3,14 @@ title: Application Workflows
 nav_order: 6
 ---
 
-## **Application Workflows 📜**
+# Application Workflows 📜
 
-### Sequence Diagrams
+## Sequence Diagrams
 
-#### **Customer Workflow**
+The following sequence diagrams illustrate the interactions between buyers, sellers, the app, and the server.
+
+### Buyer Login and Location Flow
+
 ```mermaid
 sequenceDiagram
     participant Buyer
@@ -56,7 +59,7 @@ sequenceDiagram
 
 ```
 
-### Use Cases
+## Use Cases
 
 | Feature              | Screenshot                     |
 |----------------------|---------------------------------|
@@ -64,3 +67,4 @@ sequenceDiagram
 | Customer Map View    | ![Customer Map View](https://github.com/user-attachments/assets/65410963-fe23-470a-9018-e465d6c8f4f6) |
 | Seller Interaction   | ![Seller Map View](https://github.com/user-attachments/assets/2a8f014f-6885-4b18-8692-0de5c03ecedd)
  |
+

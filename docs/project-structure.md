@@ -3,11 +3,11 @@ title: Project Structure
 nav_order: 4
 ---
 
-## **Project Structure 📁**
+# **Project Structure 📁**
 
  
 
-### Root Configuration Files
+## Root Configuration Files
 - `package.json`: Dependency management and scripts
 - `tsconfig.json`: TypeScript configuration
 - `vite.config.ts`: Vite build configuration
@@ -17,7 +17,7 @@ nav_order: 4
 - `commitlint.config.js`: Commit message linting
 - `sonar-project.properties`: SonarQube configuration
 
-### Project Architecture
+## Project Architecture
 ```
 bakso-app/
 ├── src/                # Vite React application
@@ -30,16 +30,16 @@ bakso-app/
 └── README.md           # Project documentation
 ```
 
-### Key Architectural Components
+## Key Architectural Components
 
-#### 1. Data Layer (`src/data/`)
+### 1. Data Layer (`src/data/`)
 - Defines TypeScript interfaces and types
 - Key models:
   - `LoginModel.ts`
   - `BroadcastMapModel.ts`
   - `supabase.types.ts`
 
-#### 2. Domain Layer (`src/domain/`)
+### 2. Domain Layer (`src/domain/`)
 - Services:
   - `authService.ts`: Authentication logic
   - `supabaseService.ts`: Supabase interaction
@@ -51,7 +51,7 @@ bakso-app/
   - `createPingPayload.ts`
   - `filterNearbyUsers.ts`
 
-#### 3. Presentation Layer (`src/presentation/`)
+### 3. Presentation Layer (`src/presentation/`)
 - Components:
   - Reusable components like `ProtectedRoute.tsx`
   - Providers for authentication, routing, and theming
@@ -59,11 +59,10 @@ bakso-app/
   - `LoginView`
   - `MapView`
 
-#### 4. Shared Resources (`src/shared/`)
+### 4. Shared Resources (`src/shared/`)
 - Hooks:
   - `useLocation.ts`
   - `useLocationUpdater.ts`
   - `useNotification.ts`
 - Utilities:
   - `constants.ts`
- 

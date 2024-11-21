@@ -2,8 +2,12 @@
 title: Database Design
 nav_order: 7
 ---
-## **Database Design 💾**
- 
+# **Database Design 💾**
+
+The application uses PostgreSQL with the PostGIS extension for spatial data handling.
+
+## **Entity-Relationship Diagram**
+
 erDiagram
     USER_PROFILES {
         uuid id(PK)  "Primary key, references auth.users"
@@ -16,3 +20,4 @@ erDiagram
         float8 latitude "Latitude of the user"
         float8 longitude "Longitude of the user"
     }
+

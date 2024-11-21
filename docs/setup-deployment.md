@@ -3,14 +3,14 @@ title: Setup and Deployment
 nav_order: 8
 ---
 
-## **Setup and Deployment 🐳**
+# **Setup and Deployment 🐳**
 
-### Development
+## Development
 1. Clone the repository and install dependencies.
 2. Run the app locally with `npm run dev`.
 3. The app is served at [localhost:5173](http://localhost:5173).
 
-### Production
+## Production
 1. Deploy the frontend to your VPS or preferred hosting platform.
    ```bash
    npm run build

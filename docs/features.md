@@ -3,13 +3,11 @@ title: Features
 nav_order: 3
 ---
 
-## **Features ✨**
+# **Features ✨**
 
-- Real-time location updates for sellers and customers
-- Interactive map powered by Leaflet.js
-- Role-based views for **customers** and **sellers**
-- Works offline with Progressive Web App (PWA) support
-- Secure backend powered by Supabase Cloud
-- Optimized for mobile and desktop experiences
-
----
+- **Real-time Location Updates**: Tracks the location of sellers and customers in real-time using geolocation services.
+- **Interactive Map**: Utilizes Leaflet.js for an interactive map experience with custom markers and layers.
+- **Role-Based Views**: Provides different functionalities and interfaces for **customers** and **sellers** based on their roles.
+- **Offline Support**: Implements Progressive Web App (PWA) features to allow offline access and improve performance.
+- **Secure Backend**: Leverages Supabase Cloud for secure authentication and database management.
+- **Responsive Design**: Optimized for both mobile and desktop, ensuring a seamless user experience across devices.
