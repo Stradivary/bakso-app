@@ -1,22 +1,19 @@
-import {
-  calculateRegion,
-  filterNearbyUsers,
-  initSupabaseChannel,
-  User,
-} from "@/shared/services/trackerServices";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { LatLng } from "leaflet";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { createPingPayload } from "../services/trackerServices";
 import { useNotifications } from "./useNotification";
-
+import { filterNearbyUsers } from "@/domain/use-cases/filterNearbyUsers";
+import { createPingPayload } from "@/domain/use-cases/createPingPayload";
+import { calculateRegion } from "@/domain/use-cases/calculateRegion";
+import { initSupabaseChannel } from "@/domain/services/trackerServices";
+import { UserPayload } from "@/data/models/user.types";
 export const useTracker = (
   userId: string,
   userRole: "seller" | "buyer",
   initialLocation: LatLng | null,
   userName: string,
 ) => {
-  const [nearbyUsers, setNearbyUsers] = useState<User[]>([]);
+  const [nearbyUsers, setNearbyUsers] = useState<UserPayload[]>([]);
   const { notifications, markAsRead, addNotification } =
     useNotifications(userId);
 
@@ -29,7 +26,7 @@ export const useTracker = (
   }, []);
 
   const handlePresenceSync = useCallback(
-    (users: User[]) => {
+    (users: UserPayload[]) => {
       if (!initialLocation) return users;
       const filteredUsers = filterNearbyUsers(
         users,

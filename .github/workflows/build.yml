@@ -200,5 +200,5 @@ jobs:
         uses: zaproxy/action-baseline@master
         with:
           target: ${{ env.PRODUCTION_DEPLOYMENT_URL }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_SECRET }}
           cmd_options: '-a -z "-config view.locale=id_ID"'
