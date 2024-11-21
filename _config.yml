@@ -38,6 +38,7 @@ exclude:
   - package-lock.json
   - Rakefile
   - README.md
+  - index.html
   - CODE_OF_CONDUCT.md
   - docker-compose.yml
   - Dockerfile
