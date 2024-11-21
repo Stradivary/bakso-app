@@ -1,3 +1,8 @@
+---
+title: Application Workflows
+nav_order: 6
+---
+
 ## **Application Workflows 📜**
 
 ### Sequence Diagrams

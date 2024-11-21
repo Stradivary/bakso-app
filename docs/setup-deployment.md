@@ -1,4 +1,7 @@
-
+---
+title: Setup and Deployment
+nav_order: 8
+---
 
 ## **Setup and Deployment 🐳**
 

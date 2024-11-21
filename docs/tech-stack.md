@@ -1,3 +1,7 @@
+---
+title: Tech Stack
+nav_order: 5
+---
 
 ## **Tech Stack 🛠️**
 

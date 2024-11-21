@@ -1,3 +1,7 @@
+---
+title: Project Structure
+nav_order: 4
+---
 
 ## **Project Structure 📁**
 

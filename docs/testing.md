@@ -1,4 +1,7 @@
-
+---
+title: Testing
+nav_order: 12
+---
 ## **Testing 🧪**
 
 Run frontend tests:

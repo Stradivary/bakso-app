@@ -1,3 +1,8 @@
+---
+title: Features
+nav_order: 3
+---
+
 ## **Features ✨**
 
 - Real-time location updates for sellers and customers

@@ -1,5 +1,7 @@
-
-
+---
+title: Database Design
+nav_order: 7
+---
 ## **Database Design 💾**
  
 erDiagram
