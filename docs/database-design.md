@@ -8,6 +8,7 @@ The application uses PostgreSQL with the PostGIS extension for spatial data hand
 
 ## **Entity-Relationship Diagram**
 
+```mermaid
 erDiagram
     USER_PROFILES {
         uuid id(PK)  "Primary key, references auth.users"
@@ -20,4 +21,4 @@ erDiagram
         float8 latitude "Latitude of the user"
         float8 longitude "Longitude of the user"
     }
-
+```

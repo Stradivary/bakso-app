@@ -5,6 +5,8 @@ nav_order: 5
 
 # Tech Stack 🛠️
 
+![Higher Order Design](https://github.com/user-attachments/assets/6e87f10e-b262-4cf1-aa9c-542d732105a9)
+
 ## **Frontend**
 - **React.js**: Core framework
 - **Mantine UI**: Rich component library
