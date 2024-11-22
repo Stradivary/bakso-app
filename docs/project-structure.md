@@ -3,19 +3,25 @@ title: Project Structure
 nav_order: 4
 ---
 
-# Project Structure 📁
+# Project Structure 📁 
 
 ## **Root Configuration Files**  
 
-- **`package.json`**: Manages dependencies and scripts for the project.  
-- **`tsconfig.json`**: Configures TypeScript compiler options.  
-- **`vite.config.ts`**: Specifies Vite's build setup.  
-- **`vitest.config.ts`**: Configuration for testing using Vitest.  
-- **`eslint.config.js`**: Configures ESLint rules and linting behavior.  
-- **`commitlint.config.js`**: Defines rules for commit message linting.  
-- **`sonar-project.properties`**: Configuration for SonarCloud integration.  
+At the core of the project are its configuration files—small but powerful components that define how the application behaves, builds, and maintains quality. Here's what each file brings to the table:  
+
+- **`package.json`**: The central node for managing project dependencies and defining reusable scripts. It ensures a consistent development environment and smooth collaboration.  
+- **`tsconfig.json`**: The blueprint for TypeScript configuration, governing type-checking, module resolution, and transpilation rules to maintain a robust type-safe codebase.  
+- **`vite.config.ts`**: Defines how Vite handles development builds, optimizes assets, and configures plugins for a fast, modern frontend experience.  
+- **`vitest.config.ts`**: A tailored setup for Vitest, allowing developers to write and run tests effectively, ensuring code correctness and stability.  
+- **`eslint.config.js`**: Establishes linting rules to maintain code quality and enforce consistency across the project.  
+- **`commitlint.config.js`**: Ensures commit messages follow a standardized format, improving collaboration and aiding in version tracking.  
+- **`sonar-project.properties`**: Configures SonarCloud for automated static code analysis, catching bugs and improving maintainability early in the development lifecycle.  
+
+---
 
 ## **Project Architecture**  
+
+The application's architecture is designed for clarity and maintainability. Here’s a breakdown:  
 
 ```plaintext
 bakso-app/  
@@ -36,53 +42,31 @@ bakso-app/
 
 ## **Architectural Overview**  
 
-### **Model-View-ViewModel (MVVM)**  
+The application is built on the Model-View-ViewModel (MVVM) pattern. This architecture enforces a clean separation of concerns, simplifying development and testing by isolating data, logic, and presentation layers.  
 
-The application follows the MVVM architectural pattern, ensuring clear separation of concerns between data, business logic, and the user interface.  
+### **Model**
 
-#### **Model**  
+The **Model** is the backbone of the application. It defines the data structures, business rules, and mechanisms to interact with external systems like APIs or databases. This layer doesn’t concern itself with how data will be displayed; it only ensures that data is correct, consistent, and accessible.  
 
-**Purpose**: Represents the application's data structures and core business logic.  
-**Characteristics**:  
+For example, if the application requires fetching a list of sellers within a certain radius, the Model encapsulates the logic for querying and structuring the data before handing it off to the ViewModel.  
 
-- **Independence**: Self-contained and decoupled from UI components.  
-- **Reusability**: Can be shared across multiple parts of the application or other projects.  
+---
 
-**Responsibilities**:  
+### **ViewModel**  
 
-- Define and manage data models and types.  
-- Implement validation and business rules.  
-- Handle interactions with APIs or databases, abstracting complexities from the other layers.  
+Think of the **ViewModel** as the translator between the Model and the View. It fetches raw data from the Model, transforms it into a format suitable for display, and manages the state of the UI.  
 
-#### **ViewModel**  
+The ViewModel plays a key role in keeping the View simple. It acts as a buffer, shielding the UI from the complexity of the business logic. For instance, when a buyer "pokes" a seller, the ViewModel updates the system state and ensures the View reflects this change seamlessly.  
 
-**Purpose**: Acts as the intermediary layer, managing presentation logic and coordinating data flow between the Model and the View.  
-**Characteristics**:  
+---
 
-- **State Management**: Maintains the View's required state.  
-- **Binding**: Connects the View and Model, exposing observable properties.  
+### **View**  
 
-**Responsibilities**:  
+The **View** is where the application meets the user. It is responsible for rendering the interface and capturing interactions, like button clicks or input changes. However, it avoids dealing with data or business logic directly.  
 
-- Fetch and transform data from the Model for display.  
-- Process user interactions and update the Model accordingly.  
-- Implement features like form validation, navigation, or business rules.  
-- Keep the View passive and focused on rendering.  
+For example, a buyer's interaction with the "poke" button only triggers a method in the ViewModel. The View doesn’t need to know how the poke mechanism works—it just knows how to render the button and react to state changes. 
 
-#### **View**  
-
-**Purpose**: Focused on UI rendering and user interaction handling.  
-**Characteristics**:  
-
-- **Declarative UI**: Dynamically renders the interface based on the ViewModel's state.  
-- **Event Handling**: Collects user input and forwards it to the ViewModel.  
-
-**Responsibilities**:  
-
-- Bind to ViewModel properties and display data.  
-- Render user-friendly layouts and components.  
-- Forward user interactions (e.g., clicks, input) to the ViewModel for processing.  
-- Avoid incorporating business logic to ensure ease of UI updates.  
+---
 
 ## **Comparing MVC and MVVM**
 
