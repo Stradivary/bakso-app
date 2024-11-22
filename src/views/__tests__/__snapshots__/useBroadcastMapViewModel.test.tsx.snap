@@ -42,7 +42,7 @@ exports[`useBroadcastMapViewModel > handles exit modal actions 1`] = `
     },
     "setMapRef": [Function],
     "userId": "test-id",
-    "userName": undefined,
+    "display_name": undefined,
     "userRole": undefined,
   },
 }

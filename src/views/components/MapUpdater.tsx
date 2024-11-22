@@ -40,7 +40,7 @@ export function TargetMark({
     >
       <Tooltip offset={new Point(12, 0)}>
         <Stack gap={4}>
-          <Text>{nearbyUser.userName}</Text>
+          <Text>{nearbyUser.display_name}</Text>
           <Text c="gray">
             {nearbyUser.role === "seller" ? "Pedagang Bakso" : "Pelanggan"}
           </Text>

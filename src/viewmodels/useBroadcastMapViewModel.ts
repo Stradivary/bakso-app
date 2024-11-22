@@ -23,6 +23,7 @@ export const useBroadcastMapViewModel = (
     session?.user?.user_metadata?.latitude,
     session?.user?.user_metadata?.longitude,
   ];
+
   const [exitModalOpened, { close: exitModalClose, open: openModal }] =
     useDisclosure();
   const [lastValidLatLng, setLastValidLatLng] = useState<LatLng | null>(null);
@@ -50,12 +51,7 @@ export const useBroadcastMapViewModel = (
     notifications,
     handleLocationUpdate,
     deactivateUser,
-  } = useTracker(
-    userId,
-    userRole,
-    fixedLocation,
-    session?.user?.user_metadata?.name ?? "",
-  );
+  } = useTracker(userId, userRole, fixedLocation, userName);
 
   const [mapRef, setMapRef] = React.useState<L.Map | null>(null);
 

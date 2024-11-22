@@ -25,7 +25,7 @@ export interface UserPayload {
   role: "seller" | "buyer";
   location: { lat: number; lng: number };
   isOnline: boolean;
-  userName: string;
+  display_name: string;
   isAvailable: boolean;
   seller_id: string;
 }

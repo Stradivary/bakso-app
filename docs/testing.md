@@ -65,7 +65,7 @@ describe("useBroadcastMapViewModel", () => {
     );
     const seller = {
       user_id: "seller-id",
-      userName: "Seller",
+      display_name: "Seller",
       role: "seller" as const,
       location: { lat: 2, lng: 2 },
     };

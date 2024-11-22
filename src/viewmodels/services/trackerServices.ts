@@ -46,7 +46,7 @@ export const initSupabaseChannel = async (
         role: user.userRole,
         location: { lat: location.lat, lng: location.lng },
         isOnline: true,
-        userName: user.userName,
+        display_name: user.userName,
         isAvailable: true,
       });
     }

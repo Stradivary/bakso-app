@@ -1,8 +1,8 @@
-import { Notification } from "@/viewmodels/hooks/useNotification";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { ActionButtons } from "../components/ActionButtons";
 import { MantineProvider } from "@mantine/core";
+import { Notification } from "@/models/Notification.types";
 
 describe("ActionButtons", () => {
   const defaultProps = {

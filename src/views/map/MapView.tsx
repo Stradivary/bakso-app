@@ -22,7 +22,7 @@ const PingModal: FC<{
 }> = ({ nearbyUser, estimatedTimeInMinutes }: any) => (
   <Stack gap={4}>
     <Text size="sm">
-      🍜 Apakah Anda ingin memesan bakso dari {nearbyUser.userName}?
+      🍜 Apakah Anda ingin memesan bakso dari {nearbyUser.display_name}?
     </Text>
     <Text size="xs" c="dimmed">
       Estimasi waktu: {estimatedTimeInMinutes} menit berjalan kaki

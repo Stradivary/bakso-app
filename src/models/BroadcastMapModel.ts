@@ -1,6 +1,6 @@
 export interface User {
   user_id: string;
-  userName: string;
+  display_name: string;
   role: "seller" | "buyer";
   location: {
     lat: number;

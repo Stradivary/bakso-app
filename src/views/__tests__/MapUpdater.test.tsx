@@ -67,7 +67,7 @@ describe("TargetMark", () => {
   const mockHandleClick = vi.fn();
   const mockUser = {
     user_id: "",
-    userName: "Test User",
+    display_name: "Test User",
     role: "seller",
     location: { lat: 1, lng: 1 },
   };
@@ -151,13 +151,13 @@ describe("NearbyUsersMarker", () => {
   const mockNearbyUsers = [
     {
       user_id: "1",
-      userName: "User 1",
+      display_name: "User 1",
       role: "seller" as const,
       location: { lat: 1, lng: 1 },
     },
     {
       user_id: "2",
-      userName: "User 2",
+      display_name: "User 2",
       role: "buyer" as const,
       location: { lat: 2, lng: 2 },
     },
@@ -165,7 +165,7 @@ describe("NearbyUsersMarker", () => {
   const mockInvalidNearbyUsers = [
     {
       user_id: "1",
-      userName: "User 1",
+      display_name: "User 1",
       role: "seller" as const,
       location: null,
     },
