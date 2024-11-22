@@ -136,7 +136,6 @@ export const useBroadcastMapViewModel = (
   };
 };
 
-
 export const useOrderConfirmationModal = ({
   sendPing,
   children,
@@ -148,10 +147,10 @@ export const useOrderConfirmationModal = ({
     nearbyUser: User;
     estimatedTimeInMinutes: number;
   }) => {
-    const {
-      nearbyUser,
-      estimatedTimeInMinutes,
-    } = props ?? { nearbyUser: null, estimatedTimeInMinutes: null };
+    const { nearbyUser, estimatedTimeInMinutes } = props ?? {
+      nearbyUser: null,
+      estimatedTimeInMinutes: null,
+    };
 
     if (!nearbyUser || !estimatedTimeInMinutes) {
       return;

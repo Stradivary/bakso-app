@@ -1,6 +1,9 @@
-
+import { User } from "@/models/BroadcastMapModel";
 import { useLocation } from "@/viewmodels/hooks/useLocation";
-import { useBroadcastMapViewModel, useOrderConfirmationModal } from "@/viewmodels/useBroadcastMapViewModel";
+import {
+  useBroadcastMapViewModel,
+  useOrderConfirmationModal,
+} from "@/viewmodels/useBroadcastMapViewModel";
 import { ActionButtons } from "@/views/components/ActionButtons";
 import { Dialog } from "@/views/components/Dialog";
 import { ExitConfirmationDialog } from "@/views/components/ExitConfirmationDialog";
@@ -12,7 +15,6 @@ import {
 import { LoadingOverlay, Stack, Text } from "@mantine/core";
 import React, { FC } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
-
 
 const PingModal: FC<{
   nearbyUser: any;
@@ -51,9 +53,15 @@ const BroadcastMapView: React.FC = () => {
 
   const { open } = useOrderConfirmationModal({
     sendPing,
-    children: PingModal
+    children: PingModal,
   });
 
+  const handleClick = (nearbyUser: User) => {
+    const result = handleMarkerClick(nearbyUser);
+    if (result) {
+      open(result);
+    }
+  };
 
   return (
     <>
@@ -82,7 +90,7 @@ const BroadcastMapView: React.FC = () => {
 
         <NearbyUsersMarker
           nearbyUsers={nearbyUsers}
-          handleMarkerClick={(nearbyUser) => open(handleMarkerClick(nearbyUser))}
+          handleMarkerClick={handleClick}
         />
       </MapContainer>
 

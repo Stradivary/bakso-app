@@ -38,7 +38,7 @@ export function TargetMark({
         click: () => handleClick(nearbyUser),
       }}
     >
-      <Tooltip>
+      <Tooltip offset={new Point(12, 0)}>
         <Stack gap={4}>
           <Text>{nearbyUser.userName}</Text>
           <Text c="gray">
