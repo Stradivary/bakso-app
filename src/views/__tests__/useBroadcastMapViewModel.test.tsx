@@ -3,7 +3,7 @@ import { act, renderHook } from "@testing-library/react";
 import L from "leaflet";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@/views/providers/authProvider", () => ({
+vi.mock("@/shared/contexts/authProvider", () => ({
   useAuth: () => ({
     isLoading: false,
     error: "",

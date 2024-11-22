@@ -1,15 +1,16 @@
 ---
 title: Testing
-nav_order: 12
+nav_order: 11
 ---
 
-# **Testing 🧪**
+# Testing 🧪
 
 Testing ensures the reliability and quality of the application.
 
 ## **Running Tests**
 
 Navigate to the project root and run:
+
 ```bash
 cd src
 npm run test

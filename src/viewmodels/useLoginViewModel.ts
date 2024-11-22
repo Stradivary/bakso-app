@@ -2,7 +2,7 @@ import { useRequestLocation } from "@/viewmodels/hooks/useRequestLocation";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "@/views/providers/authProvider";
+import { useAuth } from "@/shared/contexts/authProvider";
 import { FormData, loginSchema } from "@/models/LoginModel";
 
 export const useLoginViewModel = () => {

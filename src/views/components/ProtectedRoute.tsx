@@ -1,6 +1,6 @@
 import { Box, LoadingOverlay } from "@mantine/core";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "@/views/providers/authProvider";
+import { useAuth } from "@/shared/contexts/authProvider";
 
 export const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({
   children,

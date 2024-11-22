@@ -5,7 +5,7 @@ import {
   RouteObject,
   RouterProvider,
 } from "react-router-dom";
-import { OfflineHandler } from "../components/OfflineHandler";
+import { OfflineHandler } from "@/views/components/OfflineHandler";
 import { BroadcastMapPage } from "@/views/map";
 import LoginView from "@/views/login/LoginView";
 const routes: RouteObject[] = [

@@ -11,7 +11,7 @@ import {
 } from "vitest";
 import { LoginPage } from "../login";
 import { BroadcastMapPage } from "../map";
-import { Contexts } from "@/views/providers/_root";
+import { Contexts } from "@/shared/contexts/_root";
 
 vi.mock("react-router-dom", async (importOriginal) => {
   const actual = (await importOriginal()) as Record<string, never>;
@@ -21,7 +21,7 @@ vi.mock("react-router-dom", async (importOriginal) => {
   };
 });
 
-vi.mock("@/views/providers/authProvider", () => ({
+vi.mock("@/shared/contexts/authProvider", () => ({
   useAuth: () => ({
     session: {
       user: {

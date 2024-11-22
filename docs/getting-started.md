@@ -15,12 +15,14 @@ nav_order: 2
 ## Setup Instructions 🛠️
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/bakso-app.git
    cd bakso-app
    ```
 
 2. **Configure environment variables**
+
    ```bash
    cp .env.example .env
    ```
@@ -31,6 +33,7 @@ nav_order: 2
      - 'VITE_SECRET_KEY'
 
 3. **Install dependencies**
+
    ```bash
    npm install
    ```
@@ -41,16 +44,19 @@ nav_order: 2
    - Set up authentication and database schemas as per the [Database Design](/docs/database-design.md).
 
 5. **Start the development server**
+
    ```bash
    npm run dev
    ```
 
 6. **Run tests**
+
    ```bash
    npm run test
    ```
 
 7. **Build for production**
+
    ```bash
    npm run build
    ```
@@ -67,5 +73,3 @@ nav_order: 2
 - **Getting Help**
   - Refer to the [Contributing Guide](/docs/contributing.md) for support.
   - Open an issue on the [GitHub repository](https://github.com/Stradivary/bakso-app/issues).
-
----

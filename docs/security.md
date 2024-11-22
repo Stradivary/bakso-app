@@ -1,9 +1,9 @@
 ---
 title: Security Implementations
-nav_order: 11
+nav_order: 10
 ---
 
-# **Security Implementations 🔒**
+# Security Implementations
 
 I have implemented several security measures to ensure the protection of data and the integrity of the systems. Below are the key security implementations in place:
 

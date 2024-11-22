@@ -3,7 +3,7 @@ title: Features
 nav_order: 3
 ---
 
-# **Features ✨**
+# Features ✨
 
 - **Real-time Location Updates**: Tracks the location of sellers and customers in real-time using geolocation services.
 - **Interactive Map**: Utilizes Leaflet.js for an interactive map experience with custom markers and layers.

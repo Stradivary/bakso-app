@@ -7,18 +7,21 @@ nav_order: 5
 
 ![Higher Order Design](https://github.com/user-attachments/assets/6e87f10e-b262-4cf1-aa9c-542d732105a9)
 
-## **Frontend**
+## Frontend
+
 - **React.js**: Core framework
 - **Mantine UI**: Rich component library
 - **Leaflet.js**: Interactive maps
 - **React Router**: Navigation
 - **Vite**: Build tooling
 
-## **Backend**
+## Backend
+
 - **Supabase Cloud**: Auth, database, and real-time API
 - **PostgreSQL**: Database with PostGIS for geospatial queries
 
-## **DevOps**
+## DevOps
+
 - Supabase Cloud for database and authentication
 - VPS hosting for custom backend and proxy configurations
 - CI/CD pipelines with GitHub Actions
@@ -42,7 +45,7 @@ I selected **Mantine UI** due to its maturity and extensibility. Mantine provide
 
 Choosing **React.js** over frameworks like **Angular** or **Vue** was based on its flexibility and extensive ecosystem. React's component-based architecture allows for reusable code and easier maintenance. Its popularity means there are numerous libraries and tools available, which can accelerate development. React's learning curve is also favorable, making it accessible for new team members in the future.
 
-### DevOps
+### DevOps Strategy
 
 My DevOps strategy focuses on building a fast, functional app with an eye toward future scalability. I use **Supabase Cloud** for managed database and authentication services, ensuring reliability without the overhead of in-house maintenance. For custom backend and proxy configurations, I deploy on a **VPS**, opting for a lean server setup built with **GitHub Actions** to optimize resource usage. While containerization with Docker is not currently implemented, I recognize its benefits for scalability and consistency and may adopt it as the application grows.
 

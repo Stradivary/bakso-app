@@ -65,6 +65,4 @@ sequenceDiagram
 |----------------------|---------------------------------|
 | Auth Map             | ![Auth  View](https://github.com/user-attachments/assets/a3677269-4d81-4c03-9a70-d2265abb583e) |
 | Customer Map View    | ![Customer Map View](https://github.com/user-attachments/assets/65410963-fe23-470a-9018-e465d6c8f4f6) |
-| Seller Interaction   | ![Seller Map View](https://github.com/user-attachments/assets/2a8f014f-6885-4b18-8692-0de5c03ecedd)
- |
-
+| Seller Interaction   | ![Seller Map View](https://github.com/user-attachments/assets/2a8f014f-6885-4b18-8692-0de5c03ecedd) |

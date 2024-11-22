@@ -8,6 +8,7 @@ nav_order: 4
  
 
 ## Root Configuration Files
+
 - `package.json`: Dependency management and scripts
 - `tsconfig.json`: TypeScript configuration
 - `vite.config.ts`: Vite build configuration
@@ -17,6 +18,7 @@ nav_order: 4
 - `sonar-project.properties`: SonarQube configuration
 
 ## Project Architecture
+
 ```
 bakso-app/
 ├── docs/                # Documentation

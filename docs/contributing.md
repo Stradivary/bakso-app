@@ -1,9 +1,9 @@
 ---
 title: Contributing
-nav_order: 10
+nav_order: 12
 ---
 
-# **Contributing 🤝**
+# Contributing 🤝
 
 We welcome contributions from the community! Please follow these guidelines to contribute to the project.
 
@@ -14,5 +14,3 @@ We welcome contributions from the community! Please follow these guidelines to c
    Click the "Fork" button at the top right corner of the repository page.
 
 2. **Clone Your Fork**
-
-   

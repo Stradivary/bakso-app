@@ -1,6 +1,6 @@
-import { User } from "@/models/BroadcastMapModel";
+
 import { useLocation } from "@/viewmodels/hooks/useLocation";
-import { useBroadcastMapViewModel } from "@/viewmodels/useBroadcastMapViewModel";
+import { useBroadcastMapViewModel, useOrderConfirmationModal } from "@/viewmodels/useBroadcastMapViewModel";
 import { ActionButtons } from "@/views/components/ActionButtons";
 import { Dialog } from "@/views/components/Dialog";
 import { ExitConfirmationDialog } from "@/views/components/ExitConfirmationDialog";
@@ -9,51 +9,24 @@ import {
   NearbyUsersMarker,
   UserMarker,
 } from "@/views/components/MapUpdater";
-import { Stack, Text } from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { notifications as notify } from "@mantine/notifications";
-import React from "react";
+import { LoadingOverlay, Stack, Text } from "@mantine/core";
+import React, { FC } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 
-const useOrderConfirmationModal = ({
-  sendPing,
-}: {
-  sendPing: (userId: string) => void;
-}) => {
-  const open = ({
-    nearbyUser,
-    estimatedTimeInMinutes,
-  }: {
-    nearbyUser: User;
-    estimatedTimeInMinutes: number;
-  }) =>
-    modals.openConfirmModal({
-      title: "Pesan Bakso",
-      children: (
-        <Stack gap={4}>
-          <Text size="sm">
-            🍜 Apakah Anda ingin memesan bakso dari {nearbyUser.userName}?
-          </Text>
-          <Text size="xs" c="dimmed">
-            Estimasi waktu: {estimatedTimeInMinutes} menit berjalan kaki
-          </Text>
-        </Stack>
-      ),
-      labels: { cancel: "Batal", confirm: "Pesan" },
-      onConfirm: () => {
-        sendPing(nearbyUser.user_id);
-        notify.show({
-          title: "Pesan Bakso",
-          message: "Pesan bakso telah dikirim",
-          color: "blue",
-        });
-      },
-    });
 
-  return {
-    open,
-  };
-};
+const PingModal: FC<{
+  nearbyUser: any;
+  estimatedTimeInMinutes: number;
+}> = ({ nearbyUser, estimatedTimeInMinutes }: any) => (
+  <Stack gap={4}>
+    <Text size="sm">
+      🍜 Apakah Anda ingin memesan bakso dari {nearbyUser.userName}?
+    </Text>
+    <Text size="xs" c="dimmed">
+      Estimasi waktu: {estimatedTimeInMinutes} menit berjalan kaki
+    </Text>
+  </Stack>
+);
 
 const BroadcastMapView: React.FC = () => {
   const { location } = useLocation();
@@ -76,27 +49,17 @@ const BroadcastMapView: React.FC = () => {
     userRole,
   } = useBroadcastMapViewModel(location);
 
-  const { open } = useOrderConfirmationModal({ sendPing });
+  const { open } = useOrderConfirmationModal({
+    sendPing,
+    children: PingModal
+  });
 
-  const handleMarkerClickWrapper = (nearbyUser: User) => {
-    const result = handleMarkerClick(nearbyUser);
-    if (result) {
-      open(result);
-    }
-  };
-
-  if (!location) {
-    return (
-      <div>
-        <Text>Memuat lokasi anda...</Text>
-      </div>
-    );
-  }
 
   return (
     <>
+      <LoadingOverlay visible={!location} />
       <MapContainer
-        key={location.toString()}
+        key={`${location?.toString()}-map`}
         ref={(map) => setMapRef(map)}
         center={centerLocation}
         zoom={16}
@@ -119,7 +82,7 @@ const BroadcastMapView: React.FC = () => {
 
         <NearbyUsersMarker
           nearbyUsers={nearbyUsers}
-          handleMarkerClick={handleMarkerClickWrapper}
+          handleMarkerClick={(nearbyUser) => open(handleMarkerClick(nearbyUser))}
         />
       </MapContainer>
 

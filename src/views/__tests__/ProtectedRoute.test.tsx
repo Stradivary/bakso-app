@@ -3,10 +3,10 @@ import { MemoryRouter } from "react-router-dom";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ProtectedRoute } from "../components/ProtectedRoute";
 import { PropsWithChildren } from "react";
-import { useAuth } from "../providers/authProvider";
+import { useAuth } from "@/shared/contexts/authProvider";
 
 // Mock the useAuth hook
-vi.mock("@/views/providers/authProvider");
+vi.mock("@/shared/contexts/authProvider");
 
 // Mock Mantine components
 vi.mock("@mantine/core", () => ({

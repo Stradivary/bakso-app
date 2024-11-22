@@ -1,10 +1,13 @@
 import { User } from "@/models/BroadcastMapModel";
 import { calculateDistance } from "@/viewmodels/hooks/calculateDistance";
 import { useTracker } from "@/viewmodels/hooks/useTracker";
-import { useAuth } from "@/views/providers/authProvider";
+import { useAuth } from "@/shared/contexts/authProvider";
 import { useDisclosure } from "@mantine/hooks";
 import L, { LatLng } from "leaflet";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { FC, useCallback, useMemo, useState } from "react";
+
+import { modals } from "@mantine/modals";
+import { notifications as notify } from "@mantine/notifications";
 
 export const useBroadcastMapViewModel = (
   location: {
@@ -130,5 +133,45 @@ export const useBroadcastMapViewModel = (
     fixedLocation,
     centerLocation,
     sendPing,
+  };
+};
+
+
+export const useOrderConfirmationModal = ({
+  sendPing,
+  children,
+}: {
+  sendPing: (userId: string) => void;
+  children: FC<{ nearbyUser: User; estimatedTimeInMinutes: number }>;
+}) => {
+  const open = (props?: {
+    nearbyUser: User;
+    estimatedTimeInMinutes: number;
+  }) => {
+    const {
+      nearbyUser,
+      estimatedTimeInMinutes,
+    } = props ?? { nearbyUser: null, estimatedTimeInMinutes: null };
+
+    if (!nearbyUser || !estimatedTimeInMinutes) {
+      return;
+    }
+
+    modals.openConfirmModal({
+      title: "Pesan Bakso",
+      children: children({ nearbyUser, estimatedTimeInMinutes }),
+      labels: { cancel: "Batal", confirm: "Pesan" },
+      onConfirm: () => {
+        sendPing(nearbyUser.user_id);
+        notify.show({
+          title: "Pesan Bakso",
+          message: "Pesan bakso telah dikirim",
+          color: "blue",
+        });
+      },
+    });
+  };
+  return {
+    open,
   };
 };

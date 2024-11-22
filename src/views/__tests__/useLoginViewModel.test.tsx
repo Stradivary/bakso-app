@@ -4,7 +4,7 @@ import { useLoginViewModel } from "../../viewmodels/useLoginViewModel";
 
 // Mock dependencies
 
-vi.mock("@/views/providers/authProvider", () => ({
+vi.mock("@/shared/contexts/authProvider", () => ({
   useAuth: () => ({
     session: {
       user: {

@@ -11,7 +11,7 @@ vi.mock("react-router-dom", async (importOriginal) => {
     useNavigate: vi.fn().mockImplementation((a) => console.log(a)),
   };
 });
-vi.mock("@/views/providers/authProvider", () => ({
+vi.mock("@/shared/contexts/authProvider", () => ({
   useAuth: vi.fn().mockReturnValue({
     login: vi.fn(),
   }),
