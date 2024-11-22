@@ -1,4 +1,4 @@
-import { Notification } from "@/viewmodels/hooks/useNotification";
+import { Notification } from "./Notification.types";
 
 export type ActionButtonProps = {
   onRecenter: () => void;

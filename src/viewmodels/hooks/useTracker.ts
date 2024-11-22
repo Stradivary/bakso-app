@@ -2,11 +2,12 @@ import { RealtimeChannel } from "@supabase/supabase-js";
 import { LatLng } from "leaflet";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNotifications } from "./useNotification";
-import { filterNearbyUsers } from "@/viewmodels/hooks/filterNearbyUsers";
-import { createPingPayload } from "@/viewmodels/hooks/createPingPayload";
-import { calculateRegion } from "@/viewmodels/hooks/calculateRegion";
+import { filterNearbyUsers } from "@/shared/utils/filterNearbyUsers";
+import { createPingPayload } from "@/shared/utils/createPingPayload";
+import { calculateRegion } from "@/shared/utils/calculateRegion";
 import { initSupabaseChannel } from "@/viewmodels/services/trackerServices";
 import { UserPayload } from "@/models/user.types";
+
 export const useTracker = (
   userId: string,
   userRole: "seller" | "buyer",

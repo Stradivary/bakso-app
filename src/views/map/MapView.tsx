@@ -30,7 +30,7 @@ const PingModal: FC<{
   </Stack>
 );
 
-const BroadcastMapView: React.FC = () => {
+const MapView: React.FC = () => {
   const { location } = useLocation();
   const {
     centerLocation,
@@ -113,4 +113,4 @@ const BroadcastMapView: React.FC = () => {
   );
 };
 
-export default BroadcastMapView;
+export default MapView;

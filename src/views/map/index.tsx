@@ -1,10 +1,10 @@
 import { ProtectedRoute } from "@/views/components/ProtectedRoute";
-import BroadcastMapView from "@/views/map/BroadcastMapView";
+import MapView from "@/views/map/MapView";
 
 export const BroadcastMapPage = () => {
   return (
     <ProtectedRoute>
-      <BroadcastMapView />
+      <MapView />
     </ProtectedRoute>
   );
 };

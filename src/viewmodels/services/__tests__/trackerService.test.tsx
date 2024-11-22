@@ -1,9 +1,9 @@
 import { LatLng } from "leaflet";
 import { describe, expect, it, vi } from "vitest";
-import { calculateRegion } from "../../hooks/calculateRegion";
-import { calculateDistance } from "../../hooks/calculateDistance";
-import { createPingPayload } from "../../hooks/createPingPayload";
-import { filterNearbyUsers } from "../../hooks/filterNearbyUsers";
+import { calculateRegion } from "@/shared/utils/calculateRegion";
+import { calculateDistance } from "@/shared/utils/calculateDistance";
+import { createPingPayload } from "@/shared/utils/createPingPayload";
+import { filterNearbyUsers } from "@/shared/utils/filterNearbyUsers";
 import { initSupabaseChannel } from "../trackerServices";
 import { supabase } from "../supabaseService";
 

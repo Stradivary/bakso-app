@@ -1,3 +1,4 @@
+import { Notification } from "@/models/Notification.types";
 import {
   ActionIcon,
   Button,
@@ -13,7 +14,6 @@ import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
 import { Bell, CheckCheck } from "lucide-react";
 import { useCallback } from "react";
-import { Notification } from "@/viewmodels/hooks/useNotification";
 
 export function NotificationCenter({
   notifications,

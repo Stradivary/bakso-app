@@ -1,5 +1,5 @@
 import { User } from "@/models/BroadcastMapModel";
-import { calculateDistance } from "@/viewmodels/hooks/calculateDistance";
+import { calculateDistance } from "@/shared/utils/calculateDistance";
 import { useTracker } from "@/viewmodels/hooks/useTracker";
 import { useAuth } from "@/shared/contexts/authProvider";
 import { useDisclosure } from "@mantine/hooks";
