@@ -8,6 +8,7 @@ export const SEARCH_PARAMS = {
 export const SELLER_RADIUS = 3000; // 3km in meters
 export const BUYER_RADIUS = 3000; // 3km in meters
 export const PRESENCE_UPDATE_BUFFER = 1000; // 1 seconds
+export const UPDATE_INTERVAL = 2000;
 
 export const LOCATION_UPDATE_INTERVAL = 10 * 1000; // 30 seconds
 

@@ -1,6 +1,6 @@
 import { User } from "@/models/BroadcastMapModel";
 import { calculateDistance } from "@/shared/utils/calculateDistance";
-import { useTracker } from "@/viewmodels/hooks/useTracker";
+import { useTracker } from "@/shared/hooks/useTracker";
 import { useAuth } from "@/shared/contexts/authProvider";
 import { useDisclosure } from "@mantine/hooks";
 import L, { LatLng } from "leaflet";

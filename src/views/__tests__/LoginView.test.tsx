@@ -17,15 +17,15 @@ vi.mock("@/shared/contexts/authProvider", () => ({
   }),
 }));
 
-vi.mock("@/viewmodels/hooks/useLocation", () => ({
+vi.mock("@/shared/hooks/useLocation", () => ({
   useLocation: vi.fn(),
 }));
 
-vi.mock("@/viewmodels/hooks/useLocationUpdater", () => ({
+vi.mock("@/shared/hooks/useLocationUpdater", () => ({
   useLocationUpdater: vi.fn(),
 }));
 
-vi.mock("@/viewmodels/hooks/useRequestLocation", () => ({
+vi.mock("@/shared/hooks/useRequestLocation", () => ({
   useRequestLocation: vi.fn().mockReturnValue({
     latitude: 0,
     longitude: 0,

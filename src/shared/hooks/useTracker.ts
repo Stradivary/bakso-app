@@ -5,7 +5,7 @@ import { useNotifications } from "./useNotification";
 import { filterNearbyUsers } from "@/shared/utils/filterNearbyUsers";
 import { createPingPayload } from "@/shared/utils/createPingPayload";
 import { calculateRegion } from "@/shared/utils/calculateRegion";
-import { initSupabaseChannel } from "@/viewmodels/services/trackerServices";
+import { initSupabaseChannel } from "@/shared/services/trackerServices";
 import { UserPayload } from "@/models/user.types";
 
 export const useTracker = (

@@ -1,5 +1,5 @@
 import { User } from "@/models/BroadcastMapModel";
-import { useLocation } from "@/viewmodels/hooks/useLocation";
+import { useLocation } from "@/shared/hooks/useLocation";
 import {
   useBroadcastMapViewModel,
   useOrderConfirmationModal,

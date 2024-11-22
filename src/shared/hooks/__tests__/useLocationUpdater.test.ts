@@ -9,7 +9,8 @@ import {
   it,
   vi,
 } from "vitest";
-import { UPDATE_INTERVAL, useLocationUpdater } from "../useLocationUpdater";
+import { useLocationUpdater } from "../useLocationUpdater";
+import { UPDATE_INTERVAL } from "@/shared/utils/constants";
 
 vi.mock("./useLocation", () => ({
   useLocation: vi

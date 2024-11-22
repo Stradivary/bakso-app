@@ -1,4 +1,4 @@
-import { useRequestLocation } from "@/viewmodels/hooks/useRequestLocation";
+import { useRequestLocation } from "@/shared/hooks/useRequestLocation";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -1,8 +1,7 @@
 import { LatLng } from "leaflet";
 import { useEffect } from "react";
 import { useRequestLocation } from "./useRequestLocation";
-
-export const UPDATE_INTERVAL = 2000;
+import { UPDATE_INTERVAL } from "@/shared/utils/constants";
 
 export function useLocationUpdater({
   userId,

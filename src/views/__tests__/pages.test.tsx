@@ -33,7 +33,7 @@ vi.mock("@/shared/contexts/authProvider", () => ({
   }),
 }));
 
-vi.mock("@/viewmodels/hooks/useLocation", () => ({
+vi.mock("@/shared/hooks/useLocation", () => ({
   useLocation: () => ({
     location: { latitude: 0, longitude: 0 },
   }),

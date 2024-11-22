@@ -1,6 +1,6 @@
 import { Database } from "@/models/supabase.types";
-import { signInUser } from "@/viewmodels/services/authService";
-import { supabase } from "@/viewmodels/services/supabaseService";
+import { signInUser } from "@/shared/services/authService";
+import { supabase } from "@/shared/services/supabaseService";
 import { notifications } from "@mantine/notifications";
 import { Session } from "@supabase/supabase-js";
 import {
