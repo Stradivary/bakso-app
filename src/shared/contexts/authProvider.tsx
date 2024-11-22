@@ -116,13 +116,15 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const logout = useCallback(async () => {
     try {
+      sessionStorage.removeItem("abangbakso-session");
+
+      setSession(null);
+      setUser(null);
       const { error: signOutError } = await supabase.auth.signOut({
         scope: "local",
       });
 
       if (signOutError) throw signOutError;
-      setSession(null);
-      setUser(null);
     } catch (error) {
       console.error("Error during logout:", error);
       setError("Failed to logout");

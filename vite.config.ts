@@ -17,7 +17,6 @@ export default defineConfig({
       mode: "production",
       registerType: "autoUpdate",
       workbox: {
-        cleanupOutdatedCaches: true,
         clientsClaim: true,
         skipWaiting: true,
         disableDevLogs: true,
